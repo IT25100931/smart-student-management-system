@@ -1,4 +1,4 @@
-package entity;
+package com.studentmanagement.backend.entity;
 import jakarta.persistence.*;
 
 @Entity
