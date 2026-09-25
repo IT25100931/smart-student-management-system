@@ -22,4 +22,53 @@ public class LeaveBalance {
     private Integer monthlyShortLeaveTotal;
 
     // getters/setters
+
+    public Integer getBalanceId() {
+        return balanceId;
+    }
+    public void setBalanceId(Integer balanceId) {
+        this.balanceId = balanceId;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
+
+    public Integer getAcademicYear() {
+        return academicYear;
+    }
+    public void setAcademicYear(Integer academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    public Integer getFullDayTotal() {
+        return fullDayTotal;
+    }
+    public void setFullDayTotal(Integer fullDayTotal) {
+        this.fullDayTotal = fullDayTotal;
+    }
+
+    public Integer getShortLeaveTotal() {
+        return shortLeaveTotal;
+    }
+    public void setShortLeaveTotal(Integer shortLeaveTotal) {
+        this.shortLeaveTotal = shortLeaveTotal;
+    }
+
+    public Integer getMonthlyFullDayTotal() {
+        return monthlyFullDayTotal;
+    }
+    public void setMonthlyFullDayTotal(Integer monthlyFullDayTotal) {
+        this.monthlyFullDayTotal = monthlyFullDayTotal;
+    }
+
+    public Integer getMonthlyShortLeaveTotal() {
+        return monthlyShortLeaveTotal;
+    }
+    public void setMonthlyShortLeaveTotal(Integer monthlyShortLeaveTotal) {
+        this.monthlyShortLeaveTotal = monthlyShortLeaveTotal;
+    }
 }

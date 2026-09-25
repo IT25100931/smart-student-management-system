@@ -41,6 +41,9 @@ public class LeaveRequest {
     public Integer getLeaveId() {
         return leaveId;
     }
+    public void setLeaveId(Integer leaveId) {
+        this.leaveId = leaveId;
+    }
 
     public Staff getStaff() {
         return staff;
