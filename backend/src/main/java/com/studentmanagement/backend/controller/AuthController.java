@@ -23,7 +23,7 @@ public class AuthController {
         if (user.isPresent()) {
             return Map.of(
                     "success", true,
-                    "role", user.get().getRole().toString(),
+                    "role", user.get().getRole().getRoleName(),
                     "username", user.get().getUsername()
             );
         }
