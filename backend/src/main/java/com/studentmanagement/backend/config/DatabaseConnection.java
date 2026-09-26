@@ -7,11 +7,12 @@ import java.sql.SQLException;          //Handles database access errors
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/school_lms_db";
     private static final String USER = "root";
-    private static final String PASSWORD = "Pokemon@123"; // change to your MySQL password[cite: 2]
+    private static final String PASSWORD = ""; // change to your MySQL password[cite: 2]
     private static Connection connection = null;
 
     private DatabaseConnection() {}
 
+    //Checks if connection has not yet been initialized yet
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
