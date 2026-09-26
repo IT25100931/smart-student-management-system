@@ -1,8 +1,8 @@
 package com.studentmanagement.backend.config;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.Connection;            //link to the MySQL database
+import java.sql.DriverManager;         //manages database drivers and creates connections
+import java.sql.SQLException;          //Handles database access errors
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/school_lms_db";
