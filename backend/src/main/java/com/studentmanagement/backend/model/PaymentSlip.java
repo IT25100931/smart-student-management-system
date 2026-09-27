@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class PaymentSlip {
-    public class PaymentSlip {
         private int slipId;
         private int feeId;
         private String studentId;
@@ -19,5 +18,4 @@ public class PaymentSlip {
 
         public PaymentSlip() {
         }
-    }
 }
