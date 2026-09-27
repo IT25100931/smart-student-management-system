@@ -16,4 +16,16 @@ public class StudentFee {
 
     public StudentFee() {}
 
+    public StudentFee(int feeId, String studentId, String feeType, BigDecimal totalAmount,
+                      BigDecimal paidAmount, LocalDate dueDate, String paymentStatus, LocalDate paymentDate) {
+        this.feeId = feeId;
+        this.studentId = studentId;
+        this.feeType = feeType;
+        this.totalAmount = totalAmount;
+        this.paidAmount = paidAmount;
+        this.balance = totalAmount.subtract(paidAmount != null ? paidAmount : BigDecimal.ZERO);
+        this.dueDate = dueDate;
+        this.paymentStatus = paymentStatus;
+        this.paymentDate = paymentDate;
+    }
 }
