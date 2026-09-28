@@ -3,6 +3,7 @@ package com.studentmanagement.backend.controller;
 import com.studentmanagement.backend.entity.LeaveRequest;
 import com.studentmanagement.backend.service.LeaveRequestService;
 import org.springframework.web.bind.annotation.*;
+import com.studentmanagement.backend.dto.LeaveSummaryDTO;
 
 import java.util.List;
 
@@ -35,6 +36,13 @@ public class LeaveRequestController {
             @PathVariable Integer id) {
 
         return leaveRequestService.getLeaveRequestById(id);
+    }
+
+    @GetMapping("/summary/{staffId}")
+    public LeaveSummaryDTO getLeaveSummary(
+            @PathVariable Integer staffId) {
+
+        return leaveRequestService.getLeaveSummary(staffId);
     }
 }
 
