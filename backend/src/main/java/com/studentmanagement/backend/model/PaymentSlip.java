@@ -18,6 +18,7 @@ public class PaymentSlip {
 
         public PaymentSlip() {}
 
+        //Getters and Setters
         public int getSlipId() { return slipId; }
         public void setSlipId(int slipId) { this.slipId = slipId; }
 
