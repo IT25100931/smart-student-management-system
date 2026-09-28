@@ -1,0 +1,18 @@
+### Get teacher leave requests
+GET http://localhost:8081/api/leave-requests/staff/1
+
+
+### Create a full-day leave
+POST http://localhost:8081/api/leave-requests
+Content-Type: application/json
+
+{
+  "staff": {
+    "staffId": 1
+  },
+  "leaveType": "FULL_DAY",
+  "startDate": "2026-10-05",
+  "endDate": "2026-10-05",
+  "reason": "Personal matter",
+  "status": "PENDING"
+}
