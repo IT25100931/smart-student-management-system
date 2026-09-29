@@ -1,122 +1,161 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [summary, setSummary] = useState(null);
+  const [leaveRequests, setLeaveRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Temporary test teacher.
+  // Later this will come from the logged-in user.
+  const staffId = 1;
+
+  useEffect(() => {
+    loadLeaveData();
+  }, []);
+
+  async function loadLeaveData() {
+    try {
+      setLoading(true);
+      setError("");
+
+      const summaryResponse = await fetch(
+        `http://localhost:8081/api/leave-requests/summary/${staffId}`
+      );
+
+      if (!summaryResponse.ok) {
+        throw new Error("Could not load leave summary");
+      }
+
+      const summaryData = await summaryResponse.json();
+
+      const requestsResponse = await fetch(
+        `http://localhost:8081/api/leave-requests/staff/${staffId}`
+      );
+
+      if (!requestsResponse.ok) {
+        throw new Error("Could not load leave requests");
+      }
+
+      const requestsData = await requestsResponse.json();
+
+      setSummary(summaryData);
+      setLeaveRequests(requestsData);
+
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <h2>Loading leave information...</h2>;
+  }
+
+  if (error) {
+    return (
+      <div>
+        <h2>Something went wrong</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app">
 
-      <div className="ticks"></div>
+      <h1>Leave Management</h1>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+      {/* Leave Summary */}
+      <section className="summary-section">
+        <h2>Leave Summary</h2>
+
+        <div className="summary-grid">
+
+          <div className="summary-card">
+            <h3>Total Full-Day Leaves Remaining</h3>
+            <p>
+              {summary.fullDayRemaining} / {summary.fullDayTotal}
+            </p>
+          </div>
+
+          <div className="summary-card">
+            <h3>Total Short Leaves Remaining</h3>
+            <p>
+              {summary.shortLeaveRemaining} / {summary.shortLeaveTotal}
+            </p>
+          </div>
+
+          <div className="summary-card">
+            <h3>Full Days Remaining for This Month</h3>
+            <p>
+              {summary.monthlyFullDayRemaining} /{" "}
+              {summary.monthlyFullDayTotal}
+            </p>
+          </div>
+
+          <div className="summary-card">
+            <h3>Short Leaves Remaining for This Month</h3>
+            <p>
+              {summary.monthlyShortLeaveRemaining} /{" "}
+              {summary.monthlyShortLeaveTotal}
+            </p>
+          </div>
+
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* Upcoming Leave Days */}
+      <section className="upcoming-section">
+        <h2>Upcoming Leave Days</h2>
+
+        {summary.upcomingLeaveDays.length === 0 ? (
+          <p>No upcoming approved leave.</p>
+        ) : (
+          summary.upcomingLeaveDays.map((date) => (
+            <p key={date}>{date}</p>
+          ))
+        )}
+      </section>
+
+      {/* Leave Requests */}
+      <section className="requests-section">
+        <h2>My Leave Requests</h2>
+
+        {leaveRequests.length === 0 ? (
+          <p>No leave requests found.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {leaveRequests.map((request) => (
+                <tr key={request.leaveId}>
+                  <td>{request.leaveType}</td>
+                  <td>{request.startDate}</td>
+                  <td>{request.endDate}</td>
+                  <td>{request.reason}</td>
+                  <td>{request.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+
+    </div>
+  );
 }
 
-export default App
+export default App;
