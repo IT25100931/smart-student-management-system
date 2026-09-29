@@ -3,14 +3,15 @@ package com.studentmanagement.backend.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity
+@Entity //to indicate this class is a database table
 @Table(name = "students")
 public class Student {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_id")
-    private Long studentId;
+    @Id //primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //MySQL auto-increments the ID
+
+    @Column(name = "student_id") //studentId in tha java program connect to the student_id column in the database
+    private Long studentId; //stores a whole number
 
     @Column(name = "user_id")
     private Long userId;
@@ -21,7 +22,7 @@ public class Student {
     @Column(name = "last_name")
     private String lastName;
 
-    private LocalDate dob;
+    private LocalDate dob; //Year - Month - Day
     private String gender;
     private String email;
 
@@ -35,79 +36,91 @@ public class Student {
 
     private String status;
 
-    public Student() {}
+    public Student() {} //creates a Student object without giving any values initially.
+    //default constructor without any initial values
 
-    public Long getStudentId() { 
-        return studentId; 
+    //getter and setter student ID
+    public Long getStudentId() {
+        return studentId;
     }
-    public void setStudentId(Long studentId) { 
-        this.studentId = studentId; 
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
+    //getter and setter user ID
     public Long getUserId() {
-        return userId; 
+        return userId;
     }
-    public void setUserId(Long userId) { 
-        this.userId = userId; 
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
+    //getter and setter first name
     public String getFirstName() {
-        return firstName; 
+        return firstName;
     }
-    public void setFirstName(String firstName) { 
-        this.firstName = firstName; 
-    }
-
-    public String getLastName() { 
-        return lastName; 
-    }
-    public void setLastName(String lastName) { 
-        this.lastName = lastName; 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public LocalDate getDob() { 
+    //getter and setter Last name
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    //getter and setter DOB
+    public LocalDate getDob() {
         return dob;
     }
-    public void setDob(LocalDate dob) { 
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
-    public String getGender() { 
+    //getter and setter Gender
+    public String getGender() {
         return gender;
     }
-    public void setGender(String gender) { 
-        this.gender = gender; 
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getEmail() { 
+    //getter and setter Email
+    public String getEmail() {
         return email;
     }
-    public void setEmail(String email) { 
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getContactNo() { 
-        return contactNo; 
+    //getter and setter Contact No
+    public String getContactNo() {
+        return contactNo;
     }
     public void setContactNo(String contactNo) {
-        this.contactNo = contactNo; 
+        this.contactNo = contactNo;
     }
 
+    //getter and setter Address
     public String getAddress() {
         return address;
     }
-    public void setAddress(String address) { 
-        this.address = address; 
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public LocalDate getAdmissionDate() { 
+    //getter and setter Admission Date
+    public LocalDate getAdmissionDate() {
         return admissionDate;
     }
     public void setAdmissionDate(LocalDate admissionDate) {
         this.admissionDate = admissionDate;
     }
 
-    public String getStatus() { 
+    //getter and setter status
+    public String getStatus() {
         return status;
     }
     public void setStatus(String status) {
