@@ -37,38 +37,82 @@ public class Student {
 
     public Student() {}
 
-    public Long getStudentId() { return studentId; }
-    public void setStudentId(Long studentId) { this.studentId = studentId; }
+    public Long getStudentId() { 
+        return studentId; 
+    }
+    public void setStudentId(Long studentId) { 
+        this.studentId = studentId; 
+    }
 
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getUserId() {
+        return userId; 
+    }
+    public void setUserId(Long userId) { 
+        this.userId = userId; 
+    }
 
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public String getFirstName() {
+        return firstName; 
+    }
+    public void setFirstName(String firstName) { 
+        this.firstName = firstName; 
+    }
 
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public String getLastName() { 
+        return lastName; 
+    }
+    public void setLastName(String lastName) { 
+        this.lastName = lastName; 
+    }
 
-    public LocalDate getDob() { return dob; }
-    public void setDob(LocalDate dob) { this.dob = dob; }
+    public LocalDate getDob() { 
+        return dob;
+    }
+    public void setDob(LocalDate dob) { 
+        this.dob = dob;
+    }
 
-    public String getGender() { return gender; }
-    public void setGender(String gender) { this.gender = gender; }
+    public String getGender() { 
+        return gender;
+    }
+    public void setGender(String gender) { 
+        this.gender = gender; 
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getEmail() { 
+        return email;
+    }
+    public void setEmail(String email) { 
+        this.email = email;
+    }
 
-    public String getContactNo() { return contactNo; }
-    public void setContactNo(String contactNo) { this.contactNo = contactNo; }
+    public String getContactNo() { 
+        return contactNo; 
+    }
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo; 
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) { 
+        this.address = address; 
+    }
 
-    public LocalDate getAdmissionDate() { return admissionDate; }
-    public void setAdmissionDate(LocalDate admissionDate) { this.admissionDate = admissionDate; }
+    public LocalDate getAdmissionDate() { 
+        return admissionDate;
+    }
+    public void setAdmissionDate(LocalDate admissionDate) {
+        this.admissionDate = admissionDate;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getStatus() { 
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
 
 
