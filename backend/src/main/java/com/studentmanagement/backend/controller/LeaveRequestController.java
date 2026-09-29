@@ -4,11 +4,13 @@ import com.studentmanagement.backend.entity.LeaveRequest;
 import com.studentmanagement.backend.service.LeaveRequestService;
 import org.springframework.web.bind.annotation.*;
 import com.studentmanagement.backend.dto.LeaveSummaryDTO;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/leave-requests")
+@CrossOrigin(origins = "http://localhost:5173")
 public class LeaveRequestController {
 
     private final LeaveRequestService leaveRequestService;

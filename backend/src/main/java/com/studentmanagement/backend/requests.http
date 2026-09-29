@@ -1,2 +1,1 @@
-### Approve leave request 4
-PUT http://localhost:8081/api/leave-requests/10/approve?approvedBy=2
+PUT http://localhost:8081/api/leave-requests/9/reject?approvedBy=2
