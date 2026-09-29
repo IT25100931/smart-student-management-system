@@ -6,6 +6,8 @@ import com.studentmanagement.backend.entity.LeaveRequest;
 import com.studentmanagement.backend.repository.LeaveBalanceRepository;
 import com.studentmanagement.backend.repository.LeaveRequestRepository;
 import org.springframework.stereotype.Service;
+import com.studentmanagement.backend.entity.Staff;
+import com.studentmanagement.backend.repository.StaffRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,13 +21,16 @@ public class LeaveRequestService {
 
     private final LeaveRequestRepository leaveRequestRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
+    private final StaffRepository staffRepository;
 
     public LeaveRequestService(
             LeaveRequestRepository leaveRequestRepository,
-            LeaveBalanceRepository leaveBalanceRepository) {
+            LeaveBalanceRepository leaveBalanceRepository,
+            StaffRepository staffRepository) {
 
         this.leaveRequestRepository = leaveRequestRepository;
         this.leaveBalanceRepository = leaveBalanceRepository;
+        this.staffRepository = staffRepository;
     }
 
     // ============================================================
@@ -159,6 +164,8 @@ public class LeaveRequestService {
                 .orElseThrow(() ->
                         new RuntimeException("Leave request not found"));
     }
+
+
 
 
     // ============================================================
@@ -371,5 +378,56 @@ public class LeaveRequestService {
 
                 upcomingLeaveDays
         );
+    }
+    public List<LeaveRequest> getAllLeaveRequests() {
+        return leaveRequestRepository.findAll();
+    }
+
+    public LeaveRequest approveLeaveRequest(
+            Integer leaveId,
+            Integer approvedByStaffId) {
+
+        LeaveRequest request = leaveRequestRepository.findById(leaveId)
+                .orElseThrow(() ->
+                        new RuntimeException("Leave request not found"));
+
+        if (!"PENDING".equals(request.getStatus())) {
+            throw new IllegalArgumentException(
+                    "Only PENDING leave requests can be approved");
+        }
+
+        Staff approver = staffRepository.findById(approvedByStaffId)
+                .orElseThrow(() ->
+                        new RuntimeException("Approving staff member not found"));
+
+        request.setStatus("APPROVED");
+        request.setApprovedBy(approver);
+        request.setApprovedAt(LocalDateTime.now());
+
+        return leaveRequestRepository.save(request);
+    }
+
+    public LeaveRequest rejectLeaveRequest(
+            Integer leaveId,
+            Integer approvedByStaffId) {
+
+        LeaveRequest request = leaveRequestRepository.findById(leaveId)
+                .orElseThrow(() ->
+                        new RuntimeException("Leave request not found"));
+
+        if (!"PENDING".equals(request.getStatus())) {
+            throw new IllegalArgumentException(
+                    "Only PENDING leave requests can be rejected");
+        }
+
+        Staff approver = staffRepository.findById(approvedByStaffId)
+                .orElseThrow(() ->
+                        new RuntimeException("Approving staff member not found"));
+
+        request.setStatus("REJECTED");
+        request.setApprovedBy(approver);
+        request.setApprovedAt(LocalDateTime.now());
+
+        return leaveRequestRepository.save(request);
     }
 }

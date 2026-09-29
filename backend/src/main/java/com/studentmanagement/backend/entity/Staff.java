@@ -1,4 +1,4 @@
-//this is a only for demo purposes
+//this file is only for demo purposes
 package com.studentmanagement.backend.entity;
 
 import jakarta.persistence.*;

@@ -1,12 +1,2 @@
-POST http://localhost:8081/api/leave-requests
-Content-Type: application/json
-
-{
-  "staff": {
-    "staffId": 1
-  },
-  "leaveType": "SHORT",
-  "startDate": "2026-10-10",
-  "endDate": "2026-10-11",
-  "reason": "Appointment"
-}
+### Approve leave request 4
+PUT http://localhost:8081/api/leave-requests/10/approve?approvedBy=2

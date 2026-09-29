@@ -44,5 +44,29 @@ public class LeaveRequestController {
 
         return leaveRequestService.getLeaveSummary(staffId);
     }
+    @GetMapping
+    public List<LeaveRequest> getAllLeaveRequests() {
+        return leaveRequestService.getAllLeaveRequests();
+    }
+    @PutMapping("/{id}/approve")
+    public LeaveRequest approveLeaveRequest(
+            @PathVariable Integer id,
+            @RequestParam Integer approvedBy) {
+
+        return leaveRequestService.approveLeaveRequest(
+                id,
+                approvedBy
+        );
+    }
+    @PutMapping("/{id}/reject")
+    public LeaveRequest rejectLeaveRequest(
+            @PathVariable Integer id,
+            @RequestParam Integer approvedBy) {
+
+        return leaveRequestService.rejectLeaveRequest(
+                id,
+                approvedBy
+        );
+    }
 }
 
