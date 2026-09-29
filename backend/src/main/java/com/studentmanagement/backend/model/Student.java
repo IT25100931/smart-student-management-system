@@ -39,6 +39,7 @@ public class Student {
     public Student() {} //creates a Student object without giving any values initially.
     //default constructor without any initial values
 
+    //getter and setter student ID
     public Long getStudentId() {
         return studentId;
     }
@@ -46,6 +47,7 @@ public class Student {
         this.studentId = studentId;
     }
 
+    //getter and setter user ID
     public Long getUserId() {
         return userId;
     }
@@ -53,6 +55,7 @@ public class Student {
         this.userId = userId;
     }
 
+    //getter and setter first name
     public String getFirstName() {
         return firstName;
     }
@@ -60,6 +63,7 @@ public class Student {
         this.firstName = firstName;
     }
 
+    //getter and setter Last name
     public String getLastName() {
         return lastName;
     }
@@ -67,6 +71,7 @@ public class Student {
         this.lastName = lastName;
     }
 
+    //getter and setter DOB
     public LocalDate getDob() {
         return dob;
     }
@@ -74,6 +79,7 @@ public class Student {
         this.dob = dob;
     }
 
+    //getter and setter Gender
     public String getGender() {
         return gender;
     }
@@ -81,6 +87,7 @@ public class Student {
         this.gender = gender;
     }
 
+    //getter and setter Email
     public String getEmail() {
         return email;
     }
@@ -88,6 +95,7 @@ public class Student {
         this.email = email;
     }
 
+    //getter and setter Contact No
     public String getContactNo() {
         return contactNo;
     }
@@ -95,6 +103,7 @@ public class Student {
         this.contactNo = contactNo;
     }
 
+    //getter and setter Address
     public String getAddress() {
         return address;
     }
@@ -102,6 +111,7 @@ public class Student {
         this.address = address;
     }
 
+    //getter and setter Admission Date
     public LocalDate getAdmissionDate() {
         return admissionDate;
     }
@@ -109,6 +119,7 @@ public class Student {
         this.admissionDate = admissionDate;
     }
 
+    //getter and setter status
     public String getStatus() {
         return status;
     }
