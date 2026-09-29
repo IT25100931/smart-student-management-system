@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="css/staff.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Leave Requests</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f3c5b;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        header p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #1f3c5b;
+        }
+
+        .btn {
+            background-color: #1f3c5b;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #162d44;
+        }
+
+        .table-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1f3c5b;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .pending {
+            color: #b77900;
+            font-weight: bold;
+        }
+
+        .approved {
+            color: #218838;
+            font-weight: bold;
+        }
+
+        .rejected {
+            color: #c82333;
+            font-weight: bold;
+        }
+
+        /* Leave form */
+
+        .form-container {
+            display: none;
+            background-color: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .form-container h3 {
+            margin-bottom: 20px;
+            color: #1f3c5b;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .full-width {
+            grid-column: 1 / 3;
+        }
+
+        .form-buttons {
+            margin-top: 20px;
+        }
+
+        .cancel {
+            background-color: #777;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 700px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: 1;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>Focus International School</h1>
+    <p>Staff Management System</p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="top-section">
+
+        <h2>Staff Leave Requests</h2>
+
+        <button class="btn" onclick="showForm()">
+            + Request Leave
+        </button>
+
+    </div>
+
+
+    <!-- LEAVE FORM -->
+
+    <div class="form-container" id="leaveForm">
+
+        <h3>Submit Leave Request</h3>
+
+        <div class="form-grid">
+
+            <div>
+
+                <label>Staff ID</label>
+
+                <input type="number"
+                       id="staffId"
+                       placeholder="Enter staff ID">
+
+            </div>
+
+
+            <div>
+
+                <label>Leave Type</label>
+
+                <select id="leaveType">
+
+                    <option value="Annual Leave">
+                        Annual Leave
+                    </option>
+
+                    <option value="Medical Leave">
+                        Medical Leave
+                    </option>
+
+                    <option value="Casual Leave">
+                        Casual Leave
+                    </option>
+
+                    <option value="Half Day">
+                        Half Day
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>Start Date</label>
+
+                <input type="date" id="startDate">
+
+            </div>
+
+
+            <div>
+
+                <label>End Date</label>
+
+                <input type="date" id="endDate">
+
+            </div>
+
+
+            <div class="full-width">
+
+                <label>Reason</label>
+
+                <textarea
+                    id="reason"
+                    placeholder="Enter reason for leave">
+                </textarea>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-buttons">
+
+            <button class="btn" onclick="submitLeave()">
+                Submit Request
+            </button>
+
+            <button class="btn cancel" onclick="hideForm()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- LEAVE TABLE -->
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Leave ID</th>
+                    <th>Staff ID</th>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Request Date</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>1</td>
+                    <td>1</td>
+                    <td>Annual Leave</td>
+                    <td>2026-10-05</td>
+                    <td>2026-10-07</td>
+                    <td>Personal reasons</td>
+                    <td>2026-09-20</td>
+
+                    <td class="pending">
+                        Pending
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>2</td>
+                    <td>2</td>
+                    <td>Medical Leave</td>
+                    <td>2026-09-30</td>
+                    <td>2026-10-01</td>
+                    <td>Medical appointment</td>
+                    <td>2026-09-25</td>
+
+                    <td class="approved">
+                        Approved
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>3</td>
+                    <td>3</td>
+                    <td>Annual Leave</td>
+                    <td>2026-10-10</td>
+                    <td>2026-10-12</td>
+                    <td>Family function</td>
+                    <td>2026-09-22</td>
+
+                    <td class="pending">
+                        Pending
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>4</td>
+                    <td>4</td>
+                    <td>Half Day</td>
+                    <td>2026-10-03</td>
+                    <td>2026-10-03</td>
+                    <td>Personal appointment</td>
+                    <td>2026-09-27</td>
+
+                    <td class="approved">
+                        Approved
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>5</td>
+                    <td>5</td>
+                    <td>Casual Leave</td>
+                    <td>2026-10-15</td>
+                    <td>2026-10-15</td>
+                    <td>Personal matter</td>
+                    <td>2026-09-28</td>
+
+                    <td class="rejected">
+                        Rejected
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function showForm() {
+
+        document.getElementById("leaveForm").style.display = "block";
+
+    }
+
+
+    function hideForm() {
+
+        document.getElementById("leaveForm").style.display = "none";
+
+    }
+
+
+    function submitLeave() {
+
+        let staffId =
+            document.getElementById("staffId").value;
+
+        let startDate =
+            document.getElementById("startDate").value;
+
+        let endDate =
+            document.getElementById("endDate").value;
+
+
+        if (staffId === "" ||
+            startDate === "" ||
+            endDate === "") {
+
+            alert("Please fill in all required fields.");
+
+            return;
+
+        }
+
+
+        alert("Leave request submitted successfully!");
+
+        hideForm();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

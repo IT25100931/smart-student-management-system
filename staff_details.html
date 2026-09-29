@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="css/staff.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Details - Focus International School</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f3c5b;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        header p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .top-section h2 {
+            color: #1f3c5b;
+        }
+
+        .btn {
+            background-color: #1f3c5b;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #162d44;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .table-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1f3c5b;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+            background-color: #dff0df;
+            color: #267326;
+        }
+
+        /* Form */
+
+        .form-container {
+            display: none;
+            background-color: white;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .form-container h3 {
+            margin-bottom: 20px;
+            color: #1f3c5b;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-buttons {
+            margin-top: 20px;
+        }
+
+        .cancel {
+            background-color: #777;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Focus International School</h1>
+    <p>Staff Management System</p>
+</header>
+
+<div class="container">
+
+    <div class="top-section">
+        <h2>Staff Details</h2>
+
+        <button class="btn" onclick="showForm()">
+            + Add Staff
+        </button>
+    </div>
+
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search staff by name, position or staff type..."
+            onkeyup="searchStaff()"
+        >
+    </div>
+
+    <div class="table-container">
+
+        <table id="staffTable">
+
+            <thead>
+                <tr>
+                    <th>Staff ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Telephone</th>
+                    <th>Position</th>
+                    <th>Staff Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td>User1 Staff</td>
+                    <td>user1@gmail.com</td>
+                    <td>0771234567</td>
+                    <td>Teacher</td>
+                    <td>Academic</td>
+                    <td>
+                        <span class="status">Active</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>User2 Staff</td>
+                    <td>user2@gmail.com</td>
+                    <td>0712345678</td>
+                    <td>Teacher</td>
+                    <td>Academic</td>
+                    <td>
+                        <span class="status">Active</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>User3 Staff</td>
+                    <td>user3@gmail.com</td>
+                    <td>0763456789</td>
+                    <td>Accountant</td>
+                    <td>Administrative</td>
+                    <td>
+                        <span class="status">Active</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>User4 Staff</td>
+                    <td>user4@gmail.com</td>
+                    <td>0754567890</td>
+                    <td>Teacher</td>
+                    <td>Academic</td>
+                    <td>
+                        <span class="status">Active</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>User5 Staff</td>
+                    <td>user5@gmail.com</td>
+                    <td>0785678901</td>
+                    <td>Office Assistant</td>
+                    <td>Administrative</td>
+                    <td>
+                        <span class="status">Active</span>
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ADD STAFF FORM -->
+
+    <div class="form-container" id="staffForm">
+
+        <h3>Add New Staff Member</h3>
+
+        <div class="form-grid">
+
+            <div>
+                <label>First Name</label>
+                <input type="text" id="firstName">
+            </div>
+
+            <div>
+                <label>Last Name</label>
+                <input type="text" id="lastName">
+            </div>
+
+            <div>
+                <label>Email</label>
+                <input type="email" id="email">
+            </div>
+
+            <div>
+                <label>Telephone</label>
+                <input type="text" id="telephone">
+            </div>
+
+            <div>
+                <label>Address</label>
+                <input type="text" id="address">
+            </div>
+
+            <div>
+                <label>Position</label>
+                <input type="text" id="position">
+            </div>
+
+            <div>
+                <label>Staff Type</label>
+
+                <select id="staffType">
+                    <option value="Academic">Academic</option>
+                    <option value="Administrative">Administrative</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Date Joined</label>
+                <input type="date" id="dateJoined">
+            </div>
+
+        </div>
+
+        <div class="form-buttons">
+
+            <button class="btn" onclick="addStaff()">
+                Save Staff
+            </button>
+
+            <button class="btn cancel" onclick="hideForm()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function showForm() {
+        document.getElementById("staffForm").style.display = "block";
+    }
+
+    function hideForm() {
+        document.getElementById("staffForm").style.display = "none";
+    }
+
+    function searchStaff() {
+
+        let input = document.getElementById("searchInput");
+        let filter = input.value.toLowerCase();
+
+        let table = document.getElementById("staffTable");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+
+            let text = rows[i].textContent.toLowerCase();
+
+            if (text.includes(filter)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+    function addStaff() {
+        alert("Staff member saved successfully!");
+    }
+
+</script>
+
+</body>
+</html>
