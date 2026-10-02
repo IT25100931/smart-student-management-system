@@ -67,16 +67,6 @@ VALUES
 (9,  'STU1009', 'REF-COM-2026-301', 43000.00, '/uploads/slips/slip_stu1009_301.pdf', '2026-09-03 14:10:00', 'APPROVED', 'STF102', '2026-09-03 16:45:00', 'Payment accepted.'),
 (10, 'STU1010', 'REF-NDB-2026-440', 20000.00, '/uploads/slips/slip_stu1010_440.jpg', '2026-09-19 16:30:00', 'PENDING',  NULL,     NULL,                  'Recently submitted.');
 
--- 4. DISPLAY DATABASE STATE & VERIFICATION
--- Display schemas
-SHOW TABLES;
-DESCRIBE STUDENT_FEES;
-DESCRIBE PAYMENT_SLIPS;
-
--- Display all records
-SELECT * FROM STUDENT_FEES;
-SELECT * FROM PAYMENT_SLIPS;
-
 -- Check calculated outstanding balances (Function 6 verification)
 SELECT 
     fee_id,
@@ -88,3 +78,13 @@ SELECT
     payment_status,
     due_date
 FROM STUDENT_FEES;
+
+-- 4. DISPLAY DATABASE STATE & VERIFICATION
+-- Display schemas
+SHOW TABLES;
+DESCRIBE STUDENT_FEES;
+DESCRIBE PAYMENT_SLIPS;
+
+-- Display all records
+SELECT * FROM STUDENT_FEES;
+SELECT * FROM PAYMENT_SLIPS;
