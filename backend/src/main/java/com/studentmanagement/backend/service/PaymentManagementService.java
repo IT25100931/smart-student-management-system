@@ -15,13 +15,13 @@ public class PaymentManagementService {
 
     // Line 18-21 Fix: Strongly typed List ensures StudentFee::getBalance resolves cleanly
     public BigDecimal calculateTotalOutstandingBalance(String studentId) {
-        List fees = feeDAO.getStudentFeeStatus(studentId);
+        List<StudentFee> fees = feeDAO.getStudentFeeStatus(studentId);
         return fees.stream()
                 .map(StudentFee::getBalance)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public List getStudentFeeStatus(String studentId) {
+    public List<StudentFee> getStudentFeeStatus(String studentId) {
         return feeDAO.getStudentFeeStatus(studentId);
     }
 
