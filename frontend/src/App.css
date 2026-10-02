@@ -1,17 +1,53 @@
+/* ------------------------------
+   Global
+------------------------------ */
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background: #050505;
+  color: #f5f5f5;
 }
+
+/* ------------------------------
+   Main App Container
+------------------------------ */
 
 .app {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 50px 30px;
 }
 
+/* ------------------------------
+   Main Heading
+------------------------------ */
+
 h1 {
-  margin-bottom: 30px;
+  margin: 0 0 40px;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+}
+
+h2 {
+  margin: 0 0 22px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* ------------------------------
+   Leave Summary
+------------------------------ */
+
+.summary-section {
+  margin-top: 0;
 }
 
 .summary-grid {
@@ -21,40 +57,356 @@ h1 {
 }
 
 .summary-card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #101010;
+  border: 1px solid #252525;
+  padding: 28px;
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  border-color: #444444;
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.5);
 }
 
 .summary-card h3 {
-  margin-top: 0;
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #a7a7a7;
 }
 
 .summary-card p {
-  font-size: 28px;
-  font-weight: bold;
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -1px;
 }
 
-.upcoming-section,
-.requests-section,
-.summary-section {
-  margin-top: 30px;
+/* ------------------------------
+   Upcoming Leave
+------------------------------ */
+
+.upcoming-section {
+  margin-top: 45px;
+  padding: 28px;
+
+  background: #101010;
+  border: 1px solid #252525;
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-table {
+.upcoming-section p {
+  display: inline-block;
+
+  margin: 6px 8px 6px 0;
+  padding: 10px 16px;
+
+  background: #181818;
+  border: 1px solid #2d2d2d;
+  border-radius: 10px;
+
+  color: #dddddd;
+  font-size: 15px;
+}
+
+/* ------------------------------
+   Leave Requests
+------------------------------ */
+
+.requests-section {
+  margin-top: 45px;
+}
+
+.requests-section table {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  overflow: hidden;
+
+  background: #101010;
+  border: 1px solid #252525;
+  border-radius: 16px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 th,
 td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+  padding: 17px 18px;
   text-align: left;
+  border-bottom: 1px solid #242424;
 }
 
 th {
-  background: #eee;
+  background: #181818;
+  color: #a7a7a7;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+td {
+  color: #dddddd;
+  font-size: 14px;
+}
+
+tbody tr {
+  transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+  background: #171717;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ------------------------------
+   Status styling
+------------------------------ */
+
+td:last-child {
+  font-weight: 600;
+}
+
+/* ------------------------------
+   Responsive Design
+------------------------------ */
+
+@media (max-width: 750px) {
+  .app {
+    padding: 30px 18px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card p {
+    font-size: 30px;
+  }
+
+  .requests-section {
+    overflow-x: auto;
+  }
+
+  .requests-section table {
+    min-width: 750px;
+  }
+  /* ------------------------------
+   Request Leave Button
+------------------------------ */
+
+.request-button-section {
+  margin-top: 30px;
+}
+
+.request-leave-button {
+  padding: 13px 24px;
+  border: none;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #050505;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.request-leave-button:hover {
+  transform: translateY(-2px);
+  background: #e8e8e8;
+}
+
+/* ------------------------------
+   Request Leave Form
+------------------------------ */
+
+.request-form-section {
+  margin-top: 25px;
+  padding: 30px;
+
+  background: #101010;
+  border: 1px solid #252525;
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.request-form-section form {
+  max-width: 700px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #b5b5b5;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+
+  box-sizing: border-box;
+
+  background: #181818;
+  border: 1px solid #303030;
+  border-radius: 9px;
+
+  color: #ffffff;
+  font-size: 14px;
+
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #666666;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* Leave type radio buttons */
+
+.leave-type-options {
+  display: flex;
+  gap: 25px;
+}
+
+.leave-type-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #dddddd;
+  cursor: pointer;
+}
+
+.leave-type-options input {
+  width: auto;
+}
+
+/* Start and end time side by side */
+
+.time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* Error and success */
+
+.form-error {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+
+  background: #271414;
+  border: 1px solid #5a2929;
+  border-radius: 8px;
+
+  color: #ffb4b4;
+}
+
+.form-success {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+
+  background: #142719;
+  border: 1px solid #295a32;
+  border-radius: 8px;
+
+  color: #b7efbf;
+}
+
+/* Form buttons */
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 12px 22px;
+  border-radius: 9px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-button {
+  border: none;
+  background: #ffffff;
+  color: #050505;
+}
+
+.submit-button:hover {
+  background: #e8e8e8;
+}
+
+.cancel-button {
+  border: 1px solid #3a3a3a;
+  background: transparent;
+  color: #dddddd;
+}
+
+.cancel-button:hover {
+  background: #1b1b1b;
+}
+
+.submit-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mobile */
+
+@media (max-width: 750px) {
+  .time-row {
+    grid-template-columns: 1fr;
+  }
+
+  .leave-type-options {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
 }
