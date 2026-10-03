@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import "./StudentPayments.css";
+import "./App.css";
 
-// Change these to match your Spring Boot controllers
-const API = "http://localhost:8080/api";
-const STUDENT_ID = "S001"; // replace with the logged-in student's id
+// Uses the Vite proxy pointing to your Spring Boot backend on port 8081
+const API = "/api/payments";
+// Matches the sample records in your MySQL database
+const STUDENT_ID = "STU1010";
 
 const money = (n) =>
     Number(n ?? 0).toLocaleString("en-LK", { style: "currency", currency: "LKR" });
@@ -13,15 +14,15 @@ export default function StudentPayments() {
   const [slips, setSlips] = useState([]);
   const [selectedFee, setSelectedFee] = useState(null);
   const [form, setForm] = useState({ paymentReference: "", amount: "", file: null });
-  const [message, setMessage] = useState(null); // { type: "ok" | "error", text }
+  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const loadData = async () => {
     try {
       const [feesRes, slipsRes] = await Promise.all([
-        fetch(`${API}/fees/student/${STUDENT_ID}`),
-        fetch(`${API}/payment-slips/student/${STUDENT_ID}`),
+        fetch(`${API}/fees/${STUDENT_ID}`),
+        fetch(`${API}/slips/${STUDENT_ID}`),
       ]);
       if (!feesRes.ok || !slipsRes.ok) throw new Error();
       setFees(await feesRes.json());
@@ -62,13 +63,13 @@ export default function StudentPayments() {
     const data = new FormData();
     data.append("feeId", selectedFee.feeId);
     data.append("studentId", STUDENT_ID);
-    data.append("paymentReference", form.paymentReference);
+    data.append("reference", form.paymentReference);
     data.append("amount", form.amount);
-    data.append("slipFile", form.file);
+    data.append("file", form.file);
 
     setSubmitting(true);
     try {
-      const res = await fetch(`${API}/payment-slips`, { method: "POST", body: data });
+      const res = await fetch(`${API}/submit-slip`, { method: "POST", body: data });
       if (!res.ok) throw new Error();
       setMessage({ type: "ok", text: "Slip submitted. It will show as pending until it is verified." });
       setSelectedFee(null);
@@ -196,7 +197,7 @@ export default function StudentPayments() {
                       <tr key={s.slipId}>
                         <td>{s.paymentReference}</td>
                         <td>{money(s.amount)}</td>
-                        <td>{s.submissionDate?.replace("T", " ").slice(0, 16)}</td>
+                        <td>{s.submissionDate ? String(s.submissionDate).replace("T", " ").slice(0, 16) : "—"}</td>
                         <td>
                           <span className={`badge ${s.verificationStatus?.toLowerCase()}`}>{s.verificationStatus}</span>
                         </td>

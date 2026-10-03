@@ -13,7 +13,6 @@ public class PaymentManagementService {
     private final StudentFeeDAO feeDAO = new StudentFeeDAO();
     private final PaymentSlipDAO slipDAO = new PaymentSlipDAO();
 
-    // Line 18-21 Fix: Strongly typed List ensures StudentFee::getBalance resolves cleanly
     public BigDecimal calculateTotalOutstandingBalance(String studentId) {
         List<StudentFee> fees = feeDAO.getStudentFeeStatus(studentId);
         return fees.stream()
@@ -35,7 +34,6 @@ public class PaymentManagementService {
         return slipDAO.submitSlip(slip);
     }
 
-    // Resolves line 44 call
     public boolean processSlipVerification(int slipId, int feeId, BigDecimal amount, String status, String staffId, String remarks) {
         boolean slipUpdated = slipDAO.verifySlip(slipId, status, staffId, remarks);
         if (slipUpdated && "APPROVED".equalsIgnoreCase(status)) {
@@ -44,7 +42,6 @@ public class PaymentManagementService {
         return slipUpdated;
     }
 
-    // Resolves line 51 call
     public List filterFeeHistory(String studentId, String status, String feeType) {
         return feeDAO.getFilteredFees(studentId, status, feeType);
     }

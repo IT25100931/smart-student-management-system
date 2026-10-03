@@ -1,206 +1,206 @@
 .pay-page {
-  --ink: #1b2733;
-  --muted: #5d6b78;
-  --line: #d9e0e6;
-  --surface: #ffffff;
-  --bg: #f2f5f7;
-  --accent: #0f766e;
-  --accent-dark: #0b5a54;
+    --ink: #1b2733;
+    --muted: #5d6b78;
+    --line: #d9e0e6;
+    --surface: #ffffff;
+    --bg: #f2f5f7;
+    --accent: #0f766e;
+    --accent-dark: #0b5a54;
 
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 24px 16px 48px;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  line-height: 1.5;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
 }
 
 .pay-page h1 {
-  font-size: 1.75rem;
-  margin: 0 0 20px;
+    font-size: 1.75rem;
+    margin: 0 0 20px;
 }
 
 .pay-page h2 {
-  font-size: 1.1rem;
-  margin: 28px 0 10px;
+    font-size: 1.1rem;
+    margin: 28px 0 10px;
 }
 
 .pay-hint {
-  margin: 0 0 12px;
-  color: var(--muted);
+    margin: 0 0 12px;
+    color: var(--muted);
 }
 
 .pay-empty {
-  color: var(--muted);
-  padding: 12px 0;
+    color: var(--muted);
+    padding: 12px 0;
 }
 
 /* Tables */
 .pay-table-wrap {
-  overflow-x: auto;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 6px;
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
 }
 
 .pay-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.92rem;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
 }
 
 .pay-table th,
 .pay-table td {
-  padding: 10px 12px;
-  text-align: left;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--line);
 }
 
 .pay-table th {
-  font-weight: 600;
-  color: var(--muted);
-  background: #f8fafb;
+    font-weight: 600;
+    color: var(--muted);
+    background: #f8fafb;
 }
 
 .pay-table tbody tr:last-child td {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 /* Status badges */
 .badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .badge.paid,
 .badge.approved {
-  background: #d8f3e6;
-  color: #14683f;
+    background: #d8f3e6;
+    color: #14683f;
 }
 
 .badge.partial,
 .badge.pending {
-  background: #fdf0c9;
-  color: #7a5a00;
+    background: #fdf0c9;
+    color: #7a5a00;
 }
 
 .badge.unpaid,
 .badge.rejected {
-  background: #fbdcdc;
-  color: #9b1c1c;
+    background: #fbdcdc;
+    color: #9b1c1c;
 }
 
 /* Form */
 .pay-form-card {
-  margin-top: 24px;
-  padding: 20px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--accent);
-  border-radius: 6px;
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
 }
 
 .pay-form-card h2 {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 .pay-form-card form {
-  display: grid;
-  gap: 14px;
-  max-width: 420px;
+    display: grid;
+    gap: 14px;
+    max-width: 420px;
 }
 
 .pay-form-card label {
-  display: grid;
-  gap: 4px;
-  font-size: 0.9rem;
-  font-weight: 600;
+    display: grid;
+    gap: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .pay-form-card input {
-  padding: 8px 10px;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  font: inherit;
-  font-weight: 400;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font: inherit;
+    font-weight: 400;
 }
 
 .pay-form-card input:focus-visible,
 .pay-page button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 .pay-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 4px;
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
 }
 
 /* Buttons */
 .btn-primary,
 .btn-secondary {
-  padding: 8px 16px;
-  border-radius: 4px;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--accent-dark);
+    background: var(--accent-dark);
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .btn-secondary {
-  background: var(--surface);
-  color: var(--accent);
-  border: 1px solid var(--accent);
+    background: var(--surface);
+    color: var(--accent);
+    border: 1px solid var(--accent);
 }
 
 .btn-secondary:hover {
-  background: #e6f4f2;
+    background: #e6f4f2;
 }
 
 /* Feedback message */
 .pay-message {
-  padding: 10px 14px;
-  border-radius: 4px;
-  margin-bottom: 8px;
-  font-size: 0.92rem;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 0.92rem;
 }
 
 .pay-message.ok {
-  background: #d8f3e6;
-  color: #14683f;
+    background: #d8f3e6;
+    color: #14683f;
 }
 
 .pay-message.error {
-  background: #fbdcdc;
-  color: #9b1c1c;
+    background: #fbdcdc;
+    color: #9b1c1c;
 }
 
 @media (max-width: 600px) {
-  .pay-page h1 {
-    font-size: 1.4rem;
-  }
-  .pay-actions {
-    flex-direction: column;
-  }
+    .pay-page h1 {
+        font-size: 1.4rem;
+    }
+    .pay-actions {
+        flex-direction: column;
+    }
 }
