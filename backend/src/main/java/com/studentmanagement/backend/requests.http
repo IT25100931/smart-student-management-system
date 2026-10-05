@@ -1,0 +1,1 @@
+PUT http://localhost:8081/api/leave-requests/9/reject?approvedBy=2
