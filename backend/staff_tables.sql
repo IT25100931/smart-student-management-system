@@ -1,3 +1,6 @@
+CREATE DATABASE STAFF;
+USE STAFF;
+
 CREATE TABLE staff (
                        staff_id INT PRIMARY KEY,
                        user_id INT,
@@ -113,3 +116,4 @@ FROM STAFF_SALARY ss
 WHERE ss.salary_year = 2026
   AND ss.salary_month = 1
 ORDER BY staff_name;
+
