@@ -43,80 +43,26 @@ CREATE TABLE STAFF_SALARY (
                               FOREIGN KEY (staff_id) REFERENCES STAFF(staff_id)
 );
 
-CREATE TABLE LEAVE_REQUESTS (
-                                leave_id INT PRIMARY KEY AUTO_INCREMENT,
-                                staff_id INT NOT NULL,
-                                leave_type VARCHAR(50) NOT NULL,
-                                start_date DATE NOT NULL,
-                                end_date DATE NOT NULL,
-                                total_days INT NOT NULL,
-                                reason VARCHAR(255),
-                                status VARCHAR(20) NOT NULL,
-                                approved_by INT,
-                                applied_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-                                FOREIGN KEY (staff_id) REFERENCES STAFF(staff_id)
-);
-
-//--subject--//
-SELECT
-    s.staff_id,
-    s.first_name,
-    s.last_name,
-    c.class_name,
-    sub.subject_name
-FROM STAFF s
-         JOIN CLASS c ON s.staff_id = c.staff_id
-         JOIN SUBJECT sub ON c.subject_id = sub.subject_id
-WHERE s.staff_id = 'STF101';
-
-///---view salary and other relevant fields--//
-SELECT
-    salary_id,
-    staff_id,
-    salary_month,
-    salary_year,
-    base_salary,
-    allowances,
-    deductions,
-    net_salary,
-    payment_date,
-    payment_status
-FROM STAFF_SALARY
-WHERE staff_id = 'STF101';
-
-
-//--insert into leave request--//
-INSERT INTO LEAVE_REQUESTS
-(
-    staff_id,
-    leave_type,
-    start_date,
-    end_date,
-    total_days,
-    reason,
-    status
-)
+-- Populate staff
+INSERT INTO staff
+(staff_id, user_id, first_name, last_name, email, contact_no, department, designation, base_salary, join_date, status)
 VALUES
-    (
-        'STF101',
-        'Day Off',
-        '2026-10-05',
-        '2026-10-05',
-        1,
-        'Personal work',
-        'PENDING'
-    );
+    (1, 101, 'John', 'Doe', 'john.doe@school.com', '+1234567890', 'Science', 'Senior Teacher', 55000.00, '2023-01-15', 'Active'),
+    (2, 102, 'Jane', 'Smith', 'jane.smith@school.com', '+1234567891', 'Mathematics', 'Head of Dept', 65000.00, '2021-08-01', 'Active'),
+    (3, 103, 'Robert', 'Brown', 'robert.brown@school.com', '+1234567892', 'Administration', 'Clerk', 35000.00, '2024-03-10', 'Active');
 
-//--give reason for leave request and other relevant details--//
-SELECT
-    leave_id,
-    leave_type,
-    start_date,
-    end_date,
-    total_days,
-    reason,
-    status,
-    applied_at
-FROM LEAVE_REQUESTS
-WHERE staff_id = 'STF101';
+-- Populate staff_attendance
+INSERT INTO staff_attendance
+(attendance_id, staff_id, status, check_in_time, check_out_time, remarks)
+VALUES
+    (1, 1, 'Present', '07:55:00', '16:05:00', 'On time'),
+    (2, 2, 'Late', '08:25:00', '16:00:00', 'Traffic delay'),
+    (3, 3, 'Absent', NULL, NULL, 'Medical leave');
+
+-- Populate STAFF_SALARY
+INSERT INTO STAFF_SALARY
+(staff_id, salary_month, salary_year, base_salary, allowances, deductions, net_salary, payment_date, payment_status)
+VALUES
+    (1, 1, 2026, 55000.00, 3000.00, 1500.00, 56500.00, '2026-01-31', 'Paid'),
+    (2, 1, 2026, 65000.00, 5000.00, 2000.00, 68000.00, '2026-01-31', 'Paid'),
+    (3, 1, 2026, 35000.00, 1000.00, 500.00, 35500.00, NULL, 'Pending');
