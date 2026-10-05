@@ -66,3 +66,50 @@ VALUES
     (1, 1, 2026, 55000.00, 3000.00, 1500.00, 56500.00, '2026-01-31', 'Paid'),
     (2, 1, 2026, 65000.00, 5000.00, 2000.00, 68000.00, '2026-01-31', 'Paid'),
     (3, 1, 2026, 35000.00, 1000.00, 500.00, 35500.00, NULL, 'Pending');
+
+
+SELECT
+    st.staff_id,
+    CONCAT(st.first_name, ' ', st.last_name) AS staff_name,
+    st.email,
+    st.contact_no,
+    st.department,
+    st.designation,
+    st.join_date
+FROM staff st
+WHERE st.status = 'Active'
+ORDER BY st.department, staff_name;
+
+
+SELECT
+    sa.attendance_id,
+    CONCAT(st.first_name, ' ', st.last_name) AS staff_name,
+    st.department,
+    sa.status AS attendance_status,
+    sa.check_in_time,
+    sa.check_out_time,
+    sa.remarks
+FROM staff_attendance sa
+         JOIN staff st
+              ON sa.staff_id = st.staff_id
+ORDER BY st.department, staff_name;
+
+
+SELECT
+    ss.salary_id,
+    CONCAT(st.first_name, ' ', st.last_name) AS staff_name,
+    st.department,
+    ss.salary_month,
+    ss.salary_year,
+    ss.base_salary,
+    ss.allowances,
+    ss.deductions,
+    ss.net_salary,
+    ss.payment_status,
+    ss.payment_date
+FROM STAFF_SALARY ss
+         JOIN staff st
+              ON ss.staff_id = st.staff_id
+WHERE ss.salary_year = 2026
+  AND ss.salary_month = 1
+ORDER BY staff_name;
