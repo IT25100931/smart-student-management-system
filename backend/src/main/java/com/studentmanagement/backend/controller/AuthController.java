@@ -1,5 +1,6 @@
 package com.studentmanagement.backend.controller;
 
+import com.studentmanagement.backend.config.JwtUtil;
 import com.studentmanagement.backend.model.User;
 import com.studentmanagement.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,23 +9,30 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")  // temporary - loosens CORS while frontend isn't finalized
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("username");
         String password = credentials.get("password");
 
-        Optional<User> user = authService.login(username, password);
-        if (user.isPresent()) {
+        Optional<User> userOpt = authService.login(username, password);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            String token = jwtUtil.generateToken(user.getUsername(), user.getRole().getRoleName());
+
             return Map.of(
                     "success", true,
-                    "role", user.get().getRole().getRoleName(),
-                    "username", user.get().getUsername()
+                    "token", token,
+                    "role", user.getRole().getRoleName(),
+                    "username", user.getUsername()
             );
         }
         return Map.of("success", false, "message", "Invalid username or password");
