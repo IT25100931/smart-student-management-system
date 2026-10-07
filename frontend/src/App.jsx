@@ -4,7 +4,7 @@ import "./App.css";
 // Uses the Vite proxy pointing to your Spring Boot backend on port 8081
 const API = "/api/payments";
 // Matches the sample records in your MySQL database
-const STUDENT_ID = "STU1010";
+const STUDENT_ID = "STU1004";
 
 const money = (n) =>
     Number(n ?? 0).toLocaleString("en-LK", { style: "currency", currency: "LKR" });
