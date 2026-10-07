@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './LoginPage.css';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
@@ -22,7 +23,6 @@ function LoginPage() {
 
             if (data.success) {
                 localStorage.setItem('user', JSON.stringify(data));
-
                 if (data.role === 'ADMIN') navigate('/admin-dashboard');
                 else if (data.role === 'TEACHER') navigate('/teacher-dashboard');
                 else if (data.role === 'PARENT') navigate('/parent-dashboard');
@@ -35,28 +35,49 @@ function LoginPage() {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Username</label>
+        <div className="login-screen">
+            <div className="login-panel-identity">
+                <div className="login-identity-inner">
+                    <p className="login-eyebrow">Student management system</p>
+                    <h1 className="login-title">Welcome back</h1>
+                    <div className="login-rule" />
+                    <p className="login-subtext">
+                        Sign in to manage student records, attendance, and school operations.
+                    </p>
+                </div>
+            </div>
+
+            <div className="login-panel-form">
+                <form className="login-form" onSubmit={handleLogin}>
+                    <h2 className="login-form-heading">Log in</h2>
+
+                    <label className="login-label" htmlFor="username">Username</label>
                     <input
+                        id="username"
+                        className="login-input"
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        autoComplete="username"
+                        required
                     />
-                </div>
-                <div>
-                    <label>Password</label>
+
+                    <label className="login-label" htmlFor="password">Password</label>
                     <input
+                        id="password"
+                        className="login-input"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                        required
                     />
-                </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit">Log In</button>
-            </form>
+
+                    {error && <p className="login-error">{error}</p>}
+
+                    <button className="login-button" type="submit">Log in</button>
+                </form>
+            </div>
         </div>
     );
 }
