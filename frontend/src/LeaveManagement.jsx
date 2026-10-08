@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./LeaveManagement.css";
 
-/* ------ Small helpers ------ */
+/* ---------- Small helpers ---------- */
 
 function formatDate(value) {
   if (!value) return "—";
