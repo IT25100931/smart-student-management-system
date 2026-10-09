@@ -1,65 +1,109 @@
-import { useState } from "react";
-import StudentSearch from "./StudentSearch";
-import LeaveManagement from "./LeaveManagement";
-import "./App.css";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useNavigate
+} from 'react-router-dom';
+
+import LoginPage from './pages/LoginPage';
+import EditStudentPage from './pages/EditStudentPage.jsx';
+import RegisterStudentPage from './pages/RegisterStudentPage.jsx';
+import StudentSearch from './StudentSearch';
+import LeaveManagement from './LeaveManagement';
+import Navigation from './components/Navigation';
+import './App.css';
+
+// Home page for selecting academic services
+function ServicesHome() {
+    const navigate = useNavigate();
+
+    return (
+        <div className="home-page">
+            <h1>Smart Student Management System</h1>
+            <p>Select a service to continue</p>
+
+            <div className="home-buttons">
+                <button
+                    className="feature-button"
+                    onClick={() => navigate('/search-student')}
+                >
+                    Student Management
+                </button>
+
+                <button
+                    className="feature-button"
+                    onClick={() => navigate('/leave-management')}
+                >
+                    Leave Management
+                </button>
+            </div>
+        </div>
+    );
+}
+
+// Wrapper providing a back button for academic services
+function ServicePage({ children }) {
+    const navigate = useNavigate();
+
+    return (
+        <div>
+            <button
+                className="back-button"
+                onClick={() => navigate('/services')}
+            >
+                ← Back
+            </button>
+
+            {children}
+        </div>
+    );
+}
 
 function App() {
-  const [currentPage, setCurrentPage] = useState("home");
-
-  if (currentPage === "student") {
     return (
-      <div>
-        <button
-          className="back-button"
-          onClick={() => setCurrentPage("home")}
-        >
-          ← Back
-        </button>
+        <BrowserRouter>
+            <Navigation />
 
-        <StudentSearch />
-      </div>
+            <Routes>
+                {/* Existing routes from main */}
+                <Route path="/" element={<LoginPage />} />
+
+                <Route
+                    path="/register-student"
+                    element={<RegisterStudentPage />}
+                />
+
+                <Route
+                    path="/edit-student"
+                    element={<EditStudentPage />}
+                />
+
+                <Route
+                    path="/search-student"
+                    element={
+                        <ServicePage>
+                            <StudentSearch />
+                        </ServicePage>
+                    }
+                />
+
+                {/* New Academic Services routes */}
+                <Route
+                    path="/leave-management"
+                    element={
+                        <ServicePage>
+                            <LeaveManagement />
+                        </ServicePage>
+                    }
+                />
+
+                <Route
+                    path="/services"
+                    element={<ServicesHome />}
+                />
+            </Routes>
+        </BrowserRouter>
     );
-  }
-
-  if (currentPage === "leave") {
-    return (
-      <div>
-        <button
-          className="back-button"
-          onClick={() => setCurrentPage("home")}
-        >
-          ← Back
-        </button>
-
-        <LeaveManagement />
-      </div>
-    );
-  }
-
-  return (
-    <div className="home-page">
-      <h1>Smart Student Management System</h1>
-      <p>Select a service to continue</p>
-
-      <div className="home-buttons">
-
-        <button
-          className="feature-button"
-          onClick={() => setCurrentPage("student")}
-        >
-          Student Management
-        </button>
-
-        <button
-          className="feature-button"
-          onClick={() => setCurrentPage("leave")}
-        >
-          Leave Management
-        </button>
-
-      </div>
-    </div>
-  );
 }
 
 export default App;
