@@ -61,4 +61,69 @@ th, td {
 th {
   background: #f9fafb;
 }
+.home-page {
+  min-height: 100vh;
+  background: #050505;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.home-page h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.home-page p {
+  color: #999;
+  margin-bottom: 35px;
+}
+
+.home-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.feature-button {
+  width: 220px;
+  padding: 18px;
+
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 14px;
+
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.feature-button:hover {
+  transform: translateY(-3px);
+  background: #1a1a1a;
+  border-color: #666;
+}
+
+.back-button {
+  margin: 20px;
+  padding: 10px 18px;
+
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+
+  color: white;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background: #1a1a1a;
+}
 
