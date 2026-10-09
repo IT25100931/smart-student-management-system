@@ -11,6 +11,7 @@ import RegisterStudentPage from './pages/RegisterStudentPage.jsx';
 import StudentSearch from './StudentSearch';
 import LeaveManagement from './LeaveManagement';
 import Navigation from './components/Navigation';
+import PaymentPage from './pages/PaymentPage.jsx';
 import './App.css';
 
 // Home page for selecting academic services
@@ -28,6 +29,13 @@ function ServicesHome() {
                     onClick={() => navigate('/search-student')}
                 >
                     Student Management
+                </button>
+
+                <button
+                     className="feature-button"
+                     onClick={() => navigate('/payments')}
+                >
+                     Payment Management
                 </button>
 
                 <button
@@ -97,6 +105,15 @@ function App() {
                     }
                 />
 
+                {/* Payment Management */}
+              <Route
+                   path="/payments"
+                   element={
+                      <ServicePage>
+                         <PaymentPage />
+                      </ServicePage>
+                  }
+               />
                 <Route
                     path="/services"
                     element={<ServicesHome />}
