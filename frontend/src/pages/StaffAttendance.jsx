@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 // Temporary sample data.
-// Replace with a backend call once the attendance endpoint exists.
+// Replace with a backend call once the attendanpm run dev
+// ce endpoint exists.
 const sampleAttendance = [
   {
     attendance_id: 1,
