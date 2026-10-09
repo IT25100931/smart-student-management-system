@@ -1,36 +1,26 @@
 package com.studentmanagement.backend.service;
 
-
-import com.example.schoollms.dao.AcademicStaffDAO;
-import com.example.schoollms.model.LeaveRequest;
-import com.example.schoollms.model.Salary;
-import com.example.schoollms.model.Staff;
+import com.studentmanagement.backend.dao.AcademicStaffDAO;
+import com.studentmanagement.backend.model.Salary;
+import com.studentmanagement.backend.model.Staff;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AcademicStaffService {
 
-    private final AcademicStaffDAO dao =
-            new AcademicStaffDAO();
+    private final AcademicStaffDAO dao;
 
+    public AcademicStaffService(AcademicStaffDAO dao) {
+        this.dao = dao;
+    }
 
-    // View staff details
     public Staff getStaffDetails(int staffId) {
-
         return dao.getStaffDetails(staffId);
     }
 
-
-    // View salary details
     public List<Salary> getSalaryDetails(int staffId) {
-
         return dao.getSalaryDetails(staffId);
-    }
-
-
-    // Request leave
-    public boolean requestLeave(LeaveRequest leaveRequest) {
-
-        return dao.requestLeave(leaveRequest);
     }
 }

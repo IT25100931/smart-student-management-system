@@ -1,30 +1,26 @@
 package com.studentmanagement.backend.dao;
 
+import com.studentmanagement.backend.model.Salary;
+import com.studentmanagement.backend.model.Staff;
+import org.springframework.stereotype.Repository;
 
-import com.example.schoollms.model.LeaveRequest;
-import com.example.schoollms.model.Salary;
-import com.example.schoollms.model.Staff;
-
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class AcademicStaffDAO {
 
-    private final String URL =
-            "jdbc:mysql://localhost:3306/school_lms_db";
+    private final DataSource dataSource;
 
-    private final String USER = "root";
-
-    private final String PASSWORD = "YOUR_PASSWORD";
-
-
-    // ==========================
-    // DATABASE CONNECTION
-    // ==========================
+    // Spring injects the connection settings from application.properties
+    public AcademicStaffDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return dataSource.getConnection();
     }
 
 
@@ -43,36 +39,35 @@ public class AcademicStaffDAO {
                 """;
 
         try (Connection connection = getConnection();
-             PreparedStatement statement =
-                     connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, staffId);
 
-            ResultSet rs = statement.executeQuery();
+            try (ResultSet rs = statement.executeQuery()) {
 
-            if (rs.next()) {
+                if (rs.next()) {
 
-                Staff staff = new Staff();
+                    Staff staff = new Staff();
 
-                staff.setStaffId(rs.getInt("staff_id"));
-                staff.setUserId(rs.getInt("user_id"));
-                staff.setFirstName(rs.getString("first_name"));
-                staff.setLastName(rs.getString("last_name"));
-                staff.setEmail(rs.getString("email"));
-                staff.setContactNo(rs.getString("contact_no"));
-                staff.setDepartment(rs.getString("department"));
-                staff.setDesignation(rs.getString("designation"));
-                staff.setBaseSalary(rs.getDouble("base_salary"));
+                    staff.setStaffId(rs.getInt("staff_id"));
+                    staff.setUserId(rs.getInt("user_id"));
+                    staff.setFirstName(rs.getString("first_name"));
+                    staff.setLastName(rs.getString("last_name"));
+                    staff.setEmail(rs.getString("email"));
+                    staff.setContactNo(rs.getString("contact_no"));
+                    staff.setDepartment(rs.getString("department"));
+                    staff.setDesignation(rs.getString("designation"));
+                    staff.setBaseSalary(rs.getDouble("base_salary"));
 
-                Date joinDate = rs.getDate("join_date");
+                    Date joinDate = rs.getDate("join_date");
+                    if (joinDate != null) {
+                        staff.setJoinDate(joinDate.toString());
+                    }
 
-                if (joinDate != null) {
-                    staff.setJoinDate(joinDate.toString());
+                    staff.setStatus(rs.getString("status"));
+
+                    return staff;
                 }
-
-                staff.setStatus(rs.getString("status"));
-
-                return staff;
             }
 
         } catch (SQLException e) {
@@ -102,37 +97,34 @@ public class AcademicStaffDAO {
                 """;
 
         try (Connection connection = getConnection();
-             PreparedStatement statement =
-                     connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, staffId);
 
-            ResultSet rs = statement.executeQuery();
+            try (ResultSet rs = statement.executeQuery()) {
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                Salary salary = new Salary();
+                    Salary salary = new Salary();
 
-                salary.setSalaryId(rs.getInt("salary_id"));
-                salary.setStaffId(rs.getInt("staff_id"));
-                salary.setSalaryMonth(rs.getInt("salary_month"));
-                salary.setSalaryYear(rs.getInt("salary_year"));
-                salary.setBaseSalary(rs.getDouble("base_salary"));
-                salary.setAllowances(rs.getDouble("allowances"));
-                salary.setDeductions(rs.getDouble("deductions"));
-                salary.setNetSalary(rs.getDouble("net_salary"));
+                    salary.setSalaryId(rs.getInt("salary_id"));
+                    salary.setStaffId(rs.getInt("staff_id"));
+                    salary.setSalaryMonth(rs.getInt("salary_month"));
+                    salary.setSalaryYear(rs.getInt("salary_year"));
+                    salary.setBaseSalary(rs.getDouble("base_salary"));
+                    salary.setAllowances(rs.getDouble("allowances"));
+                    salary.setDeductions(rs.getDouble("deductions"));
+                    salary.setNetSalary(rs.getDouble("net_salary"));
 
-                Date paymentDate = rs.getDate("payment_date");
+                    Date paymentDate = rs.getDate("payment_date");
+                    if (paymentDate != null) {
+                        salary.setPaymentDate(paymentDate.toString());
+                    }
 
-                if (paymentDate != null) {
-                    salary.setPaymentDate(paymentDate.toString());
+                    salary.setPaymentStatus(rs.getString("payment_status"));
+
+                    salaries.add(salary);
                 }
-
-                salary.setPaymentStatus(
-                        rs.getString("payment_status")
-                );
-
-                salaries.add(salary);
             }
 
         } catch (SQLException e) {
@@ -140,55 +132,5 @@ public class AcademicStaffDAO {
         }
 
         return salaries;
-    }
-
-
-    // ==========================
-    // 3. REQUEST LEAVE
-    // ==========================
-
-    public boolean requestLeave(LeaveRequest leaveRequest) {
-
-        String sql = """
-                INSERT INTO LEAVE_REQUESTS
-                (staff_id, leave_type, start_date, end_date,
-                 total_days, reason, status)
-                VALUES (?, ?, ?, ?, ?, ?, 'PENDING')
-                """;
-
-        try (Connection connection = getConnection();
-             PreparedStatement statement =
-                     connection.prepareStatement(sql)) {
-
-            statement.setInt(1, leaveRequest.getStaffId());
-            statement.setString(2, leaveRequest.getLeaveType());
-
-            statement.setDate(
-                    3,
-                    Date.valueOf(leaveRequest.getStartDate())
-            );
-
-            statement.setDate(
-                    4,
-                    Date.valueOf(leaveRequest.getEndDate())
-            );
-
-            statement.setInt(
-                    5,
-                    leaveRequest.getTotalDays()
-            );
-
-            statement.setString(
-                    6,
-                    leaveRequest.getReason()
-            );
-
-            return statement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 }

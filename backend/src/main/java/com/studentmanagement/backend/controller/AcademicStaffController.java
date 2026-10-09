@@ -1,62 +1,43 @@
 package com.studentmanagement.backend.controller;
 
-import com.example.schoollms.model.LeaveRequest;
-import com.example.schoollms.model.Salary;
-import com.example.schoollms.model.Staff;
-import com.example.schoollms.service.AcademicStaffService;
-
-import org.springframework.web.bind.annotation.*;
+import com.studentmanagement.backend.model.Salary;
+import com.studentmanagement.backend.model.Staff;
+import com.studentmanagement.backend.service.AcademicStaffService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/academic-staff")
+@RequestMapping("/api/staff")
 @CrossOrigin(origins = "http://localhost:5173")
 public class AcademicStaffController {
 
-    private final AcademicStaffService service =
-            new AcademicStaffService();
+    private final AcademicStaffService service;
 
+    public AcademicStaffController(AcademicStaffService service) {
+        this.service = service;
+    }
 
-    // ==========================
-    // VIEW STAFF DETAILS
-    // ==========================
-
+    // GET http://localhost:8080/api/staff/1
     @GetMapping("/{staffId}")
-    public Staff getStaffDetails(
-            @PathVariable int staffId) {
+    public ResponseEntity<Staff> getStaffDetails(@PathVariable int staffId) {
+        Staff staff = service.getStaffDetails(staffId);
 
-        return service.getStaffDetails(staffId);
-    }
-
-
-    // ==========================
-    // VIEW SALARY DETAILS
-    // ==========================
-
-    @GetMapping("/{staffId}/salary")
-    public List<Salary> getSalaryDetails(
-            @PathVariable int staffId) {
-
-        return service.getSalaryDetails(staffId);
-    }
-
-
-    // ==========================
-    // REQUEST LEAVE
-    // ==========================
-
-    @PostMapping("/leave")
-    public String requestLeave(
-            @RequestBody LeaveRequest leaveRequest) {
-
-        boolean success =
-                service.requestLeave(leaveRequest);
-
-        if (success) {
-            return "Leave request submitted successfully";
+        if (staff == null) {
+            return ResponseEntity.notFound().build();
         }
 
-        return "Failed to submit leave request";
+        return ResponseEntity.ok(staff);
+    }
+
+    // GET http://localhost:8080/api/staff/1/salary
+    @GetMapping("/{staffId}/salary")
+    public List<Salary> getSalaryDetails(@PathVariable int staffId) {
+        return service.getSalaryDetails(staffId);
     }
 }
