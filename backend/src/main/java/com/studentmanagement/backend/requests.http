@@ -1,1 +1,6 @@
-PUT http://localhost:8081/api/leave-requests/9/reject?approvedBy=2
+//DELETE http://localhost:8081/api/subjects/4
+
+// PUT http://localhost:8081/api/leave-requests/9/reject?approvedBy=2
+
+### Delete the temporary test class
+DELETE http://localhost:8081/api/classes/4
