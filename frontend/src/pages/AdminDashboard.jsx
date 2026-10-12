@@ -4,6 +4,7 @@ import { useState } from "react";
 import SubjectManagement from "./SubjectManagement";
 import ClassManagement from "./ClassManagement.jsx";
 import LeaveApprovalManagement from "./LeaveApprovalManagement.jsx";
+import PaymentReview from "./PaymentReview.jsx";
 
 import "./AdminDashboard.css";
 
@@ -31,6 +32,12 @@ const NAV_ITEMS = [
     label: "Leave Approvals",
     description: "Review academic staff requests",
     icon: "clipboard",
+  },
+  {
+    id: "payments",
+    label: "Payments",
+    description: "Review student payment slips",
+    icon: "wallet",
   },
 ];
 
@@ -105,7 +112,13 @@ function AdminIcon({ name, size = 21 }) {
           <path d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       );
-
+    case "wallet":
+      return (
+          <svg {...props}>
+            <rect x="3" y="6" width="18" height="14" rx="3" />
+            <path d="M3 10h18M16 15h2M6 6V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
+          </svg>
+      );
     default:
       return null;
   }
@@ -134,6 +147,9 @@ function AdminDashboard() {
 
       case "leaves":
         return <LeaveApprovalManagement />;
+
+        case "payments":
+        return <PaymentReview />;
 
       default:
         return (
@@ -287,6 +303,30 @@ function AdminDashboard() {
                 </span>
               </button>
             </div>
+            <button
+                type="button"
+                className="admin-module-card admin-module-payments"
+                onClick={() => navigateTo("payments")}
+            >
+              <div className="admin-module-card-top">
+                  <span className="admin-module-icon">
+                    <AdminIcon name="wallet" size={27} />
+                  </span>
+                <span className="admin-module-number">04</span>
+              </div>
+              <div className="admin-module-copy">
+                <span className="admin-module-eyebrow">FEES & BILLING</span>
+                <h3>Payment Review</h3>
+                <p>
+                  Check submitted payment slips, approve or reject them,
+                  and keep the school's payment records up to date.
+                </p>
+              </div>
+              <span className="admin-module-footer">
+                  Open Payment Review
+                  <AdminIcon name="arrow" size={18} />
+                </span>
+            </button>
 
             <div className="admin-overview-note">
               <span className="admin-overview-note-icon">
