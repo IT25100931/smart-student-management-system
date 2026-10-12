@@ -4,6 +4,7 @@ public class Attendance {
 
     private int attendanceId;
     private int staffId;
+    private String staffName;
     private String attendanceDate;
     private String status;
     private String checkInTime;
@@ -18,6 +19,9 @@ public class Attendance {
 
     public int getStaffId() { return staffId; }
     public void setStaffId(int staffId) { this.staffId = staffId; }
+
+    public String getStaffName() { return staffName; }
+    public void setStaffName(String staffName) { this.staffName = staffName; }
 
     public String getAttendanceDate() { return attendanceDate; }
     public void setAttendanceDate(String attendanceDate) { this.attendanceDate = attendanceDate; }

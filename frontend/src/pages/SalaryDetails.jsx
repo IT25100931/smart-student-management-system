@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { API } from "../config";
 
-const API = "http://localhost:8081/api/staff";
 
 function SalaryDetails() {
 
@@ -46,9 +46,9 @@ function SalaryDetails() {
         setMessage("No salary records found for this Staff ID");
       }
 
-    } catch (error) {
+    } catch {
       setSalaryData([]);
-      setMessage("Could not reach the backend. Is it running on port 8080?");
+      setMessage("Could not reach the backend. Is it running?");
     }
   };
 

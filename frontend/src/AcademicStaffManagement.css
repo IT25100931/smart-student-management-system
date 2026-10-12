@@ -244,3 +244,113 @@ tbody tr:hover {
     padding: 20px;
   }
 }
+
+.status.late {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* SALARY CALCULATION */
+
+.calc-name {
+  margin: 0 0 16px;
+  color: #1f3c88;
+}
+
+.calc-table {
+  max-width: 520px;
+}
+
+.calc-table td:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.calc-total td {
+  font-weight: bold;
+  font-size: 17px;
+  border-top: 2px solid #1f3c88;
+  border-bottom: none;
+}
+
+.calc-note {
+  margin-top: 14px;
+  color: #666;
+  font-size: 13px;
+}
+
+/* SALARY SUMMARY */
+
+.summary-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.summary-card {
+  flex: 1;
+  min-width: 200px;
+  padding: 18px 20px;
+  border-radius: 10px;
+  background-color: #f1f4fa;
+  border-left: 5px solid #1f3c88;
+}
+
+.summary-card.paid {
+  background-color: #eaf6ec;
+  border-left-color: #28a745;
+}
+
+.summary-card.pending {
+  background-color: #fff8e1;
+  border-left-color: #e0a800;
+}
+
+.summary-card p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.summary-card h3 {
+  margin: 6px 0 4px;
+  font-size: 24px;
+  color: #1f3c88;
+}
+
+.summary-card span {
+  font-size: 13px;
+  color: #666;
+}
+
+.search-box select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* DAILY ATTENDANCE + MARK ATTENDANCE */
+
+.status.notmarked {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.form-message {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.form-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
