@@ -5,6 +5,7 @@
 ========================================= */
 
 :root {
+  color-scheme: light;
   --bg: #f4f4f5;
   --surface: #ffffff;
   --surface-soft: #fafafa;
@@ -38,38 +39,6 @@
 
   --font: "Manrope", "Inter", "Segoe UI", Arial, sans-serif;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #070707;
-    --surface: #131314;
-    --surface-soft: #0d0d0e;
-    --ink: #ffffff;
-    --text: #e4e4e7;
-    --muted: #9a9aa3;
-    --faint: #6c6c75;
-    --line: #232326;
-    --line-strong: #323237;
-
-    --accent: #ef233c;
-    --accent-hover: #ff4d63;
-    --accent-soft: rgba(239, 35, 60, 0.14);
-    --accent-ring: rgba(239, 35, 60, 0.32);
-
-    --hero-from: #0a0a0a;
-    --hero-to: #1f1416;
-
-    --ok-bg: rgba(52, 211, 153, 0.14);  --ok-fg: #6ee7b7;
-    --warn-bg: rgba(251, 191, 36, 0.14); --warn-fg: #fcd34d;
-    --bad-bg: rgba(239, 35, 60, 0.16);  --bad-fg: #ff8a97;
-    --info-bg: rgba(255, 255, 255, 0.08); --info-fg: #e4e4e7;
-
-    --shadow-sm: none;
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.75);
-  }
-}
-
 
 /* =========================================
    GLOBAL
@@ -121,8 +90,8 @@ body {
   padding: 44px 44px 112px;
 
   background:
-    radial-gradient(520px 260px at 90% 0%, rgba(217, 4, 41, 0.38), transparent 70%),
-    linear-gradient(120deg, var(--hero-from), var(--hero-to));
+          radial-gradient(520px 260px at 90% 0%, rgba(217, 4, 41, 0.38), transparent 70%),
+          linear-gradient(120deg, var(--hero-from), var(--hero-to));
   border-radius: 28px;
   color: #ffffff;
 }
@@ -133,8 +102,8 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
   -webkit-mask-image: linear-gradient(100deg, transparent 30%, #000 100%);
   mask-image: linear-gradient(100deg, transparent 30%, #000 100%);
@@ -213,9 +182,9 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease;
 }
 
 .request-leave-button .button-plus {
@@ -756,7 +725,7 @@ tbody tr:last-child td {
   border-radius: var(--radius-sm);
 
   color: var(--ink);
-  color-scheme: light dark;
+  color-scheme: light;
 
   font-family: inherit;
   font-size: 14px;
@@ -764,8 +733,8 @@ tbody tr:last-child td {
   outline: none;
 
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
 }
 
 .form-group input::placeholder,
@@ -825,9 +794,9 @@ tbody tr:last-child td {
   cursor: pointer;
 
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
+          background 0.2s ease,
+          color 0.2s ease,
+          box-shadow 0.2s ease;
 }
 
 .leave-type-options label:hover {
@@ -913,10 +882,10 @@ tbody tr:last-child td {
   cursor: pointer;
 
   transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
 }
 
 .submit-button {
