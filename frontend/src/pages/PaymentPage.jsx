@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import '../../../../../Downloads/PaymentPage.css';
+import './PaymentPage.css'
 
 const BASE = 'http://localhost:8081';
 const API = BASE + '/api/payments';
