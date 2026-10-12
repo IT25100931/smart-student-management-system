@@ -1,26 +1,6 @@
 import { useState } from "react";
+import { API } from "../config";
 
-// Temporary sample data.
-// Replace with a backend call once the attendanpm run dev
-// ce endpoint exists.
-const sampleAttendance = [
-  {
-    attendance_id: 1,
-    staff_id: 101,
-    status: "Present",
-    check_in_time: "08:00:00",
-    check_out_time: "16:00:00",
-    remarks: "On time"
-  },
-  {
-    attendance_id: 2,
-    staff_id: 101,
-    status: "Absent",
-    check_in_time: "-",
-    check_out_time: "-",
-    remarks: "No reason provided"
-  }
-];
 
 function StaffAttendance() {
 
@@ -30,21 +10,31 @@ function StaffAttendance() {
     "Enter a Staff ID to view attendance"
   );
 
-  const handleAttendance = () => {
+  const handleAttendance = async () => {
 
     if (staffId.trim() === "") {
       alert("Please enter Staff ID");
       return;
     }
 
-    const data = sampleAttendance.filter(
-      (item) => item.staff_id.toString() === staffId.trim()
-    );
+    try {
+      const response = await fetch(`${API}/${staffId.trim()}/attendance`);
 
-    setAttendanceData(data);
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
 
-    if (data.length === 0) {
-      setMessage("No attendance records found for this Staff ID");
+      const data = await response.json();
+
+      setAttendanceData(data);
+
+      if (data.length === 0) {
+        setMessage("No attendance records found for this Staff ID");
+      }
+
+    } catch {
+      setAttendanceData([]);
+      setMessage("Could not reach the backend. Is it running?");
     }
   };
 
@@ -91,6 +81,7 @@ function StaffAttendance() {
               <tr>
                 <th>Attendance ID</th>
                 <th>Staff ID</th>
+                <th>Date</th>
                 <th>Status</th>
                 <th>Check In</th>
                 <th>Check Out</th>
@@ -102,25 +93,24 @@ function StaffAttendance() {
 
               {attendanceData.length > 0 ? (
 
-                attendanceData.map((attendance) => (
+                attendanceData.map((a) => (
 
-                  <tr key={attendance.attendance_id}>
-                    <td>{attendance.attendance_id}</td>
-                    <td>{attendance.staff_id}</td>
+                  <tr key={a.attendanceId}>
+                    <td>{a.attendanceId}</td>
+                    <td>{a.staffId}</td>
+                    <td>{a.attendanceDate}</td>
                     <td>
                       <span
                         className={
-                          attendance.status.toLowerCase() === "present"
-                            ? "status present"
-                            : "status absent"
+                          "status " + String(a.status).toLowerCase()
                         }
                       >
-                        {attendance.status}
+                        {a.status}
                       </span>
                     </td>
-                    <td>{attendance.check_in_time}</td>
-                    <td>{attendance.check_out_time}</td>
-                    <td>{attendance.remarks}</td>
+                    <td>{a.checkInTime}</td>
+                    <td>{a.checkOutTime}</td>
+                    <td>{a.remarks}</td>
                   </tr>
 
                 ))
@@ -128,7 +118,7 @@ function StaffAttendance() {
               ) : (
 
                 <tr>
-                  <td colSpan="6" className="no-data">
+                  <td colSpan="7" className="no-data">
                     {message}
                   </td>
                 </tr>

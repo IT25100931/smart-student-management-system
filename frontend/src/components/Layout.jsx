@@ -13,7 +13,11 @@ function Layout() {
 
         <nav className="menu">
           <NavLink to="/salary">Salary Details</NavLink>
+          <NavLink to="/salary-calculation">Salary Calculation</NavLink>
+          <NavLink to="/salary-summary">Salary Summary</NavLink>
           <NavLink to="/attendance">Staff Attendance</NavLink>
+          <NavLink to="/attendance-by-date">Daily Attendance</NavLink>
+          <NavLink to="/mark-attendance">Mark Attendance</NavLink>
         </nav>
 
       </aside>
