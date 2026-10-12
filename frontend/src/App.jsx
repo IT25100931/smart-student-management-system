@@ -1,3 +1,57 @@
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useNavigate
+} from 'react-router-dom';
+
+import LoginPage from './pages/LoginPage';
+import EditStudentPage from './pages/EditStudentPage.jsx';
+import RegisterStudentPage from './pages/RegisterStudentPage.jsx';
+import StudentSearch from './StudentSearch';
+import LeaveManagement from './LeaveManagement';
+import Navigation from './components/Navigation';
+import PaymentPage from './pages/PaymentPage.jsx';
+import './App.css';
+
+// Home page for selecting academic services
+function ServicesHome() {
+    const navigate = useNavigate();
+
+    return (
+        <div className="home-page">
+            <h1>Smart Student Management System</h1>
+            <p>Select a service to continue</p>
+
+            <div className="home-buttons">
+                <button
+                    className="feature-button"
+                    onClick={() => navigate('/search-student')}
+                >
+                    Student Management
+                </button>
+
+                <button
+                     className="feature-button"
+                     onClick={() => navigate('/payments')}
+                >
+                     Payment Management
+                </button>
+
+                <button
+                    className="feature-button"
+                    onClick={() => navigate('/leave-management')}
+                >
+                    Leave Management
+                </button>
+            </div>
+        </div>
+    );
+}
+
+// Wrapper providing a back button for academic services
+function ServicePage({ children }) {
+    const navigate = useNavigate();
 
 import {
   BrowserRouter,
@@ -39,57 +93,59 @@ function ParentDashboardPlaceholder() {
 }
 
 function App() {
-  return (
-      <BrowserRouter>
-        <Routes>
-          {/* Login */}
-          <Route
-              path="/"
-              element={<LoginPage />}
-          />
+    return (
+        <BrowserRouter>
+            <Navigation />
 
-          {/* Administrative Staff Dashboard */}
-          <Route
-              path="/admin-dashboard"
-              element={<AdminDashboard />}
-          />
+            <Routes>
+                {/* Existing routes from main */}
+                <Route path="/" element={<LoginPage />} />
 
-          {/* Academic Staff Dashboard */}
-          <Route
-              path="/teacher-dashboard"
-              element={<AcademicStaffDashboard />}
-          />
+                <Route
+                    path="/register-student"
+                    element={<RegisterStudentPage />}
+                />
 
-          {/* Parent Dashboard */}
-          <Route
-              path="/parent-dashboard"
-              element={<ParentDashboardPlaceholder />}
-          />
+                <Route
+                    path="/edit-student"
+                    element={<EditStudentPage />}
+                />
 
-          {/* Student Management */}
-          <Route
-              path="/search-student"
-              element={<StudentSearch />}
-          />
+                <Route
+                    path="/search-student"
+                    element={
+                        <ServicePage>
+                            <StudentSearch />
+                        </ServicePage>
+                    }
+                />
 
-          <Route
-              path="/register-student"
-              element={<RegisterStudentPage />}
-          />
+                {/* New Academic Services routes */}
+                <Route
+                    path="/leave-management"
+                    element={
+                        <ServicePage>
+                            <LeaveManagement />
+                        </ServicePage>
+                    }
+                />
 
-          <Route
-              path="/edit-student"
-              element={<EditStudentPage />}
-          />
-
-          {/* Unknown URLs return to login */}
-          <Route
-              path="*"
-              element={<Navigate to="/" replace />}
-          />
-        </Routes>
-      </BrowserRouter>
-  );
+                {/* Payment Management */}
+              <Route
+                   path="/payments"
+                   element={
+                      <ServicePage>
+                         <PaymentPage />
+                      </ServicePage>
+                  }
+               />
+                <Route
+                    path="/services"
+                    element={<ServicesHome />}
+                />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
