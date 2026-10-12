@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { authHeaders } from '../utils/authFetch';
 import './LoginPage.css';
 
+
 const today = new Date().toISOString().split('T')[0];
 
 function RegisterStudentPage() {

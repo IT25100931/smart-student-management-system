@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import com.studentmanagement.backend.service.TokenBlacklistService;
 
 import java.io.IOException;
 
@@ -15,6 +16,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -46,6 +50,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (!jwtUtil.isTokenValid(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid or expired token");
+            return;
+        }
+
+        String tokenId = jwtUtil.extractTokenId(token);
+        if (tokenId == null || tokenBlacklistService.isRevoked(tokenId)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token has been revoked. Please log in again.");
             return;
         }
 
