@@ -8,10 +8,14 @@ import EditStudentPage from './pages/EditStudentPage.jsx';
 import StudentSearch from './pages/StudentSearch.jsx';
 import PaymentPage from './pages/PaymentPage.jsx';
 import LeaveManagement from './pages/LeaveManagement.jsx';
+import LeaveApprovalManagement from './pages/LeaveApprovalManagement.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
 import ServicePage from './components/ServicePage.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
+//import TeacherDashboard from './pages/TeacherDashboard.jsx';
+//import ParentDashboard from './pages/ParentDashboard.jsx';
 import './App.css';
 
 function App() {
@@ -21,6 +25,32 @@ function App() {
             <Routes>
                 {/* Public authentication route */}
                 <Route path="/" element={<LoginPage />} />
+
+                {/* Role-Specific Dashboard Routes */}
+                <Route
+                    path="/admin-dashboard"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN']}>
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                {/*<Route*/}
+                {/*    path="/teacher-dashboard"*/}
+                {/*    element={*/}
+                {/*        <ProtectedRoute allowedRoles={['TEACHER']}>*/}
+                {/*            <TeacherDashboard />*/}
+                {/*        </ProtectedRoute>*/}
+                {/*    }*/}
+                {/*/>*/}
+                {/*<Route*/}
+                {/*    path="/parent-dashboard"*/}
+                {/*    element={*/}
+                {/*        <ProtectedRoute allowedRoles={['PARENT']}>*/}
+                {/*            <ParentDashboard />*/}
+                {/*        </ProtectedRoute>*/}
+                {/*    }*/}
+                {/*/>*/}
 
                 {/* Services hub (any logged-in user) */}
                 <Route
@@ -80,9 +110,19 @@ function App() {
                 <Route
                     path="/leave-management"
                     element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={['TEACHER']}>
                             <ServicePage>
                                 <LeaveManagement />
+                            </ServicePage>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/leave-approval-management"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN']}>
+                            <ServicePage>
+                                <LeaveApprovalManagement />
                             </ServicePage>
                         </ProtectedRoute>
                     }

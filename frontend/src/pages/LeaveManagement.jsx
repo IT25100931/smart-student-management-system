@@ -31,28 +31,28 @@ function SummaryCard({ title, period, remaining, total }) {
   const isLow = total > 0 && percent <= 25;
 
   return (
-    <div className="summary-card">
-      <div className="summary-card-top">
-        <h3>{title}</h3>
-        <span className="summary-period">{period}</span>
-      </div>
+      <div className="summary-card">
+        <div className="summary-card-top">
+          <h3>{title}</h3>
+          <span className="summary-period">{period}</span>
+        </div>
 
-      <p>
-        {remaining}
-        <span className="summary-total"> of {total}</span>
-      </p>
+        <p>
+          {remaining}
+          <span className="summary-total"> of {total}</span>
+        </p>
 
-      <div
-        className={`summary-bar ${isLow ? "is-low" : ""}`}
-        role="progressbar"
-        aria-valuenow={remaining}
-        aria-valuemin={0}
-        aria-valuemax={total}
-        aria-label={`${title}: ${remaining} of ${total} remaining`}
-      >
-        <span style={{ width: `${percent}%` }} />
+        <div
+            className={`summary-bar ${isLow ? "is-low" : ""}`}
+            role="progressbar"
+            aria-valuenow={remaining}
+            aria-valuemin={0}
+            aria-valuemax={total}
+            aria-label={`${title}: ${remaining} of ${total} remaining`}
+        >
+          <span style={{ width: `${percent}%` }} />
+        </div>
       </div>
-    </div>
   );
 }
 
@@ -110,8 +110,16 @@ function LeaveManagement() {
       setLoading(true);
       setError("");
 
+      const token = localStorage.getItem("token");
+
       const summaryResponse = await fetch(
-        `http://localhost:8081/api/leave-requests/summary/${staffId}`
+          `http://localhost:8081/api/leave-requests/summary/${staffId}`,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
       );
 
       if (!summaryResponse.ok) {
@@ -121,7 +129,13 @@ function LeaveManagement() {
       const summaryData = await summaryResponse.json();
 
       const requestsResponse = await fetch(
-        `http://localhost:8081/api/leave-requests/staff/${staffId}`
+          `http://localhost:8081/api/leave-requests/staff/${staffId}`,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
       );
 
       if (!requestsResponse.ok) {
@@ -162,9 +176,9 @@ function LeaveManagement() {
       ...previousData,
       leaveType: newLeaveType,
       endDate:
-        newLeaveType === "SHORT"
-          ? previousData.startDate
-          : previousData.endDate,
+          newLeaveType === "SHORT"
+              ? previousData.startDate
+              : previousData.endDate,
       startTime: newLeaveType === "FULL_DAY" ? "" : previousData.startTime,
       endTime: newLeaveType === "FULL_DAY" ? "" : previousData.endTime
     }));
@@ -204,6 +218,7 @@ function LeaveManagement() {
 
     try {
       setSubmitting(true);
+      const token = localStorage.getItem("token");
 
       // Prepare data for the backend
       const requestBody = {
@@ -213,36 +228,37 @@ function LeaveManagement() {
         leaveType: formData.leaveType,
         startDate: formData.startDate,
         endDate:
-          formData.leaveType === "SHORT"
-            ? formData.startDate
-            : formData.endDate,
+            formData.leaveType === "SHORT"
+                ? formData.startDate
+                : formData.endDate,
         startTime:
-          formData.leaveType === "SHORT"
-            ? formData.startTime
-            : null,
+            formData.leaveType === "SHORT"
+                ? formData.startTime
+                : null,
         endTime:
-          formData.leaveType === "SHORT"
-            ? formData.endTime
-            : null,
+            formData.leaveType === "SHORT"
+                ? formData.endTime
+                : null,
         reason: formData.reason
       };
 
       const response = await fetch(
-        "http://localhost:8081/api/leave-requests",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(requestBody)
-        }
+          "http://localhost:8081/api/leave-requests",
+          {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestBody)
+          }
       );
 
       const responseData = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          responseData.message || "Could not submit leave request."
+            responseData.message || "Could not submit leave request."
         );
       }
 
@@ -287,402 +303,402 @@ function LeaveManagement() {
 
   if (loading && !summary) {
     return (
-      <div className="app">
-        <div className="state-screen">
-          <span className="spinner" aria-hidden="true" />
-          <h2>Loading leave information...</h2>
+        <div className="app">
+          <div className="state-screen">
+            <span className="spinner" aria-hidden="true" />
+            <h2>Loading leave information...</h2>
+          </div>
         </div>
-      </div>
     );
   }
 
   if (error) {
     return (
-      <div className="app">
-        <div className="state-screen">
-          <h2>Something went wrong</h2>
-          <p>{error}</p>
-          <button className="submit-button" onClick={loadLeaveData}>
-            Try again
-          </button>
+        <div className="app">
+          <div className="state-screen">
+            <h2>Something went wrong</h2>
+            <p>{error}</p>
+            <button className="submit-button" onClick={loadLeaveData}>
+              Try again
+            </button>
+          </div>
         </div>
-      </div>
     );
   }
 
   return (
-    <div className="app">
+      <div className="app">
 
-      {/* Page header */}
-      <header className="page-header">
-        <div className="page-header-text">
-          <h1>Leave Management</h1>
-          <p className="page-subtitle">
-            Check your balances, request time off and follow the status of
-            your requests.
-          </p>
-        </div>
-
-        <div className="request-button-section">
-          <button
-            className="request-leave-button"
-            onClick={() => {
-              setShowRequestForm(true);
-              setFormSuccess("");
-              setFormError("");
-            }}
-          >
-            <span className="button-plus" aria-hidden="true">+</span>
-            Request Leave
-          </button>
-        </div>
-      </header>
-
-      {/* Leave Summary */}
-      <section className="summary-section" aria-label="Leave summary">
-        <div className="summary-grid">
-
-          <SummaryCard
-            title="Full-day leave"
-            period="This year"
-            remaining={summary.fullDayRemaining}
-            total={summary.fullDayTotal}
-          />
-
-          <SummaryCard
-            title="Short leave"
-            period="This year"
-            remaining={summary.shortLeaveRemaining}
-            total={summary.shortLeaveTotal}
-          />
-
-          <SummaryCard
-            title="Full-day leave"
-            period="This month"
-            remaining={summary.monthlyFullDayRemaining}
-            total={summary.monthlyFullDayTotal}
-          />
-
-          <SummaryCard
-            title="Short leave"
-            period="This month"
-            remaining={summary.monthlyShortLeaveRemaining}
-            total={summary.monthlyShortLeaveTotal}
-          />
-
-        </div>
-      </section>
-
-      {/* Main content: requests + upcoming */}
-      <div className="content-grid">
-
-        {/* Leave Requests */}
-        <section className="requests-section">
-          <div className="section-head">
-            <h2>My Leave Requests</h2>
-            <span className="count-pill">{leaveRequests.length}</span>
+        {/* Page header */}
+        <header className="page-header">
+          <div className="page-header-text">
+            <h1>Leave Management</h1>
+            <p className="page-subtitle">
+              Check your balances, request time off and follow the status of
+              your requests.
+            </p>
           </div>
 
-          {leaveRequests.length === 0 ? (
-            <div className="empty-state">
-              <p>No leave requests yet.</p>
-              <span>Use “Request Leave” to submit your first one.</span>
-            </div>
-          ) : (
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Reason</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
+          <div className="request-button-section">
+            <button
+                className="request-leave-button"
+                onClick={() => {
+                  setShowRequestForm(true);
+                  setFormSuccess("");
+                  setFormError("");
+                }}
+            >
+              <span className="button-plus" aria-hidden="true">+</span>
+              Request Leave
+            </button>
+          </div>
+        </header>
 
-                <tbody>
-                  {leaveRequests.map((request) => (
-                    <tr key={request.leaveId}>
-                      <td>
+        {/* Leave Summary */}
+        <section className="summary-section" aria-label="Leave summary">
+          <div className="summary-grid">
+
+            <SummaryCard
+                title="Full-day leave"
+                period="This year"
+                remaining={summary.fullDayRemaining}
+                total={summary.fullDayTotal}
+            />
+
+            <SummaryCard
+                title="Short leave"
+                period="This year"
+                remaining={summary.shortLeaveRemaining}
+                total={summary.shortLeaveTotal}
+            />
+
+            <SummaryCard
+                title="Full-day leave"
+                period="This month"
+                remaining={summary.monthlyFullDayRemaining}
+                total={summary.monthlyFullDayTotal}
+            />
+
+            <SummaryCard
+                title="Short leave"
+                period="This month"
+                remaining={summary.monthlyShortLeaveRemaining}
+                total={summary.monthlyShortLeaveTotal}
+            />
+
+          </div>
+        </section>
+
+        {/* Main content: requests + upcoming */}
+        <div className="content-grid">
+
+          {/* Leave Requests */}
+          <section className="requests-section">
+            <div className="section-head">
+              <h2>My Leave Requests</h2>
+              <span className="count-pill">{leaveRequests.length}</span>
+            </div>
+
+            {leaveRequests.length === 0 ? (
+                <div className="empty-state">
+                  <p>No leave requests yet.</p>
+                  <span>Use “Request Leave” to submit your first one.</span>
+                </div>
+            ) : (
+                <div className="table-wrap">
+                  <table>
+                    <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Reason</th>
+                      <th>Status</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {leaveRequests.map((request) => (
+                        <tr key={request.leaveId}>
+                          <td>
                         <span
-                          className={`type-pill ${
-                            request.leaveType === "SHORT" ? "is-short" : ""
-                          }`}
+                            className={`type-pill ${
+                                request.leaveType === "SHORT" ? "is-short" : ""
+                            }`}
                         >
                           {leaveTypeLabel(request.leaveType)}
                         </span>
-                        {request.leaveType === "SHORT" &&
-                          request.startTime &&
-                          request.endTime && (
-                            <span className="time-note">
+                            {request.leaveType === "SHORT" &&
+                                request.startTime &&
+                                request.endTime && (
+                                    <span className="time-note">
                               {String(request.startTime).slice(0, 5)} –{" "}
-                              {String(request.endTime).slice(0, 5)}
+                                      {String(request.endTime).slice(0, 5)}
                             </span>
-                          )}
-                      </td>
-                      <td>{formatDate(request.startDate)}</td>
-                      <td>{formatDate(request.endDate)}</td>
-                      <td className="reason-cell">{request.reason || "—"}</td>
-                      <td>
+                                )}
+                          </td>
+                          <td>{formatDate(request.startDate)}</td>
+                          <td>{formatDate(request.endDate)}</td>
+                          <td className="reason-cell">{request.reason || "—"}</td>
+                          <td>
                         <span
-                          className={`status-badge status-${String(
-                            request.status
-                          ).toLowerCase()}`}
+                            className={`status-badge status-${String(
+                                request.status
+                            ).toLowerCase()}`}
                         >
                           {formatLabel(request.status)}
                         </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                          </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                  </table>
+                </div>
+            )}
+          </section>
+
+          {/* Upcoming Leave Days */}
+          <aside className="upcoming-section">
+            <div className="section-head">
+              <h2>Upcoming Leave Days</h2>
             </div>
-          )}
-        </section>
 
-        {/* Upcoming Leave Days */}
-        <aside className="upcoming-section">
-          <div className="section-head">
-            <h2>Upcoming Leave Days</h2>
-          </div>
+            {summary.upcomingLeaveDays.length === 0 ? (
+                <div className="empty-state">
+                  <p>No upcoming approved leave.</p>
+                </div>
+            ) : (
+                <ul className="upcoming-list">
+                  {summary.upcomingLeaveDays.map((date) => {
+                    const parsed = new Date(`${date}T00:00:00`);
+                    const valid = !isNaN(parsed);
 
-          {summary.upcomingLeaveDays.length === 0 ? (
-            <div className="empty-state">
-              <p>No upcoming approved leave.</p>
-            </div>
-          ) : (
-            <ul className="upcoming-list">
-              {summary.upcomingLeaveDays.map((date) => {
-                const parsed = new Date(`${date}T00:00:00`);
-                const valid = !isNaN(parsed);
-
-                return (
-                  <li key={date} className="upcoming-item">
-                    <div className="date-badge">
+                    return (
+                        <li key={date} className="upcoming-item">
+                          <div className="date-badge">
                       <span>
                         {valid
-                          ? parsed.toLocaleDateString("en-GB", {
+                            ? parsed.toLocaleDateString("en-GB", {
                               month: "short"
                             })
-                          : ""}
+                            : ""}
                       </span>
-                      <strong>{valid ? parsed.getDate() : date}</strong>
-                    </div>
+                            <strong>{valid ? parsed.getDate() : date}</strong>
+                          </div>
 
-                    <div className="upcoming-text">
-                      <p>
-                        {valid
-                          ? parsed.toLocaleDateString("en-GB", {
-                              weekday: "long"
-                            })
-                          : date}
-                      </p>
-                      <span>{formatDate(date)}</span>
+                          <div className="upcoming-text">
+                            <p>
+                              {valid
+                                  ? parsed.toLocaleDateString("en-GB", {
+                                    weekday: "long"
+                                  })
+                                  : date}
+                            </p>
+                            <span>{formatDate(date)}</span>
+                          </div>
+                        </li>
+                    );
+                  })}
+                </ul>
+            )}
+          </aside>
+
+        </div>
+
+        {/* Request Leave Drawer */}
+        {showRequestForm && (
+            <div
+                className="drawer-overlay"
+                onClick={() => {
+                  if (!submitting) cancelRequest();
+                }}
+            >
+              <section
+                  className="request-form-section"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="request-leave-title"
+                  onClick={(event) => event.stopPropagation()}
+              >
+
+                <div className="drawer-head">
+                  <div>
+                    <h2 id="request-leave-title">Request Leave</h2>
+                    <p>Choose the type of leave and tell us when you need it.</p>
+                  </div>
+
+                  <button
+                      type="button"
+                      className="drawer-close"
+                      aria-label="Close"
+                      onClick={cancelRequest}
+                      disabled={submitting}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+
+                  {/* Leave Type */}
+                  <div className="form-group">
+                    <span className="field-label">Leave Type</span>
+
+                    <div className="leave-type-options">
+
+                      <label>
+                        <input
+                            type="radio"
+                            name="leaveType"
+                            value="FULL_DAY"
+                            checked={formData.leaveType === "FULL_DAY"}
+                            onChange={handleLeaveTypeChange}
+                        />
+                        Full Day
+                      </label>
+
+                      <label>
+                        <input
+                            type="radio"
+                            name="leaveType"
+                            value="SHORT"
+                            checked={formData.leaveType === "SHORT"}
+                            onChange={handleLeaveTypeChange}
+                        />
+                        Short Leave
+                      </label>
+
                     </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </aside>
+                  </div>
+
+                  {/* Start Date */}
+                  <div className="form-group">
+                    <label htmlFor="startDate">
+                      {formData.leaveType === "SHORT"
+                          ? "Date"
+                          : "Start Date"}
+                    </label>
+
+                    <input
+                        type="date"
+                        id="startDate"
+                        name="startDate"
+                        value={formData.startDate}
+                        onChange={handleFormChange}
+                    />
+                  </div>
+
+                  {/* End Date - Full Day only */}
+                  {formData.leaveType === "FULL_DAY" && (
+                      <div className="form-group">
+                        <label htmlFor="endDate">
+                          End Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="endDate"
+                            name="endDate"
+                            value={formData.endDate}
+                            onChange={handleFormChange}
+                        />
+                      </div>
+                  )}
+
+                  {/* Short Leave Times */}
+                  {formData.leaveType === "SHORT" && (
+                      <div className="time-row">
+
+                        <div className="form-group">
+                          <label htmlFor="startTime">
+                            Start Time
+                          </label>
+
+                          <input
+                              type="time"
+                              id="startTime"
+                              name="startTime"
+                              value={formData.startTime}
+                              onChange={handleFormChange}
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label htmlFor="endTime">
+                            End Time
+                          </label>
+
+                          <input
+                              type="time"
+                              id="endTime"
+                              name="endTime"
+                              value={formData.endTime}
+                              onChange={handleFormChange}
+                          />
+                        </div>
+
+                      </div>
+                  )}
+
+                  {/* Reason */}
+                  <div className="form-group">
+                    <label htmlFor="reason">
+                      Reason
+                    </label>
+
+                    <textarea
+                        id="reason"
+                        name="reason"
+                        rows="4"
+                        value={formData.reason}
+                        onChange={handleFormChange}
+                        placeholder="Enter the reason for your leave"
+                    />
+                  </div>
+
+                  {/* Error */}
+                  {formError && (
+                      <p className="form-error" role="alert">
+                        {formError}
+                      </p>
+                  )}
+
+                  {/* Success */}
+                  {formSuccess && (
+                      <p className="form-success" role="status">
+                        {formSuccess}
+                      </p>
+                  )}
+
+                  {/* Buttons */}
+                  <div className="form-buttons">
+
+                    <button
+                        type="submit"
+                        className="submit-button"
+                        disabled={submitting}
+                    >
+                      {submitting ? "Submitting..." : "Submit Request"}
+                    </button>
+
+                    <button
+                        type="button"
+                        className="cancel-button"
+                        onClick={cancelRequest}
+                        disabled={submitting}
+                    >
+                      Cancel
+                    </button>
+
+                  </div>
+
+                </form>
+
+              </section>
+            </div>
+        )}
 
       </div>
-
-      {/* Request Leave Drawer */}
-      {showRequestForm && (
-        <div
-          className="drawer-overlay"
-          onClick={() => {
-            if (!submitting) cancelRequest();
-          }}
-        >
-          <section
-            className="request-form-section"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="request-leave-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-
-            <div className="drawer-head">
-              <div>
-                <h2 id="request-leave-title">Request Leave</h2>
-                <p>Choose the type of leave and tell us when you need it.</p>
-              </div>
-
-              <button
-                type="button"
-                className="drawer-close"
-                aria-label="Close"
-                onClick={cancelRequest}
-                disabled={submitting}
-              >
-                ×
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit}>
-
-              {/* Leave Type */}
-              <div className="form-group">
-                <span className="field-label">Leave Type</span>
-
-                <div className="leave-type-options">
-
-                  <label>
-                    <input
-                      type="radio"
-                      name="leaveType"
-                      value="FULL_DAY"
-                      checked={formData.leaveType === "FULL_DAY"}
-                      onChange={handleLeaveTypeChange}
-                    />
-                    Full Day
-                  </label>
-
-                  <label>
-                    <input
-                      type="radio"
-                      name="leaveType"
-                      value="SHORT"
-                      checked={formData.leaveType === "SHORT"}
-                      onChange={handleLeaveTypeChange}
-                    />
-                    Short Leave
-                  </label>
-
-                </div>
-              </div>
-
-              {/* Start Date */}
-              <div className="form-group">
-                <label htmlFor="startDate">
-                  {formData.leaveType === "SHORT"
-                    ? "Date"
-                    : "Start Date"}
-                </label>
-
-                <input
-                  type="date"
-                  id="startDate"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleFormChange}
-                />
-              </div>
-
-              {/* End Date - Full Day only */}
-              {formData.leaveType === "FULL_DAY" && (
-                <div className="form-group">
-                  <label htmlFor="endDate">
-                    End Date
-                  </label>
-
-                  <input
-                    type="date"
-                    id="endDate"
-                    name="endDate"
-                    value={formData.endDate}
-                    onChange={handleFormChange}
-                  />
-                </div>
-              )}
-
-              {/* Short Leave Times */}
-              {formData.leaveType === "SHORT" && (
-                <div className="time-row">
-
-                  <div className="form-group">
-                    <label htmlFor="startTime">
-                      Start Time
-                    </label>
-
-                    <input
-                      type="time"
-                      id="startTime"
-                      name="startTime"
-                      value={formData.startTime}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="endTime">
-                      End Time
-                    </label>
-
-                    <input
-                      type="time"
-                      id="endTime"
-                      name="endTime"
-                      value={formData.endTime}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-
-                </div>
-              )}
-
-              {/* Reason */}
-              <div className="form-group">
-                <label htmlFor="reason">
-                  Reason
-                </label>
-
-                <textarea
-                  id="reason"
-                  name="reason"
-                  rows="4"
-                  value={formData.reason}
-                  onChange={handleFormChange}
-                  placeholder="Enter the reason for your leave"
-                />
-              </div>
-
-              {/* Error */}
-              {formError && (
-                <p className="form-error" role="alert">
-                  {formError}
-                </p>
-              )}
-
-              {/* Success */}
-              {formSuccess && (
-                <p className="form-success" role="status">
-                  {formSuccess}
-                </p>
-              )}
-
-              {/* Buttons */}
-              <div className="form-buttons">
-
-                <button
-                  type="submit"
-                  className="submit-button"
-                  disabled={submitting}
-                >
-                  {submitting ? "Submitting..." : "Submit Request"}
-                </button>
-
-                <button
-                  type="button"
-                  className="cancel-button"
-                  onClick={cancelRequest}
-                  disabled={submitting}
-                >
-                  Cancel
-                </button>
-
-              </div>
-
-            </form>
-
-          </section>
-        </div>
-      )}
-
-    </div>
   );
 }
 
