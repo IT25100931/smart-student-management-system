@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import { getUser, isTokenExpired } from '../utils/authFetch';
-import TopBar from './TopBar';
 
 function ProtectedRoute({ children, allowedRoles }) {
     const user = getUser();
@@ -14,7 +13,6 @@ function ProtectedRoute({ children, allowedRoles }) {
     if (allowedRoles && !allowedRoles.includes(user.role)) {
         return (
             <div style={{ padding: 48, fontFamily: 'Inter, sans-serif', color: '#1C2B3A' }}>
-                <TopBar />
                 <h2>Access denied</h2>
                 <p>Your account ({user.role}) doesn't have permission to view this page.</p>
             </div>

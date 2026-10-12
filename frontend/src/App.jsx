@@ -1,90 +1,57 @@
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    useNavigate
-} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
-import EditStudentPage from './pages/EditStudentPage.jsx';
+import ServicesHome from './pages/ServicesHome.jsx';
+import StudentManagementPage from './pages/StudentManagementPage.jsx';
 import RegisterStudentPage from './pages/RegisterStudentPage.jsx';
+import EditStudentPage from './pages/EditStudentPage.jsx';
 import StudentSearch from './pages/StudentSearch.jsx';
-import LeaveManagement from './LeaveManagement';
 import PaymentPage from './pages/PaymentPage.jsx';
+import LeaveManagement from './pages/LeaveManagement.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
+import ServicePage from './components/ServicePage.jsx';
 import './App.css';
-
-// Home page for selecting academic services
-function ServicesHome() {
-    const navigate = useNavigate();
-
-    return (
-        <div className="home-page">
-            <h1>Smart Student Management System</h1>
-            <p>Select a service to continue</p>
-
-            <div className="home-buttons">
-                <button
-                    className="feature-button"
-                    onClick={() => navigate('/search-student')}
-                >
-                    Student Management
-                </button>
-
-                <button
-                    className="feature-button"
-                    onClick={() => navigate('/payments')}
-                >
-                    Payment Management
-                </button>
-
-                <button
-                    className="feature-button"
-                    onClick={() => navigate('/leave-management')}
-                >
-                    Leave Management
-                </button>
-            </div>
-        </div>
-    );
-}
-
-// Wrapper providing a back button for academic services
-function ServicePage({ children }) {
-    const navigate = useNavigate();
-
-    return (
-        <div className="service-page-wrapper">
-            <button
-                className="back-button"
-                onClick={() => navigate('/services')}
-                style={{ margin: '10px', padding: '8px 16px', cursor: 'pointer' }}
-            >
-                &larr; Back to Services
-            </button>
-            {children}
-        </div>
-    );
-}
 
 function App() {
     return (
         <BrowserRouter>
             <Navigation />
             <Routes>
-                {/* Public Authentication Route */}
+                {/* Public authentication route */}
                 <Route path="/" element={<LoginPage />} />
 
-                {/* Services Hub Route */}
-                <Route path="/services" element={<ServicesHome />} />
+                {/* Services hub (any logged-in user) */}
+                <Route
+                    path="/services"
+                    element={
+                        <ProtectedRoute>
+                            <ServicesHome />
+                        </ProtectedRoute>
+                    }
+                />
 
-                {/* Protected Student Management Routes (Admin Only) */}
+                {/* Student management menu */}
+                <Route
+                    path="/student-management"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
+                            <ServicePage>
+                                <StudentManagementPage />
+                            </ServicePage>
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Admin-only student pages */}
                 <Route
                     path="/register-student"
                     element={
                         <ProtectedRoute allowedRoles={['ADMIN']}>
-                            <RegisterStudentPage />
+                            <ServicePage backTo="/student-management" backLabel="Back to Student Management">
+                                <RegisterStudentPage />
+                            </ServicePage>
                         </ProtectedRoute>
                     }
                 />
@@ -92,36 +59,48 @@ function App() {
                     path="/edit-student"
                     element={
                         <ProtectedRoute allowedRoles={['ADMIN']}>
-                            <EditStudentPage />
+                            <ServicePage backTo="/student-management" backLabel="Back to Student Management">
+                                <EditStudentPage />
+                            </ServicePage>
                         </ProtectedRoute>
                     }
                 />
 
-                {/* Academic Services Routes */}
+                {/* Other services */}
                 <Route
                     path="/search-student"
                     element={
-                        <ServicePage>
-                            <StudentSearch />
-                        </ServicePage>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
+                            <ServicePage backTo="/student-management" backLabel="Back to Student Management">
+                                <StudentSearch />
+                            </ServicePage>
+                        </ProtectedRoute>
                     }
                 />
                 <Route
                     path="/leave-management"
                     element={
-                        <ServicePage>
-                            <LeaveManagement />
-                        </ServicePage>
+                        <ProtectedRoute>
+                            <ServicePage>
+                                <LeaveManagement />
+                            </ServicePage>
+                        </ProtectedRoute>
                     }
                 />
                 <Route
                     path="/payments"
                     element={
-                        <ServicePage>
-                            <PaymentPage />
-                        </ServicePage>
+                        <ProtectedRoute allowedRoles={['ADMIN', 'PARENT']}>
+                            <ServicePage>
+                                <PaymentPage />
+                            </ServicePage>
+                        </ProtectedRoute>
                     }
                 />
+
+                {/* Keep these last */}
+                <Route path="/not-found" element={<NotFoundPage />} />
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>
     );

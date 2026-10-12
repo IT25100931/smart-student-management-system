@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { authHeaders } from '../utils/authFetch';
 import './LoginPage.css';
-import TopBar from '../components/TopBar';
 
 
 const today = new Date().toISOString().split('T')[0];
@@ -45,7 +44,6 @@ function RegisterStudentPage() {
 
     return (
         <div className="login-screen">
-            <TopBar />
             <div className="login-panel-identity">
                 <div className="login-identity-inner">
                     <p className="login-eyebrow">Student management system</p>
