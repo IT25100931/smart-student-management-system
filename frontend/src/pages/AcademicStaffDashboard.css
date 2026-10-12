@@ -1,0 +1,126 @@
+
+.academic-staff-dashboard {
+  width: min(1250px, 100%);
+  margin: 0 auto;
+  padding: 26px 22px 48px;
+  color: #e8eaf2;
+  box-sizing: border-box;
+}
+
+.academic-staff-dashboard * {
+  box-sizing: border-box;
+}
+
+.asd-welcome {
+  padding: 28px;
+  margin-bottom: 24px;
+  border: 1px solid #343852;
+  border-radius: 16px;
+  background: linear-gradient(130deg, #252141, #171a28 75%);
+}
+
+.asd-eyebrow {
+  margin: 0 0 10px;
+  color: #b3a6ff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.asd-welcome h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+}
+
+.asd-welcome > p:last-child {
+  max-width: 750px;
+  margin: 12px 0 0;
+  color: #b2bad0;
+  line-height: 1.7;
+}
+
+.asd-section {
+  min-width: 0;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border: 1px solid #30354a;
+  border-radius: 16px;
+  background: #171a28;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
+}
+
+.asd-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 26px 4px;
+}
+
+.asd-section-number {
+  display: flex;
+  flex: 0 0 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #514878;
+  border-radius: 10px;
+  color: #d0c5ff;
+  background: #2a2542;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.asd-section-heading h2 {
+  margin: 2px 0 0;
+  color: #ffffff;
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+}
+
+.asd-section-heading p {
+  margin: 8px 0 0;
+  color: #a5adc2;
+  line-height: 1.6;
+}
+
+.asd-section-content {
+  min-width: 0;
+  padding: 8px 18px 18px;
+}
+
+/* Let the existing timetable fit inside its dashboard section. */
+.academic-staff-dashboard .teacher-timetable-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 18px 8px;
+}
+
+/* Responsive layout */
+@media (max-width: 650px) {
+  .academic-staff-dashboard {
+    padding: 18px 12px 32px;
+  }
+
+  .asd-welcome {
+    padding: 22px 18px;
+  }
+
+  .asd-section-heading {
+    gap: 12px;
+    padding: 20px 16px 4px;
+  }
+
+  .asd-section-number {
+    flex-basis: 34px;
+    height: 34px;
+  }
+
+  .asd-section-content {
+    padding: 8px 10px 12px;
+  }
+
+  .academic-staff-dashboard .teacher-timetable-page {
+    padding: 16px 2px;
+  }
+}

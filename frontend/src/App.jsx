@@ -53,18 +53,43 @@ function ServicesHome() {
 function ServicePage({ children }) {
     const navigate = useNavigate();
 
-    return (
-        <div>
-            <button
-                className="back-button"
-                onClick={() => navigate('/services')}
-            >
-                ← Back
-            </button>
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
-            {children}
-        </div>
-    );
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterStudentPage from "./pages/RegisterStudentPage.jsx";
+import EditStudentPage from "./pages/EditStudentPage.jsx";
+
+import StudentSearch from "./pages/StudentSearch.jsx";
+import AcademicStaffDashboard from "./pages/AcademicStaffDashboard.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+
+import "./App.css";
+
+// Temporary page until the Parent Dashboard is integrated.
+function ParentDashboardPlaceholder() {
+  return (
+      <main className="placeholder-dashboard">
+        <h1>Parent Dashboard</h1>
+        <p>
+          The parent dashboard will be integrated here.
+        </p>
+
+        <button
+            type="button"
+            onClick={() => {
+              localStorage.removeItem("user");
+              window.location.href = "/";
+            }}
+        >
+          Log out
+        </button>
+      </main>
+  );
 }
 
 function App() {
