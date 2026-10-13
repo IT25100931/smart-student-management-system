@@ -10,20 +10,15 @@ import StudentSearch from './pages/StudentSearch.jsx';
 import PaymentPage from './pages/PaymentPage.jsx';
 import LeaveManagement from './pages/LeaveManagement.jsx';
 import LeaveApprovalManagement from './pages/LeaveApprovalManagement.jsx';
-import StaffAttendance from './pages/StaffAttendance.jsx';
-import MarkAttendance from './pages/MarkAttendance.jsx';
-import SalarySummary from './pages/SalarySummary.jsx';
-import SalaryDetails from './pages/SalaryDetails.jsx';
-import SalaryCalculation from './pages/SalaryCalculation.jsx';
-import TeacherTimetable from './pages/TeacherTimetable.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
 import ServicePage from './components/ServicePage.jsx';
 import EditDetailsPage from './pages/EditDetailsPage.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+//import AdminDashboard from './pages/AdminDashboard.jsx';
 import { getUser } from './utils/authFetch';
 import './App.css';
+import Dashboard from "./pages/Dashboard.jsx";
 
 const PUBLIC_PATHS = ['/', '/login'];
 
@@ -42,7 +37,6 @@ function AppRoutes() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
 
-                {/* Main Dashboard */}
                 <Route
                     path="/dashboard"
                     element={
@@ -52,7 +46,17 @@ function AppRoutes() {
                     }
                 />
 
-                {/* Services hub */}
+                {/* Role-Specific Dashboard Routes */}
+                {/*<Route*/}
+                {/*    path="/admin-dashboard"*/}
+                {/*    element={*/}
+                {/*        <ProtectedRoute allowedRoles={['ADMIN']}>*/}
+                {/*            <AdminDashboard />*/}
+                {/*        </ProtectedRoute>*/}
+                {/*    }*/}
+                {/*/>*/}
+
+                {/* Services hub (any logged-in user) */}
                 <Route
                     path="/services"
                     element={
@@ -91,68 +95,6 @@ function AppRoutes() {
                         <ProtectedRoute allowedRoles={['ADMIN']}>
                             <ServicePage backTo="/student-management" backLabel="Back to Student Management">
                                 <EditStudentPage />
-                            </ServicePage>
-                        </ProtectedRoute>
-                    }
-                />
-
-                {/* Attendance, Salary & Teacher Timetable Routes */}
-                <Route
-                    path="/teacher-timetable"
-                    element={
-                        <ProtectedRoute allowedRoles={['TEACHER']}>
-                            <ServicePage>
-                                <TeacherTimetable />
-                            </ServicePage>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/staff-attendance"
-                    element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
-                            <ServicePage>
-                                <StaffAttendance />
-                            </ServicePage>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/mark-attendance"
-                    element={
-                        <ProtectedRoute allowedRoles={['ADMIN']}>
-                            <ServicePage>
-                                <MarkAttendance />
-                            </ServicePage>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/salary-summary"
-                    element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
-                            <ServicePage>
-                                <SalarySummary />
-                            </ServicePage>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/salary-details"
-                    element={
-                        <ProtectedRoute allowedRoles={['ADMIN']}>
-                            <ServicePage>
-                                <SalaryDetails />
-                            </ServicePage>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/salary-calculations"
-                    element={
-                        <ProtectedRoute allowedRoles={['ADMIN']}>
-                            <ServicePage>
-                                <SalaryCalculation />
                             </ServicePage>
                         </ProtectedRoute>
                     }
@@ -199,6 +141,8 @@ function AppRoutes() {
                         </ProtectedRoute>
                     }
                 />
+
+                import EditDetailsPage from './pages/EditDetailsPage.jsx';
 
                 <Route
                     path="/account"
