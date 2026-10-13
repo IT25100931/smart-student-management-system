@@ -370,3 +370,9 @@
 .staff-module .staff-back:hover {
   background-color: rgba(255, 255, 255, 0.12);
 }
+
+/* WHEN SHOWN INSIDE THE ADMIN / TEACHER DASHBOARD */
+
+.staff-module.staff-embedded {
+  background-color: transparent;
+}

@@ -29,13 +29,6 @@ function ServicesHome() {
                 >
                     Leave Management
                 </button>
-
-                <button
-                    className="feature-button"
-                    onClick={() => navigate('/staff')}
-                >
-                    Staff Management
-                </button>
             </div>
         </div>
     );

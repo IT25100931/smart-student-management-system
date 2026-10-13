@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
+import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage';
 import ServicesHome from './pages/ServicesHome.jsx';
 import StudentManagementPage from './pages/StudentManagementPage.jsx';
@@ -13,21 +14,10 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
 import ServicePage from './components/ServicePage.jsx';
-import AdminDashboard from './pages/AdminDashboard.jsx';
-import StaffLayout from './components/StaffLayout.jsx';
-import SalaryDetails from './pages/SalaryDetails.jsx';
-import SalaryCalculation from './pages/SalaryCalculation.jsx';
-import SalarySummary from './pages/SalarySummary.jsx';
-import StaffAttendance from './pages/StaffAttendance.jsx';
-import AttendanceByDate from './pages/AttendanceByDate.jsx';
-import MarkAttendance from './pages/MarkAttendance.jsx';
-//import TeacherDashboard from './pages/TeacherDashboard.jsx';
-//import ParentDashboard from './pages/ParentDashboard.jsx';
 import EditDetailsPage from './pages/EditDetailsPage.jsx';
 //import AdminDashboard from './pages/AdminDashboard.jsx';
 import { getUser } from './utils/authFetch';
 import './App.css';
-import './StaffManagement.css';
 import Dashboard from "./pages/Dashboard.jsx";
 
 const PUBLIC_PATHS = ['/', '/login'];
@@ -151,24 +141,6 @@ function AppRoutes() {
                         </ProtectedRoute>
                     }
                 />
-
-                {/* Staff management (salary and attendance) */}
-                <Route
-                    path="/staff"
-                    element={
-                        <ProtectedRoute allowedRoles={['ADMIN', 'TEACHER']}>
-                            <StaffLayout />
-                        </ProtectedRoute>
-                    }
-                >
-                    <Route index element={<Navigate to="salary" replace />} />
-                    <Route path="salary" element={<SalaryDetails />} />
-                    <Route path="salary-calculation" element={<SalaryCalculation />} />
-                    <Route path="salary-summary" element={<SalarySummary />} />
-                    <Route path="attendance" element={<StaffAttendance />} />
-                    <Route path="attendance-by-date" element={<AttendanceByDate />} />
-                    <Route path="mark-attendance" element={<MarkAttendance />} />
-                </Route>
 
                 import EditDetailsPage from './pages/EditDetailsPage.jsx';
 
