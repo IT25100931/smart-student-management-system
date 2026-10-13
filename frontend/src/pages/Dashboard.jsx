@@ -12,12 +12,6 @@ import RegisterStudentPage from "./RegisterStudentPage.jsx";
 import EditStudentPage from "./EditStudentPage.jsx";
 import StudentSearch from "./StudentSearch.jsx";
 import CreateUserPage from "./CreateUserPage.jsx";
-import MarkAttendance from "./MarkAttendance.jsx";
-import SalaryCalculation from "./SalaryCalculation.jsx";
-import SalaryDetails from "./SalaryDetails.jsx";
-import SalarySummary from "./SalarySummary.jsx";
-import StaffAttendance from "./StaffAttendance.jsx";
-import TeacherTimetable from "./TeacherTimetable.jsx";
 
 import "./AdminDashboard.css";
 import AccountMenu from "../components/AccountMenu.jsx";
@@ -137,11 +131,6 @@ const ROLE_NAV = {
         { id: "overview", label: "Overview", icon: "grid" },
         { id: "subjects", label: "Subjects", icon: "book" },
         { id: "classes", label: "Classes", icon: "calendar" },
-        { id: "staff-attendance", label: "Staff Attendance", icon: "clipboard" },
-        { id: "mark-attendance", label: "Mark Attendance", icon: "clipboard" },
-        { id: "salary-summary", label: "Salary Summary", icon: "wallet" },
-        { id: "salary-details", label: "Salary Details", icon: "wallet" },
-        { id: "salary-calculations", label: "Salary Calculations", icon: "wallet" },
         { id: "leaves", label: "Leave Approvals", icon: "clipboard" },
         { id: "payments", label: "Payments", icon: "wallet" },
         { id: "register-student", label: "Register Student", icon: "user-plus" },
@@ -151,9 +140,6 @@ const ROLE_NAV = {
     TEACHER: [
         { id: "overview", label: "Overview", icon: "grid" },
         { id: "search-student", label: "Search Student", icon: "search" },
-        { id: "teacher-timetable", label: "Teacher Timetable", icon: "calendar" },
-        { id: "staff-attendance", label: "Staff Attendance", icon: "clipboard" },
-        { id: "salary-summary", label: "Salary Summary", icon: "wallet" },
         { id: "leave-management", label: "Leave Management", icon: "clipboard" },
     ],
     PARENT: [
@@ -180,16 +166,17 @@ function Dashboard() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    function handleLogout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+    }
+
     function renderContent() {
         if (role === "ADMIN") {
             switch (activeSection) {
                 case "subjects": return <SubjectManagement />;
                 case "classes": return <ClassManagement />;
-                case "staff-attendance": return <StaffAttendance />;
-                case "mark-attendance": return <MarkAttendance />;
-                case "salary-summary": return <SalarySummary />;
-                case "salary-details": return <SalaryDetails />;
-                case "salary-calculations": return <SalaryCalculation />;
                 case "leaves": return <LeaveApprovalManagement />;
                 case "payments": return <PaymentReview />;
                 case "register-student": return <RegisterStudentPage />;
@@ -198,182 +185,22 @@ function Dashboard() {
                 default:
                     return (
                         <section className="admin-overview">
-                            <div className="admin-welcome-panel">
-                                <div className="admin-welcome-copy">
-                                    <span className="admin-eyebrow">ADMINISTRATIVE WORKSPACE</span>
-                                    <h2>Manage academics. <span>Keep everything organized.</span></h2>
-                                    <p>Maintain subject records, schedules, leave approvals, user profiles, and student enrollments from one central workspace.</p>
-                                    <button type="button" className="admin-primary-button" onClick={() => navigateTo("leaves")}>
-                                        Review leave requests <DashboardIcon name="arrow" size={17} />
-                                    </button>
-                                </div>
-                            </div>
+                            <Hero
+                                eyebrow="ADMINISTRATIVE WORKSPACE"
+                                title="Manage academics."
+                                highlight="Keep everything organized."
+                                text="Maintain subject records, schedules, leave approvals, user profiles, and student enrollments from one central workspace."
+                                actionLabel="Review leave requests"
+                                onAction={() => navigateTo("leaves")}
+                            />
 
-                            <div className="admin-section-intro">
-                                <div>
-                                    <span className="admin-eyebrow">WORKSPACE MODULES</span>
-                                    <h2>What would you like to manage?</h2>
-                                    <p>Select a module to view records or perform an administrative task.</p>
-                                </div>
-                            </div>
+                            <SectionIntro
+                                eyebrow="WORKSPACE MODULES"
+                                title="What would you like to manage?"
+                                text="Select a module to view records or perform an administrative task."
+                            />
 
-                            <div className="admin-module-grid">
-                                <button type="button" className="admin-module-card admin-module-subjects" onClick={() => navigateTo("subjects")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="book" size={27} /></span>
-                                        <span className="admin-module-number">01</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ACADEMIC CATALOGUE</span>
-                                        <h3>Subject Management</h3>
-                                        <p>Create subjects, update details, and maintain the subject catalogue.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Subject Management <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-classes" onClick={() => navigateTo("classes")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="calendar" size={27} /></span>
-                                        <span className="admin-module-number">02</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">TIMETABLE & SCHEDULING</span>
-                                        <h3>Class Management</h3>
-                                        <p>Create classes, assign subjects and staff, and maintain schedules.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Class Management <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-staff-att" onClick={() => navigateTo("staff-attendance")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="clipboard" size={27} /></span>
-                                        <span className="admin-module-number">03</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ATTENDANCE</span>
-                                        <h3>Staff Attendance</h3>
-                                        <p>View and manage staff attendance records.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Staff Attendance <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-mark-att" onClick={() => navigateTo("mark-attendance")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="clipboard" size={27} /></span>
-                                        <span className="admin-module-number">04</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ATTENDANCE</span>
-                                        <h3>Mark Attendance</h3>
-                                        <p>Record daily attendance entries for staff members.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Mark Attendance <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-salary-sum" onClick={() => navigateTo("salary-summary")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="wallet" size={27} /></span>
-                                        <span className="admin-module-number">05</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">PAYROLL</span>
-                                        <h3>Salary Summary</h3>
-                                        <p>View aggregated summary reports of staff salaries.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Salary Summary <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-salary-det" onClick={() => navigateTo("salary-details")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="wallet" size={27} /></span>
-                                        <span className="admin-module-number">06</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">PAYROLL</span>
-                                        <h3>Salary Details</h3>
-                                        <p>Review detailed breakdown of individual staff compensation.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Salary Details <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-salary-calc" onClick={() => navigateTo("salary-calculations")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="wallet" size={27} /></span>
-                                        <span className="admin-module-number">07</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">PAYROLL</span>
-                                        <h3>Salary Calculations</h3>
-                                        <p>Compute and manage salary calculations and deductions.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Salary Calculations <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-leaves" onClick={() => navigateTo("leaves")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="clipboard" size={27} /></span>
-                                        <span className="admin-module-number">08</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">STAFF SERVICES</span>
-                                        <h3>Leave Approvals</h3>
-                                        <p>Review leave requests, approve suitable requests, or reject them.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Review Leave Requests <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-payments" onClick={() => navigateTo("payments")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="wallet" size={27} /></span>
-                                        <span className="admin-module-number">09</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">FEES & BILLING</span>
-                                        <h3>Payment Review</h3>
-                                        <p>Check submitted payment slips, approve or reject them, and update records.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Payment Review <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-register" onClick={() => navigateTo("register-student")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="user-plus" size={27} /></span>
-                                        <span className="admin-module-number">10</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ADMISSIONS</span>
-                                        <h3>Register Student</h3>
-                                        <p>Enroll new students into the system and record their initial details.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Register Student <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-edit" onClick={() => navigateTo("edit-student")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="user-edit" size={27} /></span>
-                                        <span className="admin-module-number">11</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">RECORDS</span>
-                                        <h3>Edit Student</h3>
-                                        <p>Modify existing student profiles, grades, and academic records.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Edit Student Records <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-create-user" onClick={() => navigateTo("create-user")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="users" size={27} /></span>
-                                        <span className="admin-module-number">12</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ADMINISTRATION</span>
-                                        <h3>Create User Profile</h3>
-                                        <p>Add new system users and assign their respective access roles.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Create User <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-                            </div>
+                            <ModuleGrid modules={ADMIN_MODULES} onOpen={navigateTo} />
                         </section>
                     );
             }
@@ -382,98 +209,26 @@ function Dashboard() {
         if (role === "TEACHER") {
             switch (activeSection) {
                 case "search-student": return <StudentSearch />;
-                case "teacher-timetable": return <TeacherTimetable />;
-                case "staff-attendance": return <StaffAttendance />;
-                case "salary-summary": return <SalarySummary />;
                 case "leave-management": return <LeaveManagement />;
                 default:
                     return (
                         <section className="admin-overview">
-                            <div className="admin-welcome-panel">
-                                <div className="admin-welcome-copy">
-                                    <span className="admin-eyebrow">TEACHER PORTAL</span>
-                                    <h2>Welcome, Teacher. <span>Manage your daily tasks.</span></h2>
-                                    <p>Search student profiles, view your timetable, attendance, check salaries, or manage your leave requests from one central workspace.</p>
-                                    <button type="button" className="admin-primary-button" onClick={() => navigateTo("search-student")}>
-                                        Search student records <DashboardIcon name="arrow" size={17} />
-                                    </button>
-                                </div>
-                            </div>
+                            <Hero
+                                eyebrow="TEACHER PORTAL"
+                                title="Welcome, Teacher."
+                                highlight="Manage your daily tasks."
+                                text="Search student profiles or manage your leave requests from one central workspace."
+                                actionLabel="Search student records"
+                                onAction={() => navigateTo("search-student")}
+                            />
 
-                            <div className="admin-section-intro">
-                                <div>
-                                    <span className="admin-eyebrow">TEACHER MODULES</span>
-                                    <h2>What would you like to do?</h2>
-                                    <p>Select a module to search student information, view timetable, attendance and salary, or manage leave.</p>
-                                </div>
-                            </div>
+                            <SectionIntro
+                                eyebrow="TEACHER MODULES"
+                                title="What would you like to do?"
+                                text="Select a module to search student information or manage leave."
+                            />
 
-                            <div className="admin-module-grid">
-                                <button type="button" className="admin-module-card admin-module-subjects" onClick={() => navigateTo("search-student")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="search" size={27} /></span>
-                                        <span className="admin-module-number">01</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">STUDENT RECORDS</span>
-                                        <h3>Search Student</h3>
-                                        <p>Look up student profiles, view academic details, and check information.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Student Search <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-classes" onClick={() => navigateTo("teacher-timetable")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="calendar" size={27} /></span>
-                                        <span className="admin-module-number">02</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">TIMETABLE & SCHEDULING</span>
-                                        <h3>Teacher Timetable</h3>
-                                        <p>View your teaching schedule, classes, and weekly timetable.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Timetable <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-staff-att" onClick={() => navigateTo("staff-attendance")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="clipboard" size={27} /></span>
-                                        <span className="admin-module-number">03</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ATTENDANCE</span>
-                                        <h3>Staff Attendance</h3>
-                                        <p>View staff attendance records.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Staff Attendance <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-salary-sum" onClick={() => navigateTo("salary-summary")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="wallet" size={27} /></span>
-                                        <span className="admin-module-number">04</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">PAYROLL</span>
-                                        <h3>Salary Summary</h3>
-                                        <p>View your salary summary reports.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Salary Summary <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-classes" onClick={() => navigateTo("leave-management")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="clipboard" size={27} /></span>
-                                        <span className="admin-module-number">05</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">STAFF PORTAL</span>
-                                        <h3>Leave Management</h3>
-                                        <p>Submit leave requests, check leave balances, and track approvals.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Manage Leave Requests <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-                            </div>
+                            <ModuleGrid modules={TEACHER_MODULES} onOpen={navigateTo} />
                         </section>
                     );
             }
@@ -505,6 +260,7 @@ function Dashboard() {
                     <span className="admin-brand-icon">
                         <DashboardIcon name="shield" size={25} />
                     </span>
+
                     <div>
                         <strong>School Portal</strong>
                         <span>{role.charAt(0) + role.slice(1).toLowerCase()} Console</span>
@@ -524,6 +280,7 @@ function Dashboard() {
                             <span className="admin-sidebar-link-icon">
                                 <DashboardIcon name={item.icon} size={19} />
                             </span>
+
                             <span className="admin-sidebar-link-label">{item.label}</span>
                             {activeSection === item.id && <span className="admin-sidebar-active-dot" />}
                         </button>
