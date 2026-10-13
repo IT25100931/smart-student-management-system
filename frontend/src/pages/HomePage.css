@@ -1,0 +1,156 @@
+html { scroll-behavior: smooth; }
+
+.fh-page,
+.fh-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.fh-page {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #444;
+    background-color: #ffffff;
+    line-height: 1.6;
+}
+
+/* TOP BAR */
+.fh-top-bar {
+    background-color: #070202;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 7%;
+    font-size: 13px;
+}
+
+/* NAVIGATION */
+.fh-navbar {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7%;
+    background-color: rgb(232, 232, 232);
+    border-bottom: 1px solid #eeeeee;
+}
+.fh-logo-section { display: flex; align-items: center; gap: 12px; }
+.fh-logo-section img { width: 60px; height: 60px; object-fit: contain; }
+.fh-logo-section h2 { font-size: 22px; letter-spacing: 2px; color: #172b4d; }
+.fh-logo-section p { font-size: 10px; letter-spacing: 1px; color: #403939; }
+
+.fh-nav-links { display: flex; list-style: none; gap: 28px; }
+.fh-nav-links a { text-decoration: none; color: #020202; font-size: 14px; font-weight: 500; }
+.fh-nav-links a:hover { color: #a67c00; }
+
+.fh-login-button {
+    text-decoration: none;
+    background-color: #172b4d;
+    color: white;
+    padding: 11px 22px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+.fh-login-button:hover { background-color: #a67c00; }
+
+/* HERO */
+.fh-hero {
+    height: 600px;
+    background-color: #172b4d;
+    background-image:
+            linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+            url("/school.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding-left: 9%;
+}
+.fh-hero-content { color: white; max-width: 650px; }
+.fh-welcome { letter-spacing: 4px; font-size: 14px; margin-bottom: 15px; }
+.fh-hero h1 { font-size: 52px; line-height: 1.2; margin-bottom: 20px; }
+.fh-hero-content > p { font-size: 19px; margin-bottom: 30px; }
+.fh-hero-buttons { display: flex; gap: 15px; }
+
+.fh-primary-button,
+.fh-secondary-button {
+    text-decoration: none;
+    padding: 13px 25px;
+    display: inline-block;
+}
+.fh-primary-button { background-color: #a67c00; color: #ffffff; }
+.fh-secondary-button { border: 1px solid white; color: white; }
+.fh-primary-button:hover { background-color: #8b6800; }
+
+/* GENERAL SECTION */
+.fh-section { padding: 90px 8%; }
+.fh-section-content { display: flex; align-items: center; gap: 70px; }
+.fh-text-content { flex: 1; }
+.fh-image-content { flex: 1; }
+.fh-image-content img { width: 100%; height: 350px; object-fit: cover; }
+
+.fh-section-title {
+    color: #a67c00;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+.fh-section h2 { font-size: 36px; color: #172b4d; margin-bottom: 20px; }
+.fh-text-content p { margin-bottom: 15px; color: #666; }
+.fh-read-more {
+    display: inline-block;
+    margin-top: 10px;
+    color: #a67c00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* FEATURES */
+.fh-features { padding: 90px 8%; background-color: #eaa0a0; }
+.fh-section-heading { text-align: center; margin-bottom: 50px; }
+.fh-section-heading h2 { font-size: 36px; color: #172b4d; }
+.fh-feature-container { display: flex; gap: 30px; }
+.fh-feature-card {
+    background-color: white;
+    padding: 40px;
+    flex: 1;
+    text-align: center;
+    border-top: 3px solid #a67c00;
+}
+.fh-icon { color: #a67c00; font-size: 25px; font-weight: bold; margin-bottom: 15px; }
+.fh-feature-card h3 { color: #172b4d; margin-bottom: 15px; }
+.fh-feature-card p { color: #666; }
+
+/* ADMISSIONS */
+.fh-admission { padding: 90px 10%; background-color: #172b4d; color: white; }
+.fh-admission h2 { font-size: 38px; margin: 10px 0 20px; }
+.fh-admission p { max-width: 650px; margin-bottom: 25px; }
+.fh-admission .fh-section-title { color: #d2ad46; }
+
+/* SCHOOL LIFE */
+.fh-activity-container { display: flex; gap: 30px; }
+.fh-activity-card { flex: 1; padding: 35px; border: 1px solid #eeeeee; }
+.fh-activity-card h3 { color: #172b4d; margin-bottom: 12px; }
+.fh-activity-card p { color: #666; }
+
+/* FOOTER */
+.fh-footer { background-color: #151515; color: white; }
+.fh-footer-container { padding: 60px 8%; display: flex; justify-content: space-between; gap: 50px; }
+.fh-footer-container > div { flex: 1; }
+.fh-footer-container h2 { letter-spacing: 3px; margin-bottom: 15px; }
+.fh-footer-container h3 { margin-bottom: 15px; }
+.fh-footer-container p { color: #bbbbbb; margin-bottom: 8px; }
+.fh-footer-container a { display: block; color: #bbbbbb; text-decoration: none; margin-bottom: 7px; }
+.fh-footer-container a:hover { color: red; }
+.fh-copyright { border-top: 1px solid #333; text-align: center; padding: 20px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .fh-nav-links { display: none; }
+    .fh-section-content { flex-direction: column; }
+    .fh-feature-container { flex-direction: column; }
+    .fh-activity-container { flex-direction: column; }
+    .fh-hero h1 { font-size: 40px; }
+    .fh-footer-container { flex-direction: column; }
+}

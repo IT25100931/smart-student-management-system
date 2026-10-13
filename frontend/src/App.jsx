@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
+import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage';
 import ServicesHome from './pages/ServicesHome.jsx';
 import StudentManagementPage from './pages/StudentManagementPage.jsx';
@@ -13,41 +14,44 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
 import ServicePage from './components/ServicePage.jsx';
-import AdminDashboard from './pages/AdminDashboard.jsx';
-//import TeacherDashboard from './pages/TeacherDashboard.jsx';
-//import ParentDashboard from './pages/ParentDashboard.jsx';
+import EditDetailsPage from './pages/EditDetailsPage.jsx';
+//import AdminDashboard from './pages/AdminDashboard.jsx';
+import { getUser } from './utils/authFetch';
 import './App.css';
+import Dashboard from "./pages/Dashboard.jsx";
 
-function App() {
+const PUBLIC_PATHS = ['/', '/login'];
+
+function AppRoutes() {
+    const { pathname } = useLocation();
+    const showNavigation =
+        !PUBLIC_PATHS.includes(pathname) &&
+        !pathname.includes('dashboard') &&
+        !!getUser();
+
     return (
-        <BrowserRouter>
-            <Navigation />
+        <>
+            {showNavigation && <Navigation />}
             <Routes>
-                {/* Public authentication route */}
-                <Route path="/" element={<LoginPage />} />
+                {/* Public pages */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
 
-                {/* Role-Specific Dashboard Routes */}
                 <Route
-                    path="/admin-dashboard"
+                    path="/dashboard"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN']}>
-                            <AdminDashboard />
+                        <ProtectedRoute>
+                            <Dashboard />
                         </ProtectedRoute>
                     }
                 />
+
+                {/* Role-Specific Dashboard Routes */}
                 {/*<Route*/}
-                {/*    path="/teacher-dashboard"*/}
+                {/*    path="/admin-dashboard"*/}
                 {/*    element={*/}
-                {/*        <ProtectedRoute allowedRoles={['TEACHER']}>*/}
-                {/*            <TeacherDashboard />*/}
-                {/*        </ProtectedRoute>*/}
-                {/*    }*/}
-                {/*/>*/}
-                {/*<Route*/}
-                {/*    path="/parent-dashboard"*/}
-                {/*    element={*/}
-                {/*        <ProtectedRoute allowedRoles={['PARENT']}>*/}
-                {/*            <ParentDashboard />*/}
+                {/*        <ProtectedRoute allowedRoles={['ADMIN']}>*/}
+                {/*            <AdminDashboard />*/}
                 {/*        </ProtectedRoute>*/}
                 {/*    }*/}
                 {/*/>*/}
@@ -138,10 +142,29 @@ function App() {
                     }
                 />
 
+                import EditDetailsPage from './pages/EditDetailsPage.jsx';
+
+                <Route
+                    path="/account"
+                    element={
+                        <ProtectedRoute>
+                            <EditDetailsPage />
+                        </ProtectedRoute>
+                    }
+                />
+
                 {/* Keep these last */}
                 <Route path="/not-found" element={<NotFoundPage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
+        </>
+    );
+}
+
+function App() {
+    return (
+        <BrowserRouter>
+            <AppRoutes />
         </BrowserRouter>
     );
 }
