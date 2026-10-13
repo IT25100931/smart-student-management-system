@@ -4,8 +4,10 @@ import com.studentmanagement.backend.dto.ChangePasswordRequest;
 import com.studentmanagement.backend.dto.CreateUserRequest;
 import com.studentmanagement.backend.dto.UpdateProfileRequest;
 import com.studentmanagement.backend.model.Role;
+import com.studentmanagement.backend.model.Student;
 import com.studentmanagement.backend.model.User;
 import com.studentmanagement.backend.repository.RoleRepository;
+import com.studentmanagement.backend.repository.StudentRepository;
 import com.studentmanagement.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,9 +28,12 @@ public class UserManagementService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private StudentRepository studentRepository; // <--- Added Student Repository
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // ---------- existing: create user ----------
+    // ---------- create user with student validation for parents ----------
     public User createUser(CreateUserRequest request) {
         String username = request.username().trim();
         String email = request.email().trim().toLowerCase();
@@ -42,6 +48,35 @@ public class UserManagementService {
         Role role = roleRepository.findByRoleName(request.role().trim().toUpperCase())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role selected"));
 
+        List<Student> students = new ArrayList<>();
+        if ("PARENT".equalsIgnoreCase(role.getRoleName()) && request.studentIds() != null && !request.studentIds().isEmpty()) {
+            for (String studentIdStr : request.studentIds()) {
+                String trimmedId = studentIdStr.trim();
+                if (trimmedId.isEmpty()) continue;
+
+                // Try exact match first (e.g. "101")
+                Student student = studentRepository.findById(trimmedId).orElse(null);
+
+                // If not found, try with "STU" prefix (e.g. "STU101")
+                if (student == null) {
+                    String prefixedId = "STU" + trimmedId.replaceAll("(?i)^STU", "");
+                    student = studentRepository.findById(prefixedId).orElse(null);
+                }
+
+                if (student == null) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Student ID '" + trimmedId + "' does not exist in the database");
+                }
+
+                if (userRepository.existsByStudents_StudentId(student.getStudentId())) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Student ID '" + student.getStudentId() + "' is already linked to another parent account");
+                }
+
+                students.add(student);
+            }
+        }
+
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
@@ -49,10 +84,14 @@ public class UserManagementService {
         user.setRole(role);
         user.setStatus("ACTIVE");
 
+        if (!students.isEmpty()) {
+            user.setStudents(students);
+        }
+
         return userRepository.save(user);
     }
 
-    // ---------- new: edit own details ----------
+    // ---------- edit own details ----------
     public User getByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Account not found"));
@@ -84,7 +123,6 @@ public class UserManagementService {
 
     private void verifyCurrentPassword(User user, String rawPassword) {
         if (!passwordEncoder.matches(rawPassword, user.getPasswordHash())) {
-            // 400, not 401: the frontend treats 401 as "session expired"
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Current password is incorrect");
         }
     }
