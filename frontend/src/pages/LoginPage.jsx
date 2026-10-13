@@ -52,17 +52,15 @@ function LoginPage() {
 
             const data = await response.json();
 
-            if (data.success && data.token) {
-                // SAVE JWT TOKEN TO LOCALSTORAGE HERE
-                localStorage.setItem('token', data.token);
+            if (data.success && (data.token || data.accessToken)) {
+                const token = data.token || data.accessToken;
+                localStorage.setItem('token', token);
                 localStorage.setItem('user', JSON.stringify(data));
-
-                if (data.role === 'ADMIN') navigate('/admin-dashboard');
-                else if (data.role === 'TEACHER') navigate('/teacher-dashboard');
-                else if (data.role === 'PARENT') navigate('/parent-dashboard');
+                navigate('/dashboard');
             } else {
                 setError(data.message || 'Login failed');
             }
+
         } catch (err) {
             setError('Could not connect to server');
         }

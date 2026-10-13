@@ -9,7 +9,7 @@
 
 .login-panel-identity {
     flex: 1;
-    background: #1C2B3A;
+    background: #b91c1c;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,7 +21,7 @@
 }
 
 .login-eyebrow {
-    color: #9BAFC4;
+    color: #fca5a5;
     font-size: 13px;
     letter-spacing: 0.02em;
     margin: 0 0 16px;
@@ -32,19 +32,19 @@
     font-weight: 500;
     font-size: 44px;
     line-height: 1.1;
-    color: #FAF6EE;
+    color: #ffffff;
     margin: 0;
 }
 
 .login-rule {
     width: 48px;
     height: 2px;
-    background: #7A3B2E;
+    background: #ffffff;
     margin: 24px 0;
 }
 
 .login-subtext {
-    color: #C3CEDA;
+    color: #fee2e2;
     font-size: 15px;
     line-height: 1.6;
     margin: 0;
@@ -53,7 +53,7 @@
 
 .login-panel-form {
     flex: 1;
-    background: #FAF6EE;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,13 +71,13 @@
     font-family: 'Fraunces', serif;
     font-weight: 500;
     font-size: 24px;
-    color: #1C2B3A;
+    color: #1f2937;
     margin: 0 0 32px;
 }
 
 .login-label {
     font-size: 13px;
-    color: #6B6457;
+    color: #4b5563;
     margin-bottom: 6px;
     margin-top: 18px;
 }
@@ -87,31 +87,31 @@
 }
 
 .login-input {
-    border: 1px solid #D9D3C4;
-    background: #FFFFFF;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
     border-radius: 4px;
     padding: 10px 12px;
     font-size: 15px;
     font-family: 'Inter', sans-serif;
-    color: #1C2B3A;
+    color: #1f2937;
     outline: none;
     transition: border-color 0.15s ease;
 }
 
 .login-input:focus {
-    border-color: #7A3B2E;
+    border-color: #b91c1c;
 }
 
 .login-error {
-    color: #A33D3D;
+    color: #dc2626;
     font-size: 13px;
     margin: 16px 0 0;
 }
 
 .login-button {
     margin-top: 32px;
-    background: #1C2B3A;
-    color: #FAF6EE;
+    background: #b91c1c;
+    color: #ffffff;
     border: none;
     border-radius: 4px;
     padding: 12px;
@@ -123,7 +123,7 @@
 }
 
 .login-button:hover {
-    background: #7A3B2E;
+    background: #991b1b;
 }
 
 @media (max-width: 720px) {

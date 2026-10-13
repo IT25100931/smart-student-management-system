@@ -14,15 +14,20 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
 import ServicePage from './components/ServicePage.jsx';
-import AdminDashboard from './pages/AdminDashboard.jsx';
+import EditDetailsPage from './pages/EditDetailsPage.jsx';
+//import AdminDashboard from './pages/AdminDashboard.jsx';
 import { getUser } from './utils/authFetch';
 import './App.css';
+import Dashboard from "./pages/Dashboard.jsx";
 
 const PUBLIC_PATHS = ['/', '/login'];
 
 function AppRoutes() {
     const { pathname } = useLocation();
-    const showNavigation = !PUBLIC_PATHS.includes(pathname) && !!getUser();
+    const showNavigation =
+        !PUBLIC_PATHS.includes(pathname) &&
+        !pathname.includes('dashboard') &&
+        !!getUser();
 
     return (
         <>
@@ -32,15 +37,24 @@ function AppRoutes() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
 
-                {/* Role-Specific Dashboard Routes */}
                 <Route
-                    path="/admin-dashboard"
+                    path="/dashboard"
                     element={
-                        <ProtectedRoute allowedRoles={['ADMIN']}>
-                            <AdminDashboard />
+                        <ProtectedRoute>
+                            <Dashboard />
                         </ProtectedRoute>
                     }
                 />
+
+                {/* Role-Specific Dashboard Routes */}
+                {/*<Route*/}
+                {/*    path="/admin-dashboard"*/}
+                {/*    element={*/}
+                {/*        <ProtectedRoute allowedRoles={['ADMIN']}>*/}
+                {/*            <AdminDashboard />*/}
+                {/*        </ProtectedRoute>*/}
+                {/*    }*/}
+                {/*/>*/}
 
                 {/* Services hub (any logged-in user) */}
                 <Route
@@ -124,6 +138,17 @@ function AppRoutes() {
                             <ServicePage>
                                 <PaymentPage />
                             </ServicePage>
+                        </ProtectedRoute>
+                    }
+                />
+
+                import EditDetailsPage from './pages/EditDetailsPage.jsx';
+
+                <Route
+                    path="/account"
+                    element={
+                        <ProtectedRoute>
+                            <EditDetailsPage />
                         </ProtectedRoute>
                     }
                 />
