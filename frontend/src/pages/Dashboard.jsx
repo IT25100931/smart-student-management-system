@@ -169,8 +169,7 @@ function Dashboard() {
 
     const [activeSection, setActiveSection] = useState("overview");
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
-    const navigate = useNavigate();
-
+    useNavigate();
     const currentItem =
         navItems.find((item) => item.id === activeSection) ?? navItems[0];
 
