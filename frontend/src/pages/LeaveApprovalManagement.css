@@ -1,0 +1,692 @@
+
+.admin-leave-page {
+  width: 100%;
+  min-width: 0;
+  color: #e8eaf2;
+}
+
+.admin-leave-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.admin-leave-eyebrow {
+  margin: 0 0 8px;
+  color: #b4a6ff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.admin-leave-header h2 {
+  margin: 0;
+  color: #f5f5ff;
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.admin-leave-header > div > p:last-child {
+  max-width: 600px;
+  margin: 9px 0 0;
+  color: #9da7c0;
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.admin-leave-refresh {
+  flex-shrink: 0;
+  min-height: 39px;
+  padding: 10px 13px;
+
+  border: 1px solid #49436d;
+  border-radius: 9px;
+
+  color: #ddd6ff;
+  background: #26213d;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.admin-leave-refresh:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+/* Messages */
+
+.admin-leave-message {
+  margin-bottom: 18px;
+  padding: 13px 15px;
+
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+
+.admin-leave-message p {
+  margin: 5px 0 0;
+}
+
+.admin-leave-message.is-error {
+  border: 1px solid #793e4a;
+  color: #ffd0d5;
+  background: #351e28;
+}
+
+.admin-leave-message.is-success {
+  border: 1px solid #2e765a;
+  color: #baf0d6;
+  background: #17342b;
+}
+
+/* Summary cards */
+
+.admin-leave-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-leave-summary-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+
+  padding: 18px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(162, 171, 208, 0.14);
+  border-radius: 13px;
+
+  background: linear-gradient(
+    145deg,
+    #191e30,
+    #131726
+  );
+}
+
+.admin-leave-summary-card::after {
+  position: absolute;
+  top: -26px;
+  right: -26px;
+
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(144, 123, 255, 0.12),
+    transparent 72%
+  );
+
+  content: "";
+  pointer-events: none;
+}
+
+.admin-leave-summary-label {
+  color: #9da7bf;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.admin-leave-summary-card > strong {
+  color: #f3f4ff;
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-size: 2rem;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.admin-leave-summary-caption {
+  color: #7e8aa6;
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.admin-leave-summary-card.is-pending {
+  border-color: rgba(231, 182, 98, 0.20);
+}
+
+.admin-leave-summary-card.is-pending::after {
+  background: radial-gradient(
+    circle,
+    rgba(231, 182, 98, 0.12),
+    transparent 72%
+  );
+}
+
+.admin-leave-summary-card.is-pending > strong {
+  color: #efcb82;
+}
+
+.admin-leave-summary-card.is-approved {
+  border-color: rgba(95, 205, 151, 0.19);
+}
+
+.admin-leave-summary-card.is-approved::after {
+  background: radial-gradient(
+    circle,
+    rgba(95, 205, 151, 0.10),
+    transparent 72%
+  );
+}
+
+.admin-leave-summary-card.is-approved > strong {
+  color: #91e1b9;
+}
+
+.admin-leave-summary-card.is-rejected {
+  border-color: rgba(235, 125, 146, 0.17);
+}
+
+.admin-leave-summary-card.is-rejected::after {
+  background: radial-gradient(
+    circle,
+    rgba(235, 125, 146, 0.09),
+    transparent 72%
+  );
+}
+
+.admin-leave-summary-card.is-rejected > strong {
+  color: #f0a4b2;
+}
+
+/* Requests panel */
+
+.admin-leave-list-panel {
+  min-width: 0;
+  padding: 22px;
+
+  border: 1px solid rgba(162, 171, 208, 0.14);
+  border-radius: 15px;
+
+  background: #141827;
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
+}
+
+.admin-leave-list-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.admin-leave-list-heading h3 {
+  margin: 0;
+  color: #f3f4ff;
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-size: 1.08rem;
+  font-weight: 800;
+}
+
+.admin-leave-list-heading p {
+  margin: 7px 0 0;
+  color: #969fba;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.admin-leave-total-badge {
+  flex-shrink: 0;
+  padding: 7px 10px;
+
+  border: 1px solid rgba(169, 154, 255, 0.18);
+  border-radius: 999px;
+
+  color: #c9bdff;
+  background: rgba(144, 123, 255, 0.07);
+
+  font-size: 0.71rem;
+  font-weight: 700;
+}
+
+/* Filter controls */
+
+.admin-leave-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 13px;
+
+  margin-bottom: 18px;
+}
+
+.admin-leave-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.admin-leave-filter-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  min-height: 36px;
+  padding: 8px 10px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  color: #9ca6c0;
+  background: transparent;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.admin-leave-filter-tabs button:hover {
+  color: #e8e7ff;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.admin-leave-filter-tabs button.is-active {
+  border-color: rgba(169, 154, 255, 0.2);
+  color: #ded6ff;
+  background: rgba(144, 123, 255, 0.11);
+}
+
+.admin-leave-filter-tabs button > span {
+  display: inline-grid;
+  min-width: 21px;
+  height: 21px;
+  padding: 0 5px;
+
+  place-items: center;
+
+  border-radius: 6px;
+
+  color: #aeb7d0;
+  background: rgba(255, 255, 255, 0.06);
+
+  font-size: 0.65rem;
+}
+
+.admin-leave-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  width: min(100%, 260px);
+  min-height: 38px;
+  padding: 0 11px;
+
+  border: 1px solid #363d54;
+  border-radius: 9px;
+
+  color: #939eb9;
+  background: #0e1220;
+}
+
+.admin-leave-search:focus-within {
+  border-color: #8675e0;
+  box-shadow: 0 0 0 3px rgba(144, 123, 255, 0.08);
+}
+
+.admin-leave-search-symbol {
+  font-size: 1.2rem;
+}
+
+.admin-leave-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 0;
+
+  border: 0;
+  outline: none;
+
+  color: #f1f2ff;
+  background: transparent;
+
+  font: inherit;
+  font-size: 0.75rem;
+}
+
+.admin-leave-search input::placeholder {
+  color: #737e98;
+}
+
+/* Requests table */
+
+.admin-leave-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #2b3248;
+  border-radius: 10px;
+}
+
+.admin-leave-table {
+  width: 100%;
+  min-width: 940px;
+
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-leave-table thead {
+  background: #1a1f31;
+}
+
+.admin-leave-table th,
+.admin-leave-table td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #2a3146;
+  vertical-align: middle;
+}
+
+.admin-leave-table th {
+  color: #8e9ab6;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.admin-leave-table td {
+  color: #dfe3f1;
+  font-size: 0.74rem;
+}
+
+.admin-leave-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-leave-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.016);
+}
+
+.admin-leave-staff {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 140px;
+}
+
+.admin-leave-staff-avatar {
+  display: grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+
+  place-items: center;
+
+  border: 1px solid rgba(169, 154, 255, 0.23);
+  border-radius: 10px;
+
+  color: #c9bdff;
+  background: rgba(144, 123, 255, 0.10);
+
+  font-size: 0.69rem;
+  font-weight: 800;
+}
+
+.admin-leave-staff > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.admin-leave-staff strong {
+  color: #f0f2ff;
+  font-size: 0.76rem;
+}
+
+.admin-leave-staff small {
+  color: #8894af;
+  font-size: 0.66rem;
+}
+
+.admin-leave-type {
+  color: #dcd5ff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-leave-request-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 7px;
+
+  color: #a4aec6;
+  font-size: 0.69rem;
+  line-height: 1.5;
+}
+
+.admin-leave-time-range,
+.admin-leave-duration {
+  color: #8490ad;
+}
+
+.admin-leave-reason {
+  width: 155px;
+  max-width: 190px;
+
+  color: #acb5cb;
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+}
+
+.admin-leave-applied-date {
+  min-width: 135px;
+  color: #a5afc5 !important;
+  line-height: 1.5;
+}
+
+.admin-leave-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 7px 9px;
+
+  border: 1px solid transparent;
+  border-radius: 999px;
+
+  white-space: nowrap;
+  font-size: 0.67rem;
+  font-weight: 700;
+}
+
+.admin-leave-status > span {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+}
+
+.admin-leave-status.status-pending {
+  border-color: rgba(231, 182, 98, 0.2);
+  color: #edcb8a;
+  background: rgba(231, 182, 98, 0.07);
+}
+
+.admin-leave-status.status-pending > span {
+  background: #e8bd68;
+}
+
+.admin-leave-status.status-approved {
+  border-color: rgba(95, 205, 151, 0.18);
+  color: #92dfb8;
+  background: rgba(95, 205, 151, 0.06);
+}
+
+.admin-leave-status.status-approved > span {
+  background: #75d7a3;
+}
+
+.admin-leave-status.status-rejected {
+  border-color: rgba(235, 125, 146, 0.17);
+  color: #eea5b3;
+  background: rgba(235, 125, 146, 0.06);
+}
+
+.admin-leave-status.status-rejected > span {
+  background: #e8889a;
+}
+
+.admin-leave-status.status-unknown {
+  border-color: rgba(162, 171, 208, 0.15);
+  color: #abb4ca;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Approve/reject controls */
+
+.admin-leave-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 104px;
+}
+
+.admin-leave-actions button {
+  min-height: 31px;
+  padding: 7px 9px;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.admin-leave-actions button:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.admin-leave-actions button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.admin-leave-approve-button {
+  border-color: rgba(95, 205, 151, 0.22) !important;
+  color: #a6ebc8;
+  background: rgba(43, 126, 86, 0.20);
+}
+
+.admin-leave-reject-button {
+  border-color: rgba(235, 125, 146, 0.19) !important;
+  color: #f2b0bb;
+  background: rgba(147, 52, 71, 0.16);
+}
+
+.admin-leave-action-completed {
+  color: #8792aa;
+  font-size: 0.69rem;
+  line-height: 1.5;
+}
+
+.admin-leave-empty {
+  padding: 35px 15px;
+
+  color: #9ba5bd;
+  text-align: center;
+
+  font-size: 0.83rem;
+  line-height: 1.7;
+}
+
+.admin-leave-footnote {
+  margin: 14px 2px 0;
+  color: #77839d;
+  font-size: 0.70rem;
+  line-height: 1.6;
+}
+
+/* Responsive behavior */
+
+@media (max-width: 1100px) {
+  .admin-leave-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-leave-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-leave-search {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-leave-header {
+    flex-direction: column;
+  }
+
+  .admin-leave-refresh {
+    align-self: flex-start;
+  }
+
+  .admin-leave-list-panel {
+    padding: 16px 12px;
+  }
+
+  .admin-leave-list-heading {
+    align-items: flex-start;
+  }
+
+  .admin-leave-filter-tabs {
+    width: 100%;
+  }
+
+  .admin-leave-filter-tabs button {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 0.67rem;
+  }
+
+  .admin-leave-summary-card {
+    padding: 15px;
+  }
+
+  .admin-leave-summary-card > strong {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-leave-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-leave-summary-card {
+    gap: 7px;
+  }
+}
