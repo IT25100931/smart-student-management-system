@@ -1,0 +1,539 @@
+.create-user-page {
+    --red: #d6192b;
+    --red-dark: #b01221;
+    --red-soft: #fdecee;
+    --red-border: #f5c2c8;
+    --ink: #111114;
+    --ink-soft: #55596a;
+    --ink-muted: #8a8fa0;
+    --line: #e7e8ee;
+    --surface: #ffffff;
+    --surface-alt: #f6f7fa;
+
+    width: 100%;
+    max-width: 760px;
+    min-width: 0;
+    margin: 0 auto;
+    color: var(--ink);
+}
+
+/* ---------- Header ---------- */
+
+.create-user-header {
+    margin-bottom: 24px;
+}
+
+.create-user-eyebrow,
+.create-user-step {
+    display: block;
+    margin: 0 0 8px;
+    color: var(--red);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.create-user-header h2 {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+
+.create-user-header > p:last-child {
+    margin: 9px 0 0;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ---------- Messages ---------- */
+
+.create-user-message {
+    margin-bottom: 18px;
+    padding: 13px 16px;
+
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.create-user-message.is-error {
+    border: 1px solid var(--red-border);
+    border-left: 4px solid var(--red);
+    color: var(--red-dark);
+    background: var(--red-soft);
+}
+
+.create-user-message.is-success {
+    border: 1px solid #d9dbe4;
+    border-left: 4px solid var(--ink);
+    color: var(--ink);
+    background: var(--surface-alt);
+}
+
+/* ---------- Panel ---------- */
+
+.create-user-panel {
+    padding: clamp(18px, 3vw, 28px);
+
+    border: 1px solid var(--line);
+    border-radius: 16px;
+
+    background: var(--surface);
+    box-shadow: 0 10px 30px rgba(17, 17, 20, 0.05);
+}
+
+.create-user-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 23px;
+}
+
+.create-user-step {
+    margin-bottom: 7px;
+    font-size: 0.64rem;
+}
+
+.create-user-panel-heading h3 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.create-user-panel-icon {
+    display: grid;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+
+    border: 1px solid var(--red-border);
+    border-radius: 12px;
+
+    color: var(--red);
+    background: var(--red-soft);
+
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* ---------- Fields ---------- */
+
+.create-user-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.create-user-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+
+    color: var(--ink);
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.create-user-field-wide {
+    grid-column: 1 / -1;
+}
+
+.create-user-field input,
+.create-user-student-input input {
+    width: 100%;
+    min-width: 0;
+    font: inherit;
+    font-size: 0.88rem;
+    color: var(--ink);
+}
+
+.create-user-field > input,
+.create-user-password {
+    min-height: 44px;
+    padding: 11px 14px;
+
+    border: 1px solid #d9dbe4;
+    border-radius: 10px;
+
+    background: var(--surface-alt);
+
+    transition: border-color 160ms ease, box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.create-user-field > input {
+    outline: none;
+}
+
+.create-user-field > input:focus,
+.create-user-password:focus-within,
+.create-user-student-input:focus-within {
+    border-color: var(--red);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(214, 25, 43, 0.12);
+}
+
+.create-user-field input::placeholder,
+.create-user-student-input input::placeholder {
+    color: var(--ink-muted);
+    font-weight: 400;
+}
+
+/* Password with toggle */
+
+.create-user-password {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.create-user-password input {
+    flex: 1;
+    min-height: 42px;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+}
+
+.create-user-password-toggle {
+    flex-shrink: 0;
+    padding: 5px 10px;
+
+    border: 1px solid var(--line);
+    border-radius: 7px;
+
+    color: var(--ink-soft);
+    background: #fff;
+
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease;
+}
+
+.create-user-password-toggle:hover {
+    border-color: var(--red);
+    color: var(--red-dark);
+}
+
+/* ---------- Role cards ---------- */
+
+.create-user-roles {
+    min-width: 0;
+    margin: 22px 0 0;
+    padding: 0;
+    border: 0;
+}
+
+.create-user-roles legend {
+    margin-bottom: 10px;
+    padding: 0;
+    color: var(--ink);
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.create-user-role-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.create-user-role-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+
+    padding: 14px;
+
+    border: 1px solid #d9dbe4;
+    border-radius: 12px;
+
+    background: var(--surface-alt);
+    cursor: pointer;
+
+    transition: border-color 160ms ease, background 160ms ease,
+    box-shadow 160ms ease, transform 160ms ease;
+}
+
+.create-user-role-card:hover {
+    border-color: var(--red-border);
+    background: #fff;
+    transform: translateY(-1px);
+}
+
+.create-user-role-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.create-user-role-dot {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+
+    border: 2px solid #c3c6d2;
+    border-radius: 50%;
+
+    background: #fff;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.create-user-role-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.create-user-role-copy strong {
+    color: var(--ink);
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.create-user-role-copy small {
+    color: var(--ink-muted);
+    font-size: 0.72rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.create-user-role-card.is-selected {
+    border-color: var(--red);
+    background: var(--red-soft);
+    box-shadow: 0 6px 16px rgba(214, 25, 43, 0.12);
+}
+
+.create-user-role-card.is-selected .create-user-role-dot {
+    border-color: var(--red);
+    box-shadow: inset 0 0 0 3px #fff;
+    background: var(--red);
+}
+
+.create-user-role-card.is-selected strong {
+    color: var(--red-dark);
+}
+
+.create-user-role-card:has(input:focus-visible) {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+}
+
+/* ---------- Student linking ---------- */
+
+.create-user-students {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    margin-top: 22px;
+    padding: 16px;
+
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--red);
+    border-radius: 12px;
+
+    background: var(--surface-alt);
+}
+
+.create-user-students > label {
+    color: var(--ink);
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.create-user-student-row {
+    display: flex;
+    gap: 10px;
+}
+
+.create-user-student-input {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 14px;
+
+    border: 1px solid #d9dbe4;
+    border-radius: 10px;
+
+    background: #fff;
+
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.create-user-student-input span {
+    margin-right: 8px;
+    padding-right: 8px;
+
+    border-right: 1px solid var(--line);
+
+    color: var(--red);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.create-user-student-input input {
+    border: 0;
+    outline: none;
+    padding: 11px 0;
+    background: transparent;
+}
+
+.create-user-add-button {
+    flex-shrink: 0;
+    padding: 0 20px;
+
+    border: 1px solid var(--ink);
+    border-radius: 10px;
+
+    color: #fff;
+    background: var(--ink);
+
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.create-user-add-button:hover {
+    border-color: var(--red);
+    background: var(--red);
+    transform: translateY(-1px);
+}
+
+.create-user-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.create-user-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 5px 6px 5px 12px;
+
+    border: 1px solid var(--red-border);
+    border-radius: 999px;
+
+    color: var(--red-dark);
+    background: var(--red-soft);
+
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.create-user-chip button {
+    display: grid;
+    width: 20px;
+    height: 20px;
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    color: #fff;
+    background: var(--red);
+
+    font-size: 0.9rem;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: background 150ms ease;
+}
+
+.create-user-chip button:hover {
+    background: var(--ink);
+}
+
+/* ---------- Submit ---------- */
+
+.create-user-actions {
+    margin-top: 26px;
+}
+
+.create-user-submit {
+    width: 100%;
+    padding: 13px 18px;
+
+    border: 1px solid var(--red);
+    border-radius: 10px;
+
+    color: #fff;
+    background: linear-gradient(135deg, #e0202f, var(--red-dark));
+    box-shadow: 0 8px 18px rgba(214, 25, 43, 0.25);
+
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.create-user-submit:hover:not(:disabled) {
+    box-shadow: 0 10px 22px rgba(214, 25, 43, 0.35);
+    transform: translateY(-1px);
+}
+
+.create-user-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 700px) {
+    .create-user-role-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 540px) {
+    .create-user-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .create-user-field-wide {
+        grid-column: auto;
+    }
+
+    .create-user-panel {
+        padding: 18px 14px;
+    }
+
+    .create-user-student-row {
+        flex-direction: column;
+    }
+
+    .create-user-add-button {
+        min-height: 42px;
+    }
+}
