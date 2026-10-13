@@ -9,11 +9,13 @@ import com.studentmanagement.backend.model.User;
 import com.studentmanagement.backend.repository.RoleRepository;
 import com.studentmanagement.backend.repository.StudentRepository;
 import com.studentmanagement.backend.repository.UserRepository;
+import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,10 @@ public class UserManagementService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Column(name = "staff_id")
+    @JsonProperty("staffId")
+    private Integer staffId;
 
     // ---------- create user with student validation for parents ----------
     public User createUser(CreateUserRequest request) {
@@ -83,6 +89,12 @@ public class UserManagementService {
         user.setPasswordHash(passwordEncoder.encode(request.password()));
         user.setRole(role);
         user.setStatus("ACTIVE");
+
+        if ("TEACHER".equalsIgnoreCase(role.getRoleName())) {
+            Integer maxStaffId = userRepository.findMaxStaffId();
+            int nextStaffId = (maxStaffId == null || maxStaffId < 0) ? 1 : maxStaffId + 1;
+            user.setStaffId(nextStaffId);
+        }
 
         if (!students.isEmpty()) {
             user.setStudents(students);

@@ -13,8 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api/users")
@@ -78,14 +81,17 @@ public class UserManagementController {
     @GetMapping
     public ResponseEntity<List<Map<String, Object>>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        List<Map<String, Object>> response = users.stream().map(user -> Map.<String, Object>of(
-                "userId", user.getUserId(),
-                "username", user.getUsername(),
-                "email", user.getEmail() == null ? "" : user.getEmail(),
-                "role", user.getRole() != null ? user.getRole().getRoleName() : "",
-                "status", user.getStatus() == null ? "ACTIVE" : user.getStatus(),
-                "createdAt", user.getCreatedAt() != null ? user.getCreatedAt().toString() : ""
-        )).toList();
+        List<Map<String, Object>> response = users.stream().map(user -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", user.getUserId());
+            map.put("username", user.getUsername());
+            map.put("email", user.getEmail() == null ? "" : user.getEmail());
+            map.put("role", user.getRole() != null ? user.getRole().getRoleName() : "");
+            map.put("status", user.getStatus() == null ? "ACTIVE" : user.getStatus());
+            map.put("createdAt", user.getCreatedAt() != null ? user.getCreatedAt().toString() : "");
+            map.put("staffId", user.getStaffId()); // Safe for nulls (non-teachers)
+            return map;
+        }).toList();
 
         return ResponseEntity.ok(response);
     }

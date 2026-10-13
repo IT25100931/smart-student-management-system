@@ -120,6 +120,13 @@ function UserManagement() {
                                         <span className="user-role-badge">{u.role}</span>
                                     </td>
                                     <td>
+                                        {u.role?.roleName === "TEACHER" || u.role === "TEACHER" ? (
+                                            <span className="staff-id-badge">Staff #{u.staffId || "—"}</span>
+                                        ) : (
+                                            "—"
+                                        )}
+                                    </td>
+                                    <td>
                       <span
                           className={`status-pill ${
                               u.status === "ACTIVE" ? "status-active" : "status-inactive"

@@ -3,12 +3,14 @@ package com.studentmanagement.backend.controller;
 import com.studentmanagement.backend.config.JwtUtil;
 import com.studentmanagement.backend.model.User;
 import com.studentmanagement.backend.service.AuthService;
+import com.studentmanagement.backend.service.TokenBlacklistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import com.studentmanagement.backend.service.TokenBlacklistService;
-import org.springframework.http.ResponseEntity;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -33,12 +35,14 @@ public class AuthController {
             User user = userOpt.get();
             String token = jwtUtil.generateToken(user.getUsername(), user.getRole().getRoleName());
 
-            return Map.of(
-                    "success", true,
-                    "token", token,
-                    "role", user.getRole().getRoleName(),
-                    "username", user.getUsername()
-            );
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("token", token);
+            response.put("role", user.getRole().getRoleName());
+            response.put("username", user.getUsername());
+            response.put("staffId", user.getStaffId()); // Will be null for non-teachers
+
+            return response;
         }
         return Map.of("success", false, "message", "Invalid username or password");
     }

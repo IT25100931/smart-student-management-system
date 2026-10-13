@@ -28,6 +28,9 @@ public class User {
     @Column(name = "created_at")
     private java.time.LocalDateTime createdAt = java.time.LocalDateTime.now();
 
+    @Column(name = "staff_id")
+    private Integer staffId;
+
     @ManyToMany
     @JoinTable(
             name = "parent_student",
@@ -59,4 +62,6 @@ public class User {
     public void setStatus(String status) { this.status = status; }
     public java.time.LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(java.time.LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public Integer getStaffId() {return staffId;}
+    public void setStaffId(Integer staffId) {this.staffId = staffId;}
 }

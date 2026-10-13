@@ -77,9 +77,8 @@ function LeaveManagement() {
     reason: ""
   });
 
-  // Temporary test teacher.
-  // Later this will come from the logged-in user.
-  const staffId = 1;
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const staffId = user.staffId;
 
   useEffect(() => {
     loadLeaveData();
