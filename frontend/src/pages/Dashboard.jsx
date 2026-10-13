@@ -121,6 +121,13 @@ function DashboardIcon({ name, size = 21 }) {
                     <path d="m9 12 2 2 4-4" />
                 </svg>
             );
+        case "logout":
+            return (
+                <svg {...props}>
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <path d="m16 17 5-5-5-5M21 12H9" />
+                </svg>
+            );
         case "menu":
             return (
                 <svg {...props}>
@@ -131,6 +138,8 @@ function DashboardIcon({ name, size = 21 }) {
             return null;
     }
 }
+
+/* ---------- Navigation per role ---------- */
 
 const ROLE_NAV = {
     ADMIN: [
@@ -161,6 +170,202 @@ const ROLE_NAV = {
         { id: "payments", label: "Fee Payments", icon: "wallet" },
     ],
 };
+
+/* ---------- Overview module cards per role ---------- */
+
+const ADMIN_MODULES = [
+    {
+        id: "subjects",
+        variant: "subjects",
+        icon: "book",
+        eyebrow: "ACADEMIC CATALOGUE",
+        title: "Subject Management",
+        text: "Create subjects, update details, and maintain the subject catalogue.",
+        cta: "Open Subject Management",
+    },
+    {
+        id: "classes",
+        variant: "classes",
+        icon: "calendar",
+        eyebrow: "TIMETABLE & SCHEDULING",
+        title: "Class Management",
+        text: "Create classes, assign subjects and staff, and maintain schedules.",
+        cta: "Open Class Management",
+    },
+    {
+        id: "leaves",
+        variant: "leaves",
+        icon: "clipboard",
+        eyebrow: "STAFF SERVICES",
+        title: "Leave Approvals",
+        text: "Review leave requests, approve suitable requests, or reject them.",
+        cta: "Review Leave Requests",
+    },
+    {
+        id: "payments",
+        variant: "payments",
+        icon: "wallet",
+        eyebrow: "FEES & BILLING",
+        title: "Payment Review",
+        text: "Check submitted payment slips, approve or reject them, and update records.",
+        cta: "Open Payment Review",
+    },
+    {
+        id: "register-student",
+        variant: "register",
+        icon: "user-plus",
+        eyebrow: "ADMISSIONS",
+        title: "Register Student",
+        text: "Enroll new students into the system and record their initial details.",
+        cta: "Register Student",
+    },
+    {
+        id: "edit-student",
+        variant: "edit",
+        icon: "user-edit",
+        eyebrow: "RECORDS",
+        title: "Edit Student",
+        text: "Modify existing student profiles, grades, and academic records.",
+        cta: "Edit Student Records",
+    },
+    {
+        id: "create-user",
+        variant: "create-user",
+        icon: "users",
+        eyebrow: "ADMINISTRATION",
+        title: "Create User Profile",
+        text: "Add new system users and assign their respective access roles.",
+        cta: "Create User",
+    },
+];
+
+const TEACHER_MODULES = [
+    {
+        id: "search-student",
+        variant: "subjects",
+        icon: "search",
+        eyebrow: "STUDENT RECORDS",
+        title: "Search Student",
+        text: "Look up student profiles, view academic details, and check information.",
+        cta: "Open Student Search",
+    },
+    {
+        id: "leave-management",
+        variant: "classes",
+        icon: "clipboard",
+        eyebrow: "STAFF PORTAL",
+        title: "Leave Management",
+        text: "Submit leave requests, check leave balances, and track approvals.",
+        cta: "Manage Leave Requests",
+    },
+];
+
+const PARENT_MODULES = [
+    {
+        id: "payments",
+        variant: "payments",
+        icon: "wallet",
+        eyebrow: "FEES & BILLING",
+        title: "Fee Payments",
+        text: "Check your child's fee balance and upload payment slips.",
+        cta: "Open Fee Payments",
+    },
+];
+
+/* ---------- Small presentational pieces ---------- */
+
+function HeroArt() {
+    return (
+        <div className="admin-welcome-art" aria-hidden="true">
+            <span className="admin-art-ring admin-art-ring-one" />
+            <span className="admin-art-ring admin-art-ring-two" />
+            <span className="admin-art-icon">
+                <DashboardIcon name="shield" size={34} />
+            </span>
+            <span className="admin-art-dot admin-art-dot-one" />
+            <span className="admin-art-dot admin-art-dot-two" />
+            <span className="admin-art-dot admin-art-dot-three" />
+        </div>
+    );
+}
+
+function Hero({ eyebrow, title, highlight, text, actionLabel, onAction }) {
+    return (
+        <div className="admin-welcome-panel">
+            <div className="admin-welcome-copy">
+                <span className="admin-eyebrow">{eyebrow}</span>
+
+                <h2>
+                    {title}
+                    {highlight && <span>{highlight}</span>}
+                </h2>
+
+                <p>{text}</p>
+
+                {actionLabel && (
+                    <button
+                        type="button"
+                        className="admin-primary-button"
+                        onClick={onAction}
+                    >
+                        {actionLabel} <DashboardIcon name="arrow" size={17} />
+                    </button>
+                )}
+            </div>
+
+            <HeroArt />
+        </div>
+    );
+}
+
+function ModuleGrid({ modules, onOpen }) {
+    return (
+        <div className="admin-module-grid">
+            {modules.map((module, index) => (
+                <button
+                    type="button"
+                    key={module.id}
+                    className={`admin-module-card admin-module-${module.variant}`}
+                    onClick={() => onOpen(module.id)}
+                >
+                    <div className="admin-module-card-top">
+                        <span className="admin-module-icon">
+                            <DashboardIcon name={module.icon} size={26} />
+                        </span>
+
+                        <span className="admin-module-number">
+                            {String(index + 1).padStart(2, "0")}
+                        </span>
+                    </div>
+
+                    <div className="admin-module-copy">
+                        <span className="admin-module-eyebrow">{module.eyebrow}</span>
+                        <h3>{module.title}</h3>
+                        <p>{module.text}</p>
+                    </div>
+
+                    <span className="admin-module-footer">
+                        {module.cta} <DashboardIcon name="arrow" size={18} />
+                    </span>
+                </button>
+            ))}
+        </div>
+    );
+}
+
+function SectionIntro({ eyebrow, title, text }) {
+    return (
+        <div className="admin-section-intro">
+            <div>
+                <span className="admin-eyebrow">{eyebrow}</span>
+                <h2>{title}</h2>
+                <p>{text}</p>
+            </div>
+        </div>
+    );
+}
+
+/* ---------- Dashboard ---------- */
 
 function Dashboard() {
     const user = getUser();
@@ -485,22 +690,38 @@ function Dashboard() {
                 default:
                     return (
                         <section className="admin-overview">
-                            <div className="admin-welcome-panel">
-                                <div className="admin-welcome-copy">
-                                    <span className="admin-eyebrow">PARENT PORTAL</span>
-                                    <h2>Fee Payments & Status</h2>
-                                    <p>Check your child's fee balance and upload payment slips.</p>
-                                </div>
-                            </div>
+                            <Hero
+                                eyebrow="PARENT PORTAL"
+                                title="Fee Payments"
+                                highlight="& Status"
+                                text="Check your child's fee balance and upload payment slips."
+                                actionLabel="Open fee payments"
+                                onAction={() => navigateTo("payments")}
+                            />
+
+                            <ModuleGrid modules={PARENT_MODULES} onOpen={navigateTo} />
                         </section>
                     );
             }
         }
+
+        return null;
     }
 
     return (
         <div className="admin-dashboard-layout">
-            <aside className={`admin-sidebar ${mobileNavOpen ? "admin-sidebar-open" : ""}`}>
+            {mobileNavOpen && (
+                <button
+                    type="button"
+                    className="admin-mobile-backdrop"
+                    aria-label="Close menu"
+                    onClick={() => setMobileNavOpen(false)}
+                />
+            )}
+
+            <aside
+                className={`admin-sidebar ${mobileNavOpen ? "admin-sidebar-open" : ""}`}
+            >
                 <div className="admin-sidebar-brand">
                     <span className="admin-brand-icon">
                         <DashboardIcon name="shield" size={25} />
@@ -518,17 +739,31 @@ function Dashboard() {
                         <button
                             type="button"
                             key={item.id}
-                            className={`admin-sidebar-link ${activeSection === item.id ? "admin-link-active" : ""}`}
+                            className={`admin-sidebar-link ${
+                                activeSection === item.id ? "admin-link-active" : ""
+                            }`}
                             onClick={() => navigateTo(item.id)}
                         >
                             <span className="admin-sidebar-link-icon">
                                 <DashboardIcon name={item.icon} size={19} />
                             </span>
                             <span className="admin-sidebar-link-label">{item.label}</span>
-                            {activeSection === item.id && <span className="admin-sidebar-active-dot" />}
+
+                            {activeSection === item.id && (
+                                <span className="admin-sidebar-active-dot" />
+                            )}
                         </button>
                     ))}
                 </nav>
+
+                <button
+                    type="button"
+                    className="admin-sidebar-signout"
+                    onClick={handleLogout}
+                >
+                    <DashboardIcon name="logout" size={18} />
+                    Sign out
+                </button>
             </aside>
 
             <div className="admin-dashboard-main">
@@ -536,13 +771,16 @@ function Dashboard() {
                     <button
                         type="button"
                         className="admin-mobile-menu"
+                        aria-label="Toggle menu"
                         onClick={() => setMobileNavOpen((open) => !open)}
                     >
                         <DashboardIcon name="menu" size={21} />
                     </button>
 
                     <div className="admin-topbar-heading">
-                        <span className="admin-topbar-breadcrumb">PORTAL <span>/</span> WORKSPACE</span>
+                        <span className="admin-topbar-breadcrumb">
+                            PORTAL <span>/</span> WORKSPACE
+                        </span>
                         <h1>{currentItem.label}</h1>
                     </div>
 
@@ -551,9 +789,7 @@ function Dashboard() {
                     </div>
                 </header>
 
-                <main className="admin-dashboard-content">
-                    {renderContent()}
-                </main>
+                <main className="admin-dashboard-content">{renderContent()}</main>
             </div>
         </div>
     );

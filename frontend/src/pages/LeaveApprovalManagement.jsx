@@ -289,29 +289,29 @@ function LeaveApprovalManagement() {
             <span>{formatDate(request.startDate)}</span>
 
             <span className="admin-leave-time-range">
-            {formatTime(request.startTime) || "Start time unavailable"}
+              {formatTime(request.startTime) || "Start time unavailable"}
               {" – "}
               {formatTime(request.endTime) || "End time unavailable"}
-          </span>
+            </span>
           </div>
       );
     }
 
     return (
         <div className="admin-leave-request-dates">
-        <span>
-          {formatDate(request.startDate)}
-          {request.endDate &&
-          request.endDate !== request.startDate
-              ? ` – ${formatDate(request.endDate)}`
-              : ""}
-        </span>
+          <span>
+            {formatDate(request.startDate)}
+            {request.endDate &&
+            request.endDate !== request.startDate
+                ? ` – ${formatDate(request.endDate)}`
+                : ""}
+          </span>
 
           {Number(request.totalDays) > 0 && (
               <span className="admin-leave-duration">
-            {request.totalDays}{" "}
+                {request.totalDays}{" "}
                 {Number(request.totalDays) === 1 ? "day" : "days"}
-          </span>
+              </span>
           )}
         </div>
     );
@@ -321,8 +321,8 @@ function LeaveApprovalManagement() {
     if (request.status !== "PENDING") {
       return (
           <span className="admin-leave-action-completed">
-          No action needed
-        </span>
+            No action needed
+          </span>
       );
     }
 
@@ -373,6 +373,7 @@ function LeaveApprovalManagement() {
               onClick={loadRequests}
               disabled={loading}
           >
+            <span aria-hidden="true">↻</span>
             {loading ? "Refreshing..." : "Refresh requests"}
           </button>
         </header>
@@ -392,43 +393,55 @@ function LeaveApprovalManagement() {
 
         <div className="admin-leave-summary-grid">
           <article className="admin-leave-summary-card">
-          <span className="admin-leave-summary-label">
-            All requests
-          </span>
+            <span className="admin-leave-summary-icon" aria-hidden="true">
+              ≡
+            </span>
+            <span className="admin-leave-summary-label">
+              All requests
+            </span>
             <strong>{loading ? "—" : counts.all}</strong>
             <span className="admin-leave-summary-caption">
-            Recorded leave requests
-          </span>
+              Recorded leave requests
+            </span>
           </article>
 
           <article className="admin-leave-summary-card is-pending">
-          <span className="admin-leave-summary-label">
-            Pending review
-          </span>
+            <span className="admin-leave-summary-icon" aria-hidden="true">
+              ◷
+            </span>
+            <span className="admin-leave-summary-label">
+              Pending review
+            </span>
             <strong>{loading ? "—" : counts.pending}</strong>
             <span className="admin-leave-summary-caption">
-            Awaiting a decision
-          </span>
+              Awaiting a decision
+            </span>
           </article>
 
           <article className="admin-leave-summary-card is-approved">
-          <span className="admin-leave-summary-label">
-            Approved
-          </span>
+            <span className="admin-leave-summary-icon" aria-hidden="true">
+              ✓
+            </span>
+            <span className="admin-leave-summary-label">
+              Approved
+            </span>
             <strong>{loading ? "—" : counts.approved}</strong>
             <span className="admin-leave-summary-caption">
-            Approved requests
-          </span>
+              Approved requests
+            </span>
           </article>
 
           <article className="admin-leave-summary-card is-rejected">
-          <span className="admin-leave-summary-label">
-            Rejected
-          </span>
+            <span className="admin-leave-summary-icon" aria-hidden="true">
+              ✕
+            </span>
+            <span className="admin-leave-summary-label">
+              Rejected
+            </span>
             <strong>{loading ? "—" : counts.rejected}</strong>
             <span className="admin-leave-summary-caption">
-            Rejected requests
-          </span>
+              Rejected requests
+            </span>
           </article>
         </div>
 
@@ -442,8 +455,8 @@ function LeaveApprovalManagement() {
             </div>
 
             <span className="admin-leave-total-badge">
-            {filteredRequests.length} shown
-          </span>
+              {filteredRequests.length} shown
+            </span>
           </div>
 
           <div className="admin-leave-toolbar">
@@ -465,18 +478,18 @@ function LeaveApprovalManagement() {
                     {item.label}
 
                     <span>
-                  {item.id === "ALL"
-                      ? counts.all
-                      : counts[item.id.toLowerCase()]}
-                </span>
+                      {item.id === "ALL"
+                          ? counts.all
+                          : counts[item.id.toLowerCase()]}
+                    </span>
                   </button>
               ))}
             </div>
 
             <label className="admin-leave-search">
-            <span className="admin-leave-search-symbol" aria-hidden="true">
-              ⌕
-            </span>
+              <span className="admin-leave-search-symbol" aria-hidden="true">
+                ⌕
+              </span>
 
               <input
                   type="search"
@@ -517,12 +530,12 @@ function LeaveApprovalManagement() {
                       <tr key={request.leaveId}>
                         <td>
                           <div className="admin-leave-staff">
-                        <span className="admin-leave-staff-avatar">
-                          {getStaffLabel(request)
-                              .replace("Staff #", "S")
-                              .slice(0, 2)
-                              .toUpperCase()}
-                        </span>
+                            <span className="admin-leave-staff-avatar">
+                              {getStaffLabel(request)
+                                  .replace("Staff #", "S")
+                                  .slice(0, 2)
+                                  .toUpperCase()}
+                            </span>
 
                             <div>
                               <strong>{getStaffLabel(request)}</strong>
@@ -550,14 +563,14 @@ function LeaveApprovalManagement() {
                         </td>
 
                         <td>
-                      <span
-                          className={`admin-leave-status status-${String(
-                              request.status || "unknown"
-                          ).toLowerCase()}`}
-                      >
-                        <span />
-                        {formatStatus(request.status)}
-                      </span>
+                          <span
+                              className={`admin-leave-status status-${String(
+                                  request.status || "unknown"
+                              ).toLowerCase()}`}
+                          >
+                            <span />
+                            {formatStatus(request.status)}
+                          </span>
                         </td>
 
                         <td>{renderActionButtons(request)}</td>

@@ -45,6 +45,7 @@ function SubjectManagement() {
     const [subjects, setSubjects] = useState([]);
     const [form, setForm] = useState({ ...EMPTY_FORM });
     const [editingId, setEditingId] = useState(null);
+    const [search, setSearch] = useState("");
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -72,6 +73,33 @@ function SubjectManagement() {
         loadSubjects();
     }, [loadSubjects]);
 
+    const stats = useMemo(() => {
+        const totalCredits = subjects.reduce(
+            (sum, s) => sum + (Number(s.credits) || 0),
+            0
+        );
+
+        return {
+            total: subjects.length,
+            totalCredits,
+            average: subjects.length
+                ? (totalCredits / subjects.length).toFixed(1)
+                : "0.0",
+        };
+    }, [subjects]);
+
+    const filteredSubjects = useMemo(() => {
+        const term = search.trim().toLowerCase();
+
+        if (!term) return subjects;
+
+        return subjects.filter((s) =>
+            [s.subjectName, s.subjectCode, s.description]
+                .filter(Boolean)
+                .some((value) => String(value).toLowerCase().includes(term))
+        );
+    }, [subjects, search]);
+
     function handleChange(event) {
         const { name, value } = event.target;
         setForm((previous) => ({ ...previous, [name]: value }));
@@ -92,6 +120,8 @@ function SubjectManagement() {
         });
         setMessage("");
         setError("");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     async function handleSubmit(event) {
@@ -236,7 +266,7 @@ function SubjectManagement() {
                             </tr>
                             </thead>
                             <tbody>
-                            {subjects.map((subject) => (
+                            {filteredSubjects.map((subject) => (
                                 <tr key={subject.subjectId}>
                                     <td>
                                         <strong>{subject.subjectName}</strong>

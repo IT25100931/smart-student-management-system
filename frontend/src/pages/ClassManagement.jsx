@@ -45,6 +45,7 @@ function ClassManagement() {
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [form, setForm] = useState({ ...EMPTY_FORM });
+  const [search, setSearch] = useState("");
 
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -79,6 +80,43 @@ function ClassManagement() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const stats = useMemo(() => {
+    const subjectIds = new Set(
+        classes
+            .map((c) => c.subject?.subjectId)
+            .filter((id) => id != null)
+    );
+
+    const staffIds = new Set(
+        classes.map((c) => c.staff?.staffId).filter((id) => id != null)
+    );
+
+    return {
+      total: classes.length,
+      subjects: subjectIds.size,
+      staff: staffIds.size,
+    };
+  }, [classes]);
+
+  const filteredClasses = useMemo(() => {
+    const term = search.trim().toLowerCase();
+
+    if (!term) return classes;
+
+    return classes.filter((c) =>
+        [
+          c.className,
+          c.subject?.subjectName,
+          c.subject?.subjectCode,
+          c.dayOfWeek,
+          c.roomNo,
+          c.staff?.staffId,
+        ]
+            .filter((value) => value != null && value !== "")
+            .some((value) => String(value).toLowerCase().includes(term))
+    );
+  }, [classes, search]);
 
   function handleChange(event) {
     const { name, value } = event.target;
