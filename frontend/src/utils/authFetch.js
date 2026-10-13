@@ -12,6 +12,7 @@ export function getToken() {
     return user ? user.token : null;
 }
 
+// JSON requests: Content-Type + token
 export function authHeaders() {
     const token = getToken();
     return {
@@ -20,7 +21,13 @@ export function authHeaders() {
     };
 }
 
-// Reads the "exp" claim from the JWT payload (it's only encoded, not encrypted)
+// Token only: for GET, FormData and URLSearchParams requests
+export function bearer() {
+    const token = getToken();
+    return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+// Reads the "exp" claim from the JWT payload
 export function isTokenExpired(token) {
     try {
         const payload = JSON.parse(
@@ -28,20 +35,19 @@ export function isTokenExpired(token) {
         );
         return payload.exp * 1000 < Date.now();
     } catch {
-        return true; // unreadable token: treat as expired
+        return true;
     }
 }
 
 export async function logout(navigate) {
     try {
-        // Ask the server to revoke the token so it can't be reused
         await fetch('http://localhost:8081/logout', {
             method: 'POST',
             headers: authHeaders(),
         });
     } catch (err) {
-        // Server unreachable: still log out locally below
+        // server unreachable: still clear the local session below
     }
     localStorage.removeItem('user');
-    navigate('/', { replace: true });
+    navigate('/login', { replace: true });
 }
