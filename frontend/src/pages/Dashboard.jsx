@@ -115,6 +115,13 @@ function DashboardIcon({ name, size = 21 }) {
                     <path d="m9 12 2 2 4-4" />
                 </svg>
             );
+        case "logout":
+            return (
+                <svg {...props}>
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <path d="m16 17 5-5-5-5M21 12H9" />
+                </svg>
+            );
         case "menu":
             return (
                 <svg {...props}>
@@ -125,6 +132,8 @@ function DashboardIcon({ name, size = 21 }) {
             return null;
     }
 }
+
+/* ---------- Navigation per role ---------- */
 
 const ROLE_NAV = {
     ADMIN: [
@@ -147,6 +156,202 @@ const ROLE_NAV = {
         { id: "payments", label: "Fee Payments", icon: "wallet" },
     ],
 };
+
+/* ---------- Overview module cards per role ---------- */
+
+const ADMIN_MODULES = [
+    {
+        id: "subjects",
+        variant: "subjects",
+        icon: "book",
+        eyebrow: "ACADEMIC CATALOGUE",
+        title: "Subject Management",
+        text: "Create subjects, update details, and maintain the subject catalogue.",
+        cta: "Open Subject Management",
+    },
+    {
+        id: "classes",
+        variant: "classes",
+        icon: "calendar",
+        eyebrow: "TIMETABLE & SCHEDULING",
+        title: "Class Management",
+        text: "Create classes, assign subjects and staff, and maintain schedules.",
+        cta: "Open Class Management",
+    },
+    {
+        id: "leaves",
+        variant: "leaves",
+        icon: "clipboard",
+        eyebrow: "STAFF SERVICES",
+        title: "Leave Approvals",
+        text: "Review leave requests, approve suitable requests, or reject them.",
+        cta: "Review Leave Requests",
+    },
+    {
+        id: "payments",
+        variant: "payments",
+        icon: "wallet",
+        eyebrow: "FEES & BILLING",
+        title: "Payment Review",
+        text: "Check submitted payment slips, approve or reject them, and update records.",
+        cta: "Open Payment Review",
+    },
+    {
+        id: "register-student",
+        variant: "register",
+        icon: "user-plus",
+        eyebrow: "ADMISSIONS",
+        title: "Register Student",
+        text: "Enroll new students into the system and record their initial details.",
+        cta: "Register Student",
+    },
+    {
+        id: "edit-student",
+        variant: "edit",
+        icon: "user-edit",
+        eyebrow: "RECORDS",
+        title: "Edit Student",
+        text: "Modify existing student profiles, grades, and academic records.",
+        cta: "Edit Student Records",
+    },
+    {
+        id: "create-user",
+        variant: "create-user",
+        icon: "users",
+        eyebrow: "ADMINISTRATION",
+        title: "Create User Profile",
+        text: "Add new system users and assign their respective access roles.",
+        cta: "Create User",
+    },
+];
+
+const TEACHER_MODULES = [
+    {
+        id: "search-student",
+        variant: "subjects",
+        icon: "search",
+        eyebrow: "STUDENT RECORDS",
+        title: "Search Student",
+        text: "Look up student profiles, view academic details, and check information.",
+        cta: "Open Student Search",
+    },
+    {
+        id: "leave-management",
+        variant: "classes",
+        icon: "clipboard",
+        eyebrow: "STAFF PORTAL",
+        title: "Leave Management",
+        text: "Submit leave requests, check leave balances, and track approvals.",
+        cta: "Manage Leave Requests",
+    },
+];
+
+const PARENT_MODULES = [
+    {
+        id: "payments",
+        variant: "payments",
+        icon: "wallet",
+        eyebrow: "FEES & BILLING",
+        title: "Fee Payments",
+        text: "Check your child's fee balance and upload payment slips.",
+        cta: "Open Fee Payments",
+    },
+];
+
+/* ---------- Small presentational pieces ---------- */
+
+function HeroArt() {
+    return (
+        <div className="admin-welcome-art" aria-hidden="true">
+            <span className="admin-art-ring admin-art-ring-one" />
+            <span className="admin-art-ring admin-art-ring-two" />
+            <span className="admin-art-icon">
+                <DashboardIcon name="shield" size={34} />
+            </span>
+            <span className="admin-art-dot admin-art-dot-one" />
+            <span className="admin-art-dot admin-art-dot-two" />
+            <span className="admin-art-dot admin-art-dot-three" />
+        </div>
+    );
+}
+
+function Hero({ eyebrow, title, highlight, text, actionLabel, onAction }) {
+    return (
+        <div className="admin-welcome-panel">
+            <div className="admin-welcome-copy">
+                <span className="admin-eyebrow">{eyebrow}</span>
+
+                <h2>
+                    {title}
+                    {highlight && <span>{highlight}</span>}
+                </h2>
+
+                <p>{text}</p>
+
+                {actionLabel && (
+                    <button
+                        type="button"
+                        className="admin-primary-button"
+                        onClick={onAction}
+                    >
+                        {actionLabel} <DashboardIcon name="arrow" size={17} />
+                    </button>
+                )}
+            </div>
+
+            <HeroArt />
+        </div>
+    );
+}
+
+function ModuleGrid({ modules, onOpen }) {
+    return (
+        <div className="admin-module-grid">
+            {modules.map((module, index) => (
+                <button
+                    type="button"
+                    key={module.id}
+                    className={`admin-module-card admin-module-${module.variant}`}
+                    onClick={() => onOpen(module.id)}
+                >
+                    <div className="admin-module-card-top">
+                        <span className="admin-module-icon">
+                            <DashboardIcon name={module.icon} size={26} />
+                        </span>
+
+                        <span className="admin-module-number">
+                            {String(index + 1).padStart(2, "0")}
+                        </span>
+                    </div>
+
+                    <div className="admin-module-copy">
+                        <span className="admin-module-eyebrow">{module.eyebrow}</span>
+                        <h3>{module.title}</h3>
+                        <p>{module.text}</p>
+                    </div>
+
+                    <span className="admin-module-footer">
+                        {module.cta} <DashboardIcon name="arrow" size={18} />
+                    </span>
+                </button>
+            ))}
+        </div>
+    );
+}
+
+function SectionIntro({ eyebrow, title, text }) {
+    return (
+        <div className="admin-section-intro">
+            <div>
+                <span className="admin-eyebrow">{eyebrow}</span>
+                <h2>{title}</h2>
+                <p>{text}</p>
+            </div>
+        </div>
+    );
+}
+
+/* ---------- Dashboard ---------- */
 
 function Dashboard() {
     const user = getUser();
@@ -185,117 +390,22 @@ function Dashboard() {
                 default:
                     return (
                         <section className="admin-overview">
-                            <div className="admin-welcome-panel">
-                                <div className="admin-welcome-copy">
-                                    <span className="admin-eyebrow">ADMINISTRATIVE WORKSPACE</span>
-                                    <h2>Manage academics. <span>Keep everything organized.</span></h2>
-                                    <p>Maintain subject records, schedules, leave approvals, user profiles, and student enrollments from one central workspace.</p>
-                                    <button type="button" className="admin-primary-button" onClick={() => navigateTo("leaves")}>
-                                        Review leave requests <DashboardIcon name="arrow" size={17} />
-                                    </button>
-                                </div>
-                            </div>
+                            <Hero
+                                eyebrow="ADMINISTRATIVE WORKSPACE"
+                                title="Manage academics."
+                                highlight="Keep everything organized."
+                                text="Maintain subject records, schedules, leave approvals, user profiles, and student enrollments from one central workspace."
+                                actionLabel="Review leave requests"
+                                onAction={() => navigateTo("leaves")}
+                            />
 
-                            <div className="admin-section-intro">
-                                <div>
-                                    <span className="admin-eyebrow">WORKSPACE MODULES</span>
-                                    <h2>What would you like to manage?</h2>
-                                    <p>Select a module to view records or perform an administrative task.</p>
-                                </div>
-                            </div>
+                            <SectionIntro
+                                eyebrow="WORKSPACE MODULES"
+                                title="What would you like to manage?"
+                                text="Select a module to view records or perform an administrative task."
+                            />
 
-                            <div className="admin-module-grid">
-                                <button type="button" className="admin-module-card admin-module-subjects" onClick={() => navigateTo("subjects")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="book" size={27} /></span>
-                                        <span className="admin-module-number">01</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ACADEMIC CATALOGUE</span>
-                                        <h3>Subject Management</h3>
-                                        <p>Create subjects, update details, and maintain the subject catalogue.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Subject Management <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-classes" onClick={() => navigateTo("classes")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="calendar" size={27} /></span>
-                                        <span className="admin-module-number">02</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">TIMETABLE & SCHEDULING</span>
-                                        <h3>Class Management</h3>
-                                        <p>Create classes, assign subjects and staff, and maintain schedules.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Class Management <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-leaves" onClick={() => navigateTo("leaves")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="clipboard" size={27} /></span>
-                                        <span className="admin-module-number">03</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">STAFF SERVICES</span>
-                                        <h3>Leave Approvals</h3>
-                                        <p>Review leave requests, approve suitable requests, or reject them.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Review Leave Requests <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-payments" onClick={() => navigateTo("payments")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="wallet" size={27} /></span>
-                                        <span className="admin-module-number">04</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">FEES & BILLING</span>
-                                        <h3>Payment Review</h3>
-                                        <p>Check submitted payment slips, approve or reject them, and update records.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Payment Review <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-register" onClick={() => navigateTo("register-student")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="user-plus" size={27} /></span>
-                                        <span className="admin-module-number">05</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ADMISSIONS</span>
-                                        <h3>Register Student</h3>
-                                        <p>Enroll new students into the system and record their initial details.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Register Student <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-edit" onClick={() => navigateTo("edit-student")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="user-edit" size={27} /></span>
-                                        <span className="admin-module-number">06</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">RECORDS</span>
-                                        <h3>Edit Student</h3>
-                                        <p>Modify existing student profiles, grades, and academic records.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Edit Student Records <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-create-user" onClick={() => navigateTo("create-user")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="users" size={27} /></span>
-                                        <span className="admin-module-number">07</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">ADMINISTRATION</span>
-                                        <h3>Create User Profile</h3>
-                                        <p>Add new system users and assign their respective access roles.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Create User <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-                            </div>
+                            <ModuleGrid modules={ADMIN_MODULES} onOpen={navigateTo} />
                         </section>
                     );
             }
@@ -308,52 +418,22 @@ function Dashboard() {
                 default:
                     return (
                         <section className="admin-overview">
-                            <div className="admin-welcome-panel">
-                                <div className="admin-welcome-copy">
-                                    <span className="admin-eyebrow">TEACHER PORTAL</span>
-                                    <h2>Welcome, Teacher. <span>Manage your daily tasks.</span></h2>
-                                    <p>Search student profiles or manage your leave requests from one central workspace.</p>
-                                    <button type="button" className="admin-primary-button" onClick={() => navigateTo("search-student")}>
-                                        Search student records <DashboardIcon name="arrow" size={17} />
-                                    </button>
-                                </div>
-                            </div>
+                            <Hero
+                                eyebrow="TEACHER PORTAL"
+                                title="Welcome, Teacher."
+                                highlight="Manage your daily tasks."
+                                text="Search student profiles or manage your leave requests from one central workspace."
+                                actionLabel="Search student records"
+                                onAction={() => navigateTo("search-student")}
+                            />
 
-                            <div className="admin-section-intro">
-                                <div>
-                                    <span className="admin-eyebrow">TEACHER MODULES</span>
-                                    <h2>What would you like to do?</h2>
-                                    <p>Select a module to search student information or manage leave.</p>
-                                </div>
-                            </div>
+                            <SectionIntro
+                                eyebrow="TEACHER MODULES"
+                                title="What would you like to do?"
+                                text="Select a module to search student information or manage leave."
+                            />
 
-                            <div className="admin-module-grid">
-                                <button type="button" className="admin-module-card admin-module-subjects" onClick={() => navigateTo("search-student")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="search" size={27} /></span>
-                                        <span className="admin-module-number">01</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">STUDENT RECORDS</span>
-                                        <h3>Search Student</h3>
-                                        <p>Look up student profiles, view academic details, and check information.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Open Student Search <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-
-                                <button type="button" className="admin-module-card admin-module-classes" onClick={() => navigateTo("leave-management")}>
-                                    <div className="admin-module-card-top">
-                                        <span className="admin-module-icon"><DashboardIcon name="clipboard" size={27} /></span>
-                                        <span className="admin-module-number">02</span>
-                                    </div>
-                                    <div className="admin-module-copy">
-                                        <span className="admin-module-eyebrow">STAFF PORTAL</span>
-                                        <h3>Leave Management</h3>
-                                        <p>Submit leave requests, check leave balances, and track approvals.</p>
-                                    </div>
-                                    <span className="admin-module-footer">Manage Leave Requests <DashboardIcon name="arrow" size={18} /></span>
-                                </button>
-                            </div>
+                            <ModuleGrid modules={TEACHER_MODULES} onOpen={navigateTo} />
                         </section>
                     );
             }
@@ -365,26 +445,43 @@ function Dashboard() {
                 default:
                     return (
                         <section className="admin-overview">
-                            <div className="admin-welcome-panel">
-                                <div className="admin-welcome-copy">
-                                    <span className="admin-eyebrow">PARENT PORTAL</span>
-                                    <h2>Fee Payments & Status</h2>
-                                    <p>Check your child's fee balance and upload payment slips.</p>
-                                </div>
-                            </div>
+                            <Hero
+                                eyebrow="PARENT PORTAL"
+                                title="Fee Payments"
+                                highlight="& Status"
+                                text="Check your child's fee balance and upload payment slips."
+                                actionLabel="Open fee payments"
+                                onAction={() => navigateTo("payments")}
+                            />
+
+                            <ModuleGrid modules={PARENT_MODULES} onOpen={navigateTo} />
                         </section>
                     );
             }
         }
+
+        return null;
     }
 
     return (
         <div className="admin-dashboard-layout">
-            <aside className={`admin-sidebar ${mobileNavOpen ? "admin-sidebar-open" : ""}`}>
+            {mobileNavOpen && (
+                <button
+                    type="button"
+                    className="admin-mobile-backdrop"
+                    aria-label="Close menu"
+                    onClick={() => setMobileNavOpen(false)}
+                />
+            )}
+
+            <aside
+                className={`admin-sidebar ${mobileNavOpen ? "admin-sidebar-open" : ""}`}
+            >
                 <div className="admin-sidebar-brand">
-          <span className="admin-brand-icon">
-            <DashboardIcon name="shield" size={25} />
-          </span>
+                    <span className="admin-brand-icon">
+                        <DashboardIcon name="shield" size={25} />
+                    </span>
+
                     <div>
                         <strong>School Portal</strong>
                         <span>{role.charAt(0) + role.slice(1).toLowerCase()} Console</span>
@@ -398,17 +495,32 @@ function Dashboard() {
                         <button
                             type="button"
                             key={item.id}
-                            className={`admin-sidebar-link ${activeSection === item.id ? "admin-link-active" : ""}`}
+                            className={`admin-sidebar-link ${
+                                activeSection === item.id ? "admin-link-active" : ""
+                            }`}
                             onClick={() => navigateTo(item.id)}
                         >
-              <span className="admin-sidebar-link-icon">
-                <DashboardIcon name={item.icon} size={19} />
-              </span>
+                            <span className="admin-sidebar-link-icon">
+                                <DashboardIcon name={item.icon} size={19} />
+                            </span>
+
                             <span className="admin-sidebar-link-label">{item.label}</span>
-                            {activeSection === item.id && <span className="admin-sidebar-active-dot" />}
+
+                            {activeSection === item.id && (
+                                <span className="admin-sidebar-active-dot" />
+                            )}
                         </button>
                     ))}
                 </nav>
+
+                <button
+                    type="button"
+                    className="admin-sidebar-signout"
+                    onClick={handleLogout}
+                >
+                    <DashboardIcon name="logout" size={18} />
+                    Sign out
+                </button>
             </aside>
 
             <div className="admin-dashboard-main">
@@ -416,13 +528,16 @@ function Dashboard() {
                     <button
                         type="button"
                         className="admin-mobile-menu"
+                        aria-label="Toggle menu"
                         onClick={() => setMobileNavOpen((open) => !open)}
                     >
                         <DashboardIcon name="menu" size={21} />
                     </button>
 
                     <div className="admin-topbar-heading">
-                        <span className="admin-topbar-breadcrumb">PORTAL <span>/</span> WORKSPACE</span>
+                        <span className="admin-topbar-breadcrumb">
+                            PORTAL <span>/</span> WORKSPACE
+                        </span>
                         <h1>{currentItem.label}</h1>
                     </div>
 
@@ -431,9 +546,7 @@ function Dashboard() {
                     </div>
                 </header>
 
-                <main className="admin-dashboard-content">
-                    {renderContent()}
-                </main>
+                <main className="admin-dashboard-content">{renderContent()}</main>
             </div>
         </div>
     );

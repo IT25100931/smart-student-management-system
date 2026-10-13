@@ -1,16 +1,38 @@
 import { useState } from "react";
 import { authHeaders } from "../utils/authFetch";
+import "./CreateUserPage.css";
+
+const ROLES = [
+    {
+        value: "ADMIN",
+        label: "Admin",
+        description: "Full access to manage the system",
+    },
+    {
+        value: "TEACHER",
+        label: "Teacher",
+        description: "Classes, students and leave",
+    },
+    {
+        value: "PARENT",
+        label: "Parent",
+        description: "View fees and upload payment slips",
+    },
+];
+
+const EMPTY_FORM = {
+    username: "",
+    email: "",
+    password: "",
+    role: "TEACHER",
+    studentIds: [],
+};
 
 function CreateUserPage() {
-    const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        password: "",
-        role: "TEACHER",
-        studentIds: [],
-    });
+    const [formData, setFormData] = useState({ ...EMPTY_FORM });
 
     const [currentStudentInput, setCurrentStudentInput] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -75,8 +97,9 @@ function CreateUserPage() {
 
             if (response.ok) {
                 setMessage({ type: "success", text: "User profile created successfully!" });
-                setFormData({ username: "", email: "", password: "", role: "TEACHER", studentIds: [] });
+                setFormData({ ...EMPTY_FORM });
                 setCurrentStudentInput("");
+                setShowPassword(false);
             } else if (response.status === 401) {
                 setMessage({ type: "error", text: "Your session has expired. Please log in again." });
             } else if (response.status === 403) {
@@ -92,126 +115,175 @@ function CreateUserPage() {
     }
 
     return (
-        <div className="admin-overview" style={{ maxWidth: "700px", margin: "0 auto" }}>
-            <div className="admin-welcome-panel" style={{ minHeight: "auto", padding: "24px" }}>
-                <div className="admin-welcome-copy">
-                    <span className="admin-eyebrow">USER ADMINISTRATION</span>
-                    <h2>Create User Profile</h2>
-                    <p>Add a new system user and assign their access role.</p>
-                </div>
-            </div>
+        <div className="create-user-page">
+            <header className="create-user-header">
+                <p className="create-user-eyebrow">USER ADMINISTRATION</p>
+                <h2>Create User Profile</h2>
+                <p>Add a new system user and assign their access role.</p>
+            </header>
 
-            <form onSubmit={handleSubmit} style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "16px" }}>
-                {message.text && (
-                    <div style={{
-                        padding: "12px 16px",
-                        borderRadius: "8px",
-                        backgroundColor: message.type === "success" ? "rgba(34, 197, 94, 0.1)" : "rgba(239, 68, 68, 0.1)",
-                        border: `1px solid ${message.type === "success" ? "#22c55e" : "#ef4444"}`,
-                        color: message.type === "success" ? "#4ade80" : "#f87171",
-                        fontSize: "0.85rem"
-                    }}>
-                        {message.text}
+            {message.text && (
+                <div
+                    className={`create-user-message ${
+                        message.type === "success" ? "is-success" : "is-error"
+                    }`}
+                    role={message.type === "success" ? "status" : "alert"}
+                >
+                    {message.text}
+                </div>
+            )}
+
+            <form className="create-user-panel" onSubmit={handleSubmit}>
+                <div className="create-user-panel-heading">
+                    <div>
+                        <span className="create-user-step">NEW USER</span>
+                        <h3>Account details</h3>
                     </div>
-                )}
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: "600", color: "#d4d4d8" }}>Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                        placeholder="Enter username"
-                        style={{ padding: "11px 14px", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.15)", background: "#16181e", color: "#fff", fontSize: "0.9rem" }}
-                    />
+                    <span className="create-user-panel-icon" aria-hidden="true">
+                        +
+                    </span>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: "600", color: "#d4d4d8" }}>Email Address</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="Enter email address"
-                        style={{ padding: "11px 14px", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.15)", background: "#16181e", color: "#fff", fontSize: "0.9rem" }}
-                    />
+                <div className="create-user-grid">
+                    <label className="create-user-field">
+                        Username
+                        <input
+                            type="text"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter username"
+                            autoComplete="off"
+                        />
+                    </label>
+
+                    <label className="create-user-field">
+                        Email Address
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter email address"
+                            autoComplete="off"
+                        />
+                    </label>
+
+                    <label className="create-user-field create-user-field-wide">
+                        Temporary Password
+                        <div className="create-user-password">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                                placeholder="Enter temporary password"
+                                autoComplete="new-password"
+                            />
+
+                            <button
+                                type="button"
+                                className="create-user-password-toggle"
+                                onClick={() => setShowPassword((show) => !show)}
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
+                    </label>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <label style={{ fontSize: "0.8rem", fontWeight: "600", color: "#d4d4d8" }}>Temporary Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        placeholder="Enter temporary password"
-                        style={{ padding: "11px 14px", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.15)", background: "#16181e", color: "#fff", fontSize: "0.9rem" }}
-                    />
-                </div>
+                <fieldset className="create-user-roles">
+                    <legend>User Role</legend>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <label style={{ fontSize: "0.80rem", fontWeight: "600", color: "#d4d4d8" }}>User Role</label>
-                    <select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        style={{ padding: "11px 14px", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.15)", background: "#16181e", color: "#fff", fontSize: "0.9rem" }}
-                    >
-                        <option value="ADMIN">Admin</option>
-                        <option value="TEACHER">Teacher</option>
-                        <option value="PARENT">Parent</option>
-                    </select>
-                </div>
+                    <div className="create-user-role-grid">
+                        {ROLES.map((role) => (
+                            <label
+                                key={role.value}
+                                className={`create-user-role-card ${
+                                    formData.role === role.value ? "is-selected" : ""
+                                }`}
+                            >
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value={role.value}
+                                    checked={formData.role === role.value}
+                                    onChange={handleChange}
+                                />
+
+                                <span className="create-user-role-dot" aria-hidden="true" />
+
+                                <span className="create-user-role-copy">
+                                    <strong>{role.label}</strong>
+                                    <small>{role.description}</small>
+                                </span>
+                            </label>
+                        ))}
+                    </div>
+                </fieldset>
 
                 {formData.role === "PARENT" && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", background: "rgba(255,255,255,0.03)", padding: "14px", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)" }}>
-                        <label style={{ fontSize: "0.8rem", fontWeight: "600", color: "#d4d4d8" }}>Link Student ID(s)</label>
-                        <div style={{ display: "flex", gap: "8px" }}>
-                            <div style={{ display: "flex", alignItems: "center", background: "#16181e", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "10px", padding: "0 12px", flex: 1 }}>
-                                <span style={{ color: "#a1a1aa", fontSize: "0.9rem", fontWeight: "600", marginRight: "4px" }}>STU</span>
+                    <div className="create-user-students">
+                        <label htmlFor="create-user-student-input">
+                            Link Student ID(s)
+                        </label>
+
+                        <div className="create-user-student-row">
+                            <div className="create-user-student-input">
+                                <span>STU</span>
+
                                 <input
+                                    id="create-user-student-input"
                                     type="text"
                                     value={currentStudentInput}
                                     onChange={(e) => setCurrentStudentInput(e.target.value)}
                                     placeholder="Enter student number (e.g. 101)"
-                                    style={{ border: "none", background: "transparent", color: "#fff", fontSize: "0.9rem", outline: "none", width: "100%", padding: "11px 0" }}
                                 />
                             </div>
+
                             <button
                                 type="button"
+                                className="create-user-add-button"
                                 onClick={handleAddStudentId}
-                                style={{ padding: "0 18px", borderRadius: "10px", background: "#ef4444", color: "#fff", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "0.85rem" }}
                             >
                                 Add ID
                             </button>
                         </div>
 
                         {formData.studentIds.length > 0 && (
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "8px" }}>
+                            <div className="create-user-chips">
                                 {formData.studentIds.map((id) => (
-                                    <span key={id} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.1)", padding: "5px 10px", borderRadius: "6px", fontSize: "0.8rem", color: "#fff" }}>
-                    STU{id}
-                                        <button type="button" onClick={() => handleRemoveStudentId(id)} style={{ background: "transparent", border: "none", color: "#f87171", cursor: "pointer", fontWeight: "bold", fontSize: "0.9rem" }}>×</button>
-                  </span>
+                                    <span key={id} className="create-user-chip">
+                                        STU{id}
+
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveStudentId(id)}
+                                            aria-label={`Remove student ${id}`}
+                                        >
+                                            ×
+                                        </button>
+                                    </span>
                                 ))}
                             </div>
                         )}
                     </div>
                 )}
 
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="admin-primary-button"
-                    style={{ marginTop: "10px", width: "100%" }}
-                >
-                    {loading ? "Creating Profile..." : "Create User Profile"}
-                </button>
+                <div className="create-user-actions">
+                    <button
+                        type="submit"
+                        className="create-user-submit"
+                        disabled={loading}
+                    >
+                        {loading ? "Creating Profile..." : "Create User Profile"}
+                    </button>
+                </div>
             </form>
         </div>
     );

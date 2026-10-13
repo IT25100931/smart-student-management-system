@@ -1,5 +1,4 @@
-
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./SubjectManagement.css";
 
 const API_URL = "http://localhost:8081/api/subjects";
@@ -46,6 +45,7 @@ function SubjectManagement() {
     const [subjects, setSubjects] = useState([]);
     const [form, setForm] = useState({ ...EMPTY_FORM });
     const [editingId, setEditingId] = useState(null);
+    const [search, setSearch] = useState("");
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -73,6 +73,33 @@ function SubjectManagement() {
         loadSubjects();
     }, [loadSubjects]);
 
+    const stats = useMemo(() => {
+        const totalCredits = subjects.reduce(
+            (sum, s) => sum + (Number(s.credits) || 0),
+            0
+        );
+
+        return {
+            total: subjects.length,
+            totalCredits,
+            average: subjects.length
+                ? (totalCredits / subjects.length).toFixed(1)
+                : "0.0",
+        };
+    }, [subjects]);
+
+    const filteredSubjects = useMemo(() => {
+        const term = search.trim().toLowerCase();
+
+        if (!term) return subjects;
+
+        return subjects.filter((s) =>
+            [s.subjectName, s.subjectCode, s.description]
+                .filter(Boolean)
+                .some((value) => String(value).toLowerCase().includes(term))
+        );
+    }, [subjects, search]);
+
     function handleChange(event) {
         const { name, value } = event.target;
 
@@ -99,6 +126,8 @@ function SubjectManagement() {
 
         setMessage("");
         setError("");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     async function handleSubmit(event) {
@@ -116,9 +145,7 @@ function SubjectManagement() {
         };
 
         try {
-            const url = editingId
-                ? `${API_URL}/${editingId}`
-                : API_URL;
+            const url = editingId ? `${API_URL}/${editingId}` : API_URL;
 
             const response = await fetch(url, {
                 method: editingId ? "PUT" : "POST",
@@ -154,10 +181,9 @@ function SubjectManagement() {
         setMessage("");
 
         try {
-            const response = await fetch(
-                `${API_URL}/${subject.subjectId}`,
-                { method: "DELETE" }
-            );
+            const response = await fetch(`${API_URL}/${subject.subjectId}`, {
+                method: "DELETE",
+            });
 
             await readResponse(response);
 
@@ -182,9 +208,7 @@ function SubjectManagement() {
 
                     <h2>Subject Management</h2>
 
-                    <p>
-                        Maintain the subjects offered by your institution.
-                    </p>
+                    <p>Maintain the subjects offered by your institution.</p>
                 </div>
 
                 <button
@@ -193,9 +217,33 @@ function SubjectManagement() {
                     onClick={loadSubjects}
                     disabled={loading}
                 >
+                    <span aria-hidden="true">↻</span>
                     {loading ? "Loading..." : "Refresh"}
                 </button>
             </header>
+
+            <section className="admin-subject-stats" aria-label="Summary">
+                <article className="admin-subject-stat">
+                    <span className="admin-subject-stat-label">
+                        Total Subjects
+                    </span>
+                    <strong>{stats.total}</strong>
+                </article>
+
+                <article className="admin-subject-stat">
+                    <span className="admin-subject-stat-label">
+                        Total Credits
+                    </span>
+                    <strong>{stats.totalCredits}</strong>
+                </article>
+
+                <article className="admin-subject-stat">
+                    <span className="admin-subject-stat-label">
+                        Average Credits
+                    </span>
+                    <strong>{stats.average}</strong>
+                </article>
+            </section>
 
             {error && (
                 <div className="admin-subject-message is-error" role="alert">
@@ -212,9 +260,9 @@ function SubjectManagement() {
             <section className="admin-subject-form-panel">
                 <div className="admin-subject-panel-heading">
                     <div>
-            <span className="admin-subject-step">
-              {editingId ? "EDIT SUBJECT" : "NEW SUBJECT"}
-            </span>
+                        <span className="admin-subject-step">
+                            {editingId ? "EDIT SUBJECT" : "NEW SUBJECT"}
+                        </span>
 
                         <h3>
                             {editingId ? "Update subject details" : "Add a subject"}
@@ -222,8 +270,8 @@ function SubjectManagement() {
                     </div>
 
                     <span className="admin-subject-panel-icon">
-            {editingId ? "✎" : "+"}
-          </span>
+                        {editingId ? "✎" : "+"}
+                    </span>
                 </div>
 
                 <form className="admin-subject-form" onSubmit={handleSubmit}>
@@ -309,20 +357,33 @@ function SubjectManagement() {
                         <p>Subjects currently recorded in the database.</p>
                     </div>
 
-                    <span className="admin-subject-count">
-            {subjects.length} subjects
-          </span>
+                    <div className="admin-subject-list-tools">
+                        <input
+                            type="search"
+                            className="admin-subject-search"
+                            placeholder="Search subjects..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            aria-label="Search subjects"
+                        />
+
+                        <span className="admin-subject-count">
+                            {filteredSubjects.length} subjects
+                        </span>
+                    </div>
                 </div>
 
                 {loading ? (
-                    <p className="admin-subject-empty">
-                        Loading subjects...
-                    </p>
+                    <p className="admin-subject-empty">Loading subjects...</p>
                 ) : subjects.length === 0 && !error ? (
                     <p className="admin-subject-empty">
                         No subjects found. Create your first subject above.
                     </p>
-                ) : subjects.length > 0 ? (
+                ) : subjects.length > 0 && filteredSubjects.length === 0 ? (
+                    <p className="admin-subject-empty">
+                        No subjects match "{search}".
+                    </p>
+                ) : filteredSubjects.length > 0 ? (
                     <div className="admin-subject-table-wrapper">
                         <table className="admin-subject-table">
                             <thead>
@@ -336,15 +397,24 @@ function SubjectManagement() {
                             </thead>
 
                             <tbody>
-                            {subjects.map((subject) => (
+                            {filteredSubjects.map((subject) => (
                                 <tr key={subject.subjectId}>
                                     <td>
                                         <strong>{subject.subjectName}</strong>
                                         <small>ID: {subject.subjectId}</small>
                                     </td>
 
-                                    <td>{subject.subjectCode}</td>
-                                    <td>{subject.credits}</td>
+                                    <td>
+                                        <span className="admin-subject-code">
+                                            {subject.subjectCode}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span className="admin-subject-credits">
+                                            {subject.credits}
+                                        </span>
+                                    </td>
 
                                     <td className="admin-subject-description">
                                         {subject.description || "—"}
