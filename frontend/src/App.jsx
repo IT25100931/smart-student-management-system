@@ -15,6 +15,7 @@ import Navigation from './components/Navigation';
 import ProtectedRoute from './components/ProtectedRoute';
 import ServicePage from './components/ServicePage.jsx';
 import EditDetailsPage from './pages/EditDetailsPage.jsx';
+import UserManagement from './pages/UserManagement.jsx';
 //import AdminDashboard from './pages/AdminDashboard.jsx';
 import { getUser } from './utils/authFetch';
 import './App.css';
@@ -95,6 +96,16 @@ function AppRoutes() {
                         <ProtectedRoute allowedRoles={['ADMIN']}>
                             <ServicePage backTo="/student-management" backLabel="Back to Student Management">
                                 <EditStudentPage />
+                            </ServicePage>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/user-management"
+                    element={
+                        <ProtectedRoute allowedRoles={['ADMIN']}>
+                            <ServicePage>
+                                <UserManagement />
                             </ServicePage>
                         </ProtectedRoute>
                     }

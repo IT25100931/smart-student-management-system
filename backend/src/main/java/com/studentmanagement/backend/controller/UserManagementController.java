@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -71,5 +72,35 @@ public class UserManagementController {
         tokenBlacklistService.revoke(jwtUtil.extractTokenId(token), jwtUtil.extractExpiration(token));
 
         return Map.of("message", "Password changed. Please log in again.");
+    }
+
+    // ---------- Get all users ----------
+    @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<Map<String, Object>> response = users.stream().map(user -> Map.<String, Object>of(
+                "userId", user.getUserId(),
+                "username", user.getUsername(),
+                "email", user.getEmail() == null ? "" : user.getEmail(),
+                "role", user.getRole() != null ? user.getRole().getRoleName() : "",
+                "status", user.getStatus() == null ? "ACTIVE" : user.getStatus(),
+                "createdAt", user.getCreatedAt() != null ? user.getCreatedAt().toString() : ""
+        )).toList();
+
+        return ResponseEntity.ok(response);
+    }
+
+    // ---------- Toggle user status (ACTIVE / INACTIVE) ----------
+    @PutMapping("/{userId}/status")
+    public ResponseEntity<Map<String, Object>> updateStatus(@PathVariable Long userId,
+                                                            @RequestBody Map<String, String> body) {
+        String newStatus = body.get("status");
+        User updatedUser = userService.updateUserStatus(userId, newStatus);
+
+        return ResponseEntity.ok(Map.of(
+                "message", "User status updated successfully",
+                "userId", updatedUser.getUserId(),
+                "status", updatedUser.getStatus()
+        ));
     }
 }

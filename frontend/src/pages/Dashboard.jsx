@@ -11,13 +11,13 @@ import PaymentPage from "./PaymentPage.jsx";
 import RegisterStudentPage from "./RegisterStudentPage.jsx";
 import EditStudentPage from "./EditStudentPage.jsx";
 import StudentSearch from "./StudentSearch.jsx";
-import CreateUserPage from "./CreateUserPage.jsx";
 import MarkAttendance from "./MarkAttendance.jsx";
 import SalaryCalculation from "./SalaryCalculation.jsx";
 import SalaryDetails from "./SalaryDetails.jsx";
 import SalarySummary from "./SalarySummary.jsx";
 import StaffAttendance from "./StaffAttendance.jsx";
 import TeacherTimetable from "./TeacherTimetable.jsx";
+import UserManagement from "./UserManagement.jsx";
 
 import "./AdminDashboard.css";
 import AccountMenu from "../components/AccountMenu.jsx";
@@ -146,7 +146,7 @@ const ROLE_NAV = {
         { id: "payments", label: "Payments", icon: "wallet" },
         { id: "register-student", label: "Register Student", icon: "user-plus" },
         { id: "edit-student", label: "Edit Student", icon: "user-edit" },
-        { id: "create-user", label: "Create User", icon: "users" },
+        { id: "user-management", label: "User Management", icon: "users" },
     ],
     TEACHER: [
         { id: "overview", label: "Overview", icon: "grid" },
@@ -182,6 +182,7 @@ function Dashboard() {
     function renderContent() {
         if (role === "ADMIN") {
             switch (activeSection) {
+                case "user-management": return <UserManagement />;
                 case "subjects": return <SubjectManagement />;
                 case "classes": return <ClassManagement />;
                 case "staff-attendance": return <StaffAttendance />;
@@ -193,7 +194,7 @@ function Dashboard() {
                 case "payments": return <PaymentReview />;
                 case "register-student": return <RegisterStudentPage />;
                 case "edit-student": return <EditStudentPage />;
-                case "create-user": return <CreateUserPage />;
+                //case "create-user": return <CreateUserPage />;
                 default:
                     return (
                         <section className="admin-overview">
@@ -359,18 +360,17 @@ function Dashboard() {
                                     </div>
                                     <span className="admin-module-footer">Edit Student Records <DashboardIcon name="arrow" size={18} /></span>
                                 </button>
-
-                                <button type="button" className="admin-module-card admin-module-create-user" onClick={() => navigateTo("create-user")}>
+                                <button type="button" className="admin-module-card admin-module-user-mgmt" onClick={() => navigateTo("user-management")}>
                                     <div className="admin-module-card-top">
                                         <span className="admin-module-icon"><DashboardIcon name="users" size={27} /></span>
                                         <span className="admin-module-number">12</span>
                                     </div>
                                     <div className="admin-module-copy">
                                         <span className="admin-module-eyebrow">ADMINISTRATION</span>
-                                        <h3>Create User Profile</h3>
-                                        <p>Add new system users and assign their respective access roles.</p>
+                                        <h3>User Management</h3>
+                                        <p>View system users, manage access statuses, and add new user profiles.</p>
                                     </div>
-                                    <span className="admin-module-footer">Create User <DashboardIcon name="arrow" size={18} /></span>
+                                    <span className="admin-module-footer">Open User Management <DashboardIcon name="arrow" size={18} /></span>
                                 </button>
                             </div>
                         </section>

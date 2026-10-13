@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 public class UserManagementService {
 
@@ -85,5 +87,21 @@ public class UserManagementService {
             // 400, not 401: the frontend treats 401 as "session expired"
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Current password is incorrect");
         }
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User updateUserStatus(Long userId, String status) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        if (!"ACTIVE".equalsIgnoreCase(status) && !"INACTIVE".equalsIgnoreCase(status)) {
+            throw new IllegalArgumentException("Invalid status value. Must be ACTIVE or INACTIVE.");
+        }
+
+        user.setStatus(status.toUpperCase());
+        return userRepository.save(user);
     }
 }

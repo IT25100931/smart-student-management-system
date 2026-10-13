@@ -28,7 +28,7 @@ const EMPTY_FORM = {
     studentIds: [],
 };
 
-function CreateUserPage() {
+function CreateUserPage({ onSuccess }) {
     const [formData, setFormData] = useState({ ...EMPTY_FORM });
 
     const [currentStudentInput, setCurrentStudentInput] = useState("");
@@ -74,7 +74,6 @@ function CreateUserPage() {
         setLoading(true);
         setMessage({ type: "", text: "" });
 
-        // Automatically include any student ID currently typed in the input box if not already added
         let finalStudentIds = [...formData.studentIds];
         const trimmedInput = currentStudentInput.trim();
         if (trimmedInput && !finalStudentIds.includes(trimmedInput)) {
@@ -100,6 +99,12 @@ function CreateUserPage() {
                 setFormData({ ...EMPTY_FORM });
                 setCurrentStudentInput("");
                 setShowPassword(false);
+
+                if (onSuccess) {
+                    setTimeout(() => {
+                        onSuccess();
+                    }, 800);
+                }
             } else if (response.status === 401) {
                 setMessage({ type: "error", text: "Your session has expired. Please log in again." });
             } else if (response.status === 403) {
