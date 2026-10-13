@@ -33,6 +33,7 @@ function AccountMenu() {
                 className="am-pill"
                 aria-haspopup="menu"
                 aria-expanded={open}
+                style={{color:'black'}}
                 onClick={() => setOpen((o) => !o)}
             >
                 <span className="am-dot" />
