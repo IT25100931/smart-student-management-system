@@ -105,4 +105,26 @@ public class StudentFeeDAO {
         }
         return false;
     }
+
+    public boolean addStudentFee(StudentFee fee) {
+        String sql = "INSERT INTO STUDENT_FEES "
+                + "(student_id, fee_type, total_amount, paid_amount, due_date, payment_status) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, fee.getStudentId());
+            ps.setString(2, fee.getFeeType());
+            ps.setBigDecimal(3, fee.getTotalAmount());
+            ps.setBigDecimal(4, fee.getPaidAmount());
+            ps.setDate(5, java.sql.Date.valueOf(fee.getDueDate()));
+            ps.setString(6, fee.getPaymentStatus());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
