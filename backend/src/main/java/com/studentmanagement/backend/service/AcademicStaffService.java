@@ -1,7 +1,7 @@
 package com.studentmanagement.backend.service;
 
 import com.studentmanagement.backend.dao.AcademicStaffDAO;
-import com.studentmanagement.backend.model.Attendance;
+import com.studentmanagement.backend.model.AttendanceStaff;
 import com.studentmanagement.backend.model.Salary;
 import com.studentmanagement.backend.model.SalaryCalculation;
 import com.studentmanagement.backend.model.SalarySummary;
@@ -33,7 +33,7 @@ public class AcademicStaffService {
         return dao.getSalaryDetails(staffId);
     }
 
-    public List<Attendance> getAttendanceDetails(int staffId) {
+    public List<AttendanceStaff> getAttendanceDetails(int staffId) {
         return dao.getAttendanceDetails(staffId);
     }
 
@@ -72,7 +72,7 @@ public class AcademicStaffService {
     }
 
     // Returns null when the date is not a valid YYYY-MM-DD date
-    public List<Attendance> getAttendanceByDate(String date) {
+    public List<AttendanceStaff> getAttendanceByDate(String date) {
 
         try {
             LocalDate.parse(date);
@@ -85,7 +85,7 @@ public class AcademicStaffService {
 
     // Returns: created, updated, staff_not_found, invalid_status,
     // invalid_date or error
-    public String markAttendance(Attendance attendance) {
+    public String markAttendance(AttendanceStaff attendance) {
 
         String status = normalizeStatus(attendance.getStatus());
 

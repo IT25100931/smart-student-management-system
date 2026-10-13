@@ -1,0 +1,372 @@
+/* Staff management module.
+   Every rule is scoped under .staff-module so it cannot change
+   the other teams' pages. */
+
+.staff-module {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+  text-align: left;
+}
+
+.staff-module *,
+.staff-module *::before,
+.staff-module *::after {
+  box-sizing: border-box;
+}
+
+.staff-module .dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.staff-module .sidebar {
+  width: 240px;
+  background-color: #1f3c88;
+  color: white;
+  padding: 24px 16px;
+  flex-shrink: 0;
+}
+
+.staff-module .logo {
+  margin-bottom: 30px;
+}
+
+.staff-module .logo h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.staff-module .logo p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.staff-module .menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.staff-module .menu a {
+  display: block;
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.staff-module .menu a:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.staff-module .menu a.active {
+  background-color: rgba(255, 255, 255, 0.22);
+  font-weight: bold;
+}
+
+/* MAIN */
+
+.staff-module .main-content {
+  flex: 1;
+  padding: 30px 40px;
+  min-width: 0;
+}
+
+.staff-module .header h1 {
+  margin: 0;
+  color: #1f3c88;
+  font-size: 26px;
+}
+
+.staff-module .header p {
+  margin: 6px 0 24px;
+  color: #666;
+}
+
+/* SEARCH */
+
+.staff-module .search-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.staff-module .search-section label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.staff-module .search-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.staff-module .search-box input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.staff-module .search-box button {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.staff-module .salary-button {
+  background-color: #1f3c88;
+}
+
+.staff-module .salary-button:hover {
+  background-color: #162d68;
+}
+
+.staff-module .attendance-button {
+  background-color: #28a745;
+}
+
+.staff-module .attendance-button:hover {
+  background-color: #218838;
+}
+
+/* CONTENT CARD */
+
+.staff-module .content-card {
+  background-color: white;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.staff-module .card-header h2 {
+  margin: 0;
+  color: #1f3c88;
+}
+
+.staff-module .card-header p {
+  margin: 4px 0 18px;
+  color: #666;
+}
+
+.staff-module .table-container {
+  overflow-x: auto;
+}
+
+.staff-module table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.staff-module th {
+  background-color: #1f3c88;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.staff-module td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.staff-module tbody tr:hover {
+  background-color: #f1f4fa;
+}
+
+.staff-module .net-salary {
+  font-weight: bold;
+}
+
+.staff-module .no-data {
+  text-align: center;
+  color: #777;
+  padding: 30px;
+}
+
+/* STATUS BADGES */
+
+.staff-module .status {
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.staff-module .status.paid,
+.staff-module .status.present {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.staff-module .status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.staff-module .status.absent,
+.staff-module .status.unpaid {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+@media (max-width: 768px) {
+  .staff-module .dashboard {
+    flex-direction: column;
+  }
+
+  .staff-module .sidebar {
+    width: 100%;
+  }
+
+  .staff-module .main-content {
+    padding: 20px;
+  }
+}
+
+.staff-module .status.late {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* SALARY CALCULATION */
+
+.staff-module .calc-name {
+  margin: 0 0 16px;
+  color: #1f3c88;
+}
+
+.staff-module .calc-table {
+  max-width: 520px;
+}
+
+.staff-module .calc-table td:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.staff-module .calc-total td {
+  font-weight: bold;
+  font-size: 17px;
+  border-top: 2px solid #1f3c88;
+  border-bottom: none;
+}
+
+.staff-module .calc-note {
+  margin-top: 14px;
+  color: #666;
+  font-size: 13px;
+}
+
+/* SALARY SUMMARY */
+
+.staff-module .summary-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.staff-module .summary-card {
+  flex: 1;
+  min-width: 200px;
+  padding: 18px 20px;
+  border-radius: 10px;
+  background-color: #f1f4fa;
+  border-left: 5px solid #1f3c88;
+}
+
+.staff-module .summary-card.paid {
+  background-color: #eaf6ec;
+  border-left-color: #28a745;
+}
+
+.staff-module .summary-card.pending {
+  background-color: #fff8e1;
+  border-left-color: #e0a800;
+}
+
+.staff-module .summary-card p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.staff-module .summary-card h3 {
+  margin: 6px 0 4px;
+  font-size: 24px;
+  color: #1f3c88;
+}
+
+.staff-module .summary-card span {
+  font-size: 13px;
+  color: #666;
+}
+
+.staff-module .search-box select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* DAILY ATTENDANCE + MARK ATTENDANCE */
+
+.staff-module .status.notmarked {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.staff-module .form-message {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.staff-module .form-message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.staff-module .form-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* BACK BUTTON */
+
+.staff-module .staff-back {
+  margin-top: 30px;
+  width: 100%;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.staff-module .staff-back:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}

@@ -1,6 +1,6 @@
 package com.studentmanagement.backend.controller;
 
-import com.studentmanagement.backend.model.Attendance;
+import com.studentmanagement.backend.model.AttendanceStaff;
 import com.studentmanagement.backend.model.Salary;
 import com.studentmanagement.backend.model.SalaryCalculation;
 import com.studentmanagement.backend.model.SalarySummary;
@@ -50,7 +50,7 @@ public class AcademicStaffController {
 
     // GET http://localhost:8080/api/staff/1/attendance
     @GetMapping("/{staffId}/attendance")
-    public List<Attendance> getAttendanceDetails(@PathVariable int staffId) {
+    public List<AttendanceStaff> getAttendanceDetails(@PathVariable int staffId) {
         return service.getAttendanceDetails(staffId);
     }
 
@@ -75,8 +75,8 @@ public class AcademicStaffController {
 
     // GET http://localhost:8080/api/staff/attendance?date=2026-09-28
     @GetMapping("/attendance")
-    public ResponseEntity<List<Attendance>> getAttendanceByDate(@RequestParam String date) {
-        List<Attendance> records = service.getAttendanceByDate(date);
+    public ResponseEntity<List<AttendanceStaff>> getAttendanceByDate(@RequestParam String date) {
+        List<AttendanceStaff> records = service.getAttendanceByDate(date);
 
         if (records == null) {
             return ResponseEntity.badRequest().build();
@@ -88,7 +88,7 @@ public class AcademicStaffController {
     // POST http://localhost:8080/api/staff/attendance
     // Body: {"staffId":1,"attendanceDate":"2026-09-28","status":"Present","remarks":"On time"}
     @PostMapping("/attendance")
-    public ResponseEntity<Map<String, String>> markAttendance(@RequestBody Attendance attendance) {
+    public ResponseEntity<Map<String, String>> markAttendance(@RequestBody AttendanceStaff attendance) {
 
         String result = service.markAttendance(attendance);
 

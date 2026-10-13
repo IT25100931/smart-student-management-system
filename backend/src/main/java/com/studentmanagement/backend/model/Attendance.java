@@ -1,39 +1,57 @@
 package com.studentmanagement.backend.model;
 
+import jakarta.persistence.*;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "attendance",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "week_end_date"}))
 public class Attendance {
 
-    private int attendanceId;
-    private int staffId;
-    private String staffName;
-    private String attendanceDate;
-    private String status;
-    private String checkInTime;
-    private String checkOutTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "attendance_id")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
+
+    @Column(name = "week_start_date", nullable = false)
+    private LocalDate weekStartDate;
+
+    @Column(name = "week_end_date", nullable = false)
+    private LocalDate weekEndDate;
+
+    @Column(name = "total_days", nullable = false)
+    private int totalDays;
+
+    @Column(name = "days_present", nullable = false)
+    private int daysPresent;
+
+    @Column(length = 255)
     private String remarks;
 
     public Attendance() {
     }
 
-    public int getAttendanceId() { return attendanceId; }
-    public void setAttendanceId(int attendanceId) { this.attendanceId = attendanceId; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public int getStaffId() { return staffId; }
-    public void setStaffId(int staffId) { this.staffId = staffId; }
+    public Student getStudent() { return student; }
+    public void setStudent(Student student) { this.student = student; }
 
-    public String getStaffName() { return staffName; }
-    public void setStaffName(String staffName) { this.staffName = staffName; }
+    public LocalDate getWeekStartDate() { return weekStartDate; }
+    public void setWeekStartDate(LocalDate weekStartDate) { this.weekStartDate = weekStartDate; }
 
-    public String getAttendanceDate() { return attendanceDate; }
-    public void setAttendanceDate(String attendanceDate) { this.attendanceDate = attendanceDate; }
+    public LocalDate getWeekEndDate() { return weekEndDate; }
+    public void setWeekEndDate(LocalDate weekEndDate) { this.weekEndDate = weekEndDate; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public int getTotalDays() { return totalDays; }
+    public void setTotalDays(int totalDays) { this.totalDays = totalDays; }
 
-    public String getCheckInTime() { return checkInTime; }
-    public void setCheckInTime(String checkInTime) { this.checkInTime = checkInTime; }
-
-    public String getCheckOutTime() { return checkOutTime; }
-    public void setCheckOutTime(String checkOutTime) { this.checkOutTime = checkOutTime; }
+    public int getDaysPresent() { return daysPresent; }
+    public void setDaysPresent(int daysPresent) { this.daysPresent = daysPresent; }
 
     public String getRemarks() { return remarks; }
     public void setRemarks(String remarks) { this.remarks = remarks; }

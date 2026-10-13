@@ -1,6 +1,6 @@
 package com.studentmanagement.backend.dao;
 
-import com.studentmanagement.backend.model.Attendance;
+import com.studentmanagement.backend.model.AttendanceStaff;
 import com.studentmanagement.backend.model.Salary;
 import com.studentmanagement.backend.model.SalarySummary;
 import com.studentmanagement.backend.model.Staff;
@@ -141,9 +141,9 @@ public class AcademicStaffDAO {
     // 3. VIEW ATTENDANCE
     // ==========================
 
-    public List<Attendance> getAttendanceDetails(int staffId) {
+    public List<AttendanceStaff> getAttendanceDetails(int staffId) {
 
-        List<Attendance> records = new ArrayList<>();
+        List<AttendanceStaff> records = new ArrayList<>();
 
         String sql = """
                 SELECT *
@@ -161,7 +161,7 @@ public class AcademicStaffDAO {
 
                 while (rs.next()) {
 
-                    Attendance record = new Attendance();
+                    AttendanceStaff record = new AttendanceStaff();
 
                     record.setAttendanceId(rs.getInt("attendance_id"));
                     record.setStaffId(rs.getInt("staff_id"));
@@ -267,9 +267,9 @@ public class AcademicStaffDAO {
 
     // Lists every staff member. Staff with no record for that date
     // are shown with the status "Not marked".
-    public List<Attendance> getAttendanceByDate(String date) {
+    public List<AttendanceStaff> getAttendanceByDate(String date) {
 
-        List<Attendance> records = new ArrayList<>();
+        List<AttendanceStaff> records = new ArrayList<>();
 
         try (Connection connection = getConnection()) {
 
@@ -297,7 +297,7 @@ public class AcademicStaffDAO {
 
                     while (rs.next()) {
 
-                        Attendance record = new Attendance();
+                        AttendanceStaff record = new AttendanceStaff();
 
                         record.setStaffId(rs.getInt("staff_id"));
                         record.setStaffName(
@@ -330,7 +330,7 @@ public class AcademicStaffDAO {
     // Returns: "created", "updated", "staff_not_found" or "error".
     // If the staff member already has a record for that date it is updated,
     // so a day is never recorded twice.
-    public String markAttendance(Attendance attendance) {
+    public String markAttendance(AttendanceStaff attendance) {
 
         try (Connection connection = getConnection()) {
 
