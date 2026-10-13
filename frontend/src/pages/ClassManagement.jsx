@@ -1,17 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { authHeaders, bearer } from "../utils/authFetch";
 import "./ClassManagement.css";
 
 const API_BASE = "http://localhost:8081/api";
 
-const DAYS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const EMPTY_FORM = {
   subjectId: "",
@@ -25,10 +18,8 @@ const EMPTY_FORM = {
   academicYear: String(new Date().getFullYear()),
 };
 
-// Read JSON responses and show useful API errors.
 async function readResponse(response) {
   const text = await response.text();
-
   let data = null;
 
   if (text) {
@@ -44,7 +35,6 @@ async function readResponse(response) {
         typeof data === "object" && data !== null
             ? data.message || data.error
             : data;
-
     throw new Error(message || `Request failed: ${response.status}`);
   }
 
@@ -69,8 +59,8 @@ function ClassManagement() {
 
     try {
       const [classesResponse, subjectsResponse] = await Promise.all([
-        fetch(`${API_BASE}/classes`),
-        fetch(`${API_BASE}/subjects`),
+        fetch(`${API_BASE}/classes`, { headers: bearer() }),
+        fetch(`${API_BASE}/subjects`, { headers: bearer() }),
       ]);
 
       const [classesData, subjectsData] = await Promise.all([
@@ -81,9 +71,7 @@ function ClassManagement() {
       setClasses(Array.isArray(classesData) ? classesData : []);
       setSubjects(Array.isArray(subjectsData) ? subjectsData : []);
     } catch (err) {
-      setError(
-          `${err.message}. Check that the backend is running on port 8081.`
-      );
+      setError(`${err.message}. Check that the backend is running on port 8081.`);
     } finally {
       setLoading(false);
     }
@@ -132,11 +120,7 @@ function ClassManagement() {
 
   function handleChange(event) {
     const { name, value } = event.target;
-
-    setForm((previous) => ({
-      ...previous,
-      [name]: value,
-    }));
+    setForm((previous) => ({ ...previous, [name]: value }));
   }
 
   function resetForm() {
@@ -148,7 +132,6 @@ function ClassManagement() {
 
   function handleEdit(classItem) {
     setEditingId(classItem.classId);
-
     setForm({
       subjectId: String(classItem.subject?.subjectId ?? ""),
       staffId: String(classItem.staff?.staffId ?? ""),
@@ -160,58 +143,43 @@ function ClassManagement() {
       semester: classItem.semester ?? "",
       academicYear: String(classItem.academicYear ?? ""),
     });
-
     setMessage("");
     setError("");
-
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     setSaving(true);
     setError("");
     setMessage("");
 
     const payload = {
-      subject: {
-        subjectId: Number(form.subjectId),
-      },
-      staff: {
-        staffId: Number(form.staffId),
-      },
+      subject: { subjectId: Number(form.subjectId) },
+      staff: { staffId: Number(form.staffId) },
       className: form.className.trim(),
       roomNo: form.roomNo.trim() || null,
       dayOfWeek: form.dayOfWeek,
       startTime: `${form.startTime}:00`,
       endTime: `${form.endTime}:00`,
       semester: form.semester.trim() || null,
-      academicYear: form.academicYear
-          ? Number(form.academicYear)
-          : null,
+      academicYear: form.academicYear ? Number(form.academicYear) : null,
     };
 
     try {
-      const url = editingId
-          ? `${API_BASE}/classes/${editingId}`
-          : `${API_BASE}/classes`;
+      const url = editingId ? `${API_BASE}/classes/${editingId}` : `${API_BASE}/classes`;
 
       const response = await fetch(url, {
         method: editingId ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: authHeaders(),
         body: JSON.stringify(payload),
       });
 
       await readResponse(response);
-
       const action = editingId ? "updated" : "created";
 
       resetForm();
       await loadData();
-
       setMessage(`Class ${action} successfully.`);
     } catch (err) {
       setError(err.message);
@@ -221,22 +189,17 @@ function ClassManagement() {
   }
 
   async function handleDelete(classItem) {
-    const confirmed = window.confirm(
-        `Delete class "${classItem.className}" (ID ${classItem.classId})?`
-    );
-
-    if (!confirmed) {
-      return;
-    }
+    const confirmed = window.confirm(`Delete class "${classItem.className}" (ID ${classItem.classId})?`);
+    if (!confirmed) return;
 
     setError("");
     setMessage("");
 
     try {
-      const response = await fetch(
-          `${API_BASE}/classes/${classItem.classId}`,
-          { method: "DELETE" }
-      );
+      const response = await fetch(`${API_BASE}/classes/${classItem.classId}`, {
+        method: "DELETE",
+        headers: authHeaders(),
+      });
 
       await readResponse(response);
 
@@ -259,74 +222,22 @@ function ClassManagement() {
             <h1>Class Management</h1>
             <p>Manage classes, subjects, rooms, and weekly schedules.</p>
           </div>
-
-          <button
-              type="button"
-              className="class-refresh-button"
-              onClick={loadData}
-              disabled={loading}
-          >
-            <span aria-hidden="true">↻</span>
-            {loading ? "Loading..." : "Refresh Classes"}
+          <button type="button" className="class-refresh-button" onClick={loadData} disabled={loading}>
+            Refresh Classes
           </button>
         </header>
 
-        <section className="class-stats" aria-label="Summary">
-          <article className="class-stat">
-            <span className="class-stat-label">Total Classes</span>
-            <strong>{loading ? "—" : stats.total}</strong>
-          </article>
-
-          <article className="class-stat">
-            <span className="class-stat-label">Subjects Covered</span>
-            <strong>{loading ? "—" : stats.subjects}</strong>
-          </article>
-
-          <article className="class-stat">
-            <span className="class-stat-label">Teaching Staff</span>
-            <strong>{loading ? "—" : stats.staff}</strong>
-          </article>
-        </section>
-
-        {error && (
-            <div className="class-message class-error" role="alert">
-              {error}
-            </div>
-        )}
-
-        {message && (
-            <div className="class-message class-success" role="status">
-              {message}
-            </div>
-        )}
+        {error && <div className="class-message class-error" role="alert">{error}</div>}
+        {message && <div className="class-message class-success" role="status">{message}</div>}
 
         <section className="class-form-panel">
-          <div className="class-panel-heading">
-            <div>
-            <span className="class-step">
-              {editingId ? "EDIT CLASS" : "NEW CLASS"}
-            </span>
-              <h2>{editingId ? "Edit Class" : "Create a Class"}</h2>
-              <p className="class-panel-description">
-                Select an existing subject and staff member. Their IDs must
-                exist in your database.
-              </p>
-            </div>
-
-            <span className="class-panel-icon" aria-hidden="true">
-            {editingId ? "✎" : "+"}
-          </span>
-          </div>
+          <h2>{editingId ? "Edit Class" : "Create a Class"}</h2>
+          <p className="class-panel-description">Select an existing subject and staff member. Their IDs must exist in your database.</p>
 
           <form onSubmit={handleSubmit} className="class-form">
             <label>
               Subject
-              <select
-                  name="subjectId"
-                  value={form.subjectId}
-                  onChange={handleChange}
-                  required
-              >
+              <select name="subjectId" value={form.subjectId} onChange={handleChange} required>
                 <option value="">Select a subject</option>
                 {subjects.map((subject) => (
                     <option key={subject.subjectId} value={subject.subjectId}>
@@ -335,119 +246,48 @@ function ClassManagement() {
                 ))}
               </select>
             </label>
-
             <label>
               Staff ID
-              <input
-                  name="staffId"
-                  type="number"
-                  min="1"
-                  value={form.staffId}
-                  onChange={handleChange}
-                  placeholder="Enter an existing staff ID"
-                  required
-              />
+              <input name="staffId" type="number" min="1" value={form.staffId} onChange={handleChange} placeholder="Enter an existing staff ID" required />
             </label>
-
             <label>
               Class Name
-              <input
-                  name="className"
-                  value={form.className}
-                  onChange={handleChange}
-                  placeholder="e.g. 10 A"
-                  maxLength={50}
-                  required
-              />
+              <input name="className" value={form.className} onChange={handleChange} placeholder="e.g. 10 A" maxLength={50} required />
             </label>
-
             <label>
               Room
-              <input
-                  name="roomNo"
-                  value={form.roomNo}
-                  onChange={handleChange}
-                  placeholder="e.g. Room 201"
-                  maxLength={30}
-              />
+              <input name="roomNo" value={form.roomNo} onChange={handleChange} placeholder="e.g. Room 201" maxLength={30} />
             </label>
-
             <label>
               Day of Week
-              <select
-                  name="dayOfWeek"
-                  value={form.dayOfWeek}
-                  onChange={handleChange}
-                  required
-              >
+              <select name="dayOfWeek" value={form.dayOfWeek} onChange={handleChange} required>
                 {DAYS.map((day) => (
-                    <option key={day} value={day}>
-                      {day}
-                    </option>
+                    <option key={day} value={day}>{day}</option>
                 ))}
               </select>
             </label>
-
             <label>
               Start Time
-              <input
-                  name="startTime"
-                  type="time"
-                  value={form.startTime}
-                  onChange={handleChange}
-                  required
-              />
+              <input name="startTime" type="time" value={form.startTime} onChange={handleChange} required />
             </label>
-
             <label>
               End Time
-              <input
-                  name="endTime"
-                  type="time"
-                  value={form.endTime}
-                  onChange={handleChange}
-                  required
-              />
+              <input name="endTime" type="time" value={form.endTime} onChange={handleChange} required />
             </label>
-
             <label>
               Semester
-              <input
-                  name="semester"
-                  value={form.semester}
-                  onChange={handleChange}
-                  placeholder="e.g. Semester 1"
-                  maxLength={30}
-              />
+              <input name="semester" value={form.semester} onChange={handleChange} placeholder="e.g. Semester 1" maxLength={30} />
             </label>
-
             <label>
               Academic Year
-              <input
-                  name="academicYear"
-                  type="number"
-                  min="2000"
-                  max="9999"
-                  value={form.academicYear}
-                  onChange={handleChange}
-              />
+              <input name="academicYear" type="number" min="2000" max="9999" value={form.academicYear} onChange={handleChange} />
             </label>
-
             <div className="class-form-actions">
               <button type="submit" disabled={saving}>
-                {saving
-                    ? "Saving..."
-                    : editingId
-                        ? "Save Changes"
-                        : "Create Class"}
+                {saving ? "Saving..." : editingId ? "Save Changes" : "Create Class"}
               </button>
-
               {editingId && (
-                  <button
-                      type="button"
-                      className="class-cancel-button"
-                      onClick={resetForm}
-                  >
+                  <button type="button" className="class-cancel-button" onClick={resetForm}>
                     Cancel Edit
                   </button>
               )}
@@ -461,33 +301,13 @@ function ClassManagement() {
               <h2>Scheduled Classes</h2>
               <p>Classes currently saved in the database.</p>
             </div>
-
-            <div className="class-list-tools">
-              <input
-                  type="search"
-                  className="class-search"
-                  placeholder="Search classes..."
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  aria-label="Search classes"
-              />
-
-              <span className="class-count">
-              {filteredClasses.length} classes
-            </span>
-            </div>
+            <span className="class-count">{classes.length} classes</span>
           </div>
 
           {loading ? (
               <p className="class-empty-state">Loading classes...</p>
           ) : classes.length === 0 ? (
-              <p className="class-empty-state">
-                No classes found. Use the form above to create one.
-              </p>
-          ) : filteredClasses.length === 0 ? (
-              <p className="class-empty-state">
-                No classes match "{search}".
-              </p>
+              <p className="class-empty-state">No classes found. Use the form above to create one.</p>
           ) : (
               <div className="class-table-wrapper">
                 <table className="class-table">
@@ -502,66 +322,25 @@ function ClassManagement() {
                     <th>Actions</th>
                   </tr>
                   </thead>
-
                   <tbody>
-                  {filteredClasses.map((classItem) => (
+                  {classes.map((classItem) => (
                       <tr key={classItem.classId}>
                         <td>
                           <strong>{classItem.className}</strong>
                           <small>ID: {classItem.classId}</small>
                         </td>
-
                         <td>
                           {classItem.subject?.subjectName ?? "Unknown subject"}
-                          {classItem.subject?.subjectCode && (
-                              <span className="class-subject-code">
-                          {classItem.subject.subjectCode}
-                        </span>
-                          )}
+                          <small>{classItem.subject?.subjectCode ?? ""}</small>
                         </td>
-
                         <td>{classItem.staff?.staffId ?? "—"}</td>
-
-                        <td>
-                      <span className="class-day-badge">
-                        {classItem.dayOfWeek}
-                      </span>
-                        </td>
-
-                        <td>
-                      <span className="class-time">
-                        {classItem.startTime?.slice(0, 5)} –{" "}
-                        {classItem.endTime?.slice(0, 5)}
-                      </span>
-                        </td>
-
-                        <td>
-                          {classItem.roomNo ? (
-                              <span className="class-room-chip">
-                          {classItem.roomNo}
-                        </span>
-                          ) : (
-                              "—"
-                          )}
-                        </td>
-
+                        <td>{classItem.dayOfWeek}</td>
+                        <td>{classItem.startTime?.slice(0, 5)} – {classItem.endTime?.slice(0, 5)}</td>
+                        <td>{classItem.roomNo || "—"}</td>
                         <td>
                           <div className="class-row-actions">
-                            <button
-                                type="button"
-                                className="class-edit-button"
-                                onClick={() => handleEdit(classItem)}
-                            >
-                              Edit
-                            </button>
-
-                            <button
-                                type="button"
-                                className="class-delete-button"
-                                onClick={() => handleDelete(classItem)}
-                            >
-                              Delete
-                            </button>
+                            <button type="button" className="class-edit-button" onClick={() => handleEdit(classItem)}>Edit</button>
+                            <button type="button" className="class-delete-button" onClick={() => handleDelete(classItem)}>Delete</button>
                           </div>
                         </td>
                       </tr>

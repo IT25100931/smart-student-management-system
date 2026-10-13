@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { API } from "../config";
-
+import { authHeaders } from "../utils/authFetch";
 
 function today() {
   const d = new Date();
@@ -10,7 +10,6 @@ function today() {
 }
 
 function MarkAttendance() {
-
   const [staffId, setStaffId] = useState("");
   const [date, setDate] = useState(today());
   const [status, setStatus] = useState("Present");
@@ -18,7 +17,6 @@ function MarkAttendance() {
   const [result, setResult] = useState(null);
 
   const handleSubmit = async () => {
-
     if (staffId.trim() === "" || isNaN(Number(staffId))) {
       setResult({ type: "error", text: "Please enter a valid Staff ID" });
       return;
@@ -32,7 +30,7 @@ function MarkAttendance() {
     try {
       const response = await fetch(`${API}/attendance`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({
           staffId: Number(staffId),
           attendanceDate: date,
@@ -45,95 +43,79 @@ function MarkAttendance() {
 
       setResult({
         type: response.ok ? "success" : "error",
-        text: data.message
+        text: data.message || "Attendance saved successfully."
       });
 
       if (response.ok) {
         setRemarks("");
       }
-
     } catch {
       setResult({
         type: "error",
-        text: "Could not reach the backend. Is it running?"
+        text: "Could not reach the backend. Check authentication or server status."
       });
     }
   };
 
   return (
-    <>
-      <header className="header">
-        <h1>Mark Attendance</h1>
-        <p>Record Present, Absent or Late for a staff member</p>
-      </header>
+      <>
+        <header className="header">
+          <h1>Mark Attendance</h1>
+          <p>Record Present, Absent or Late for a staff member</p>
+        </header>
 
-      <section className="search-section">
-
-        <label>Staff ID</label>
-
-        <div className="search-box">
-
-          <input
-            type="text"
-            placeholder="Enter Staff ID"
-            value={staffId}
-            onChange={(e) => setStaffId(e.target.value)}
-          />
-
-        </div>
-
-        <label style={{ marginTop: 16 }}>Date</label>
-
-        <div className="search-box">
-
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-
-        </div>
-
-        <label style={{ marginTop: 16 }}>Status</label>
-
-        <div className="search-box">
-
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option value="Present">Present</option>
-            <option value="Absent">Absent</option>
-            <option value="Late">Late</option>
-          </select>
-
-        </div>
-
-        <label style={{ marginTop: 16 }}>Remarks</label>
-
-        <div className="search-box">
-
-          <input
-            type="text"
-            placeholder="Optional, e.g. On time, Sick leave"
-            value={remarks}
-            onChange={(e) => setRemarks(e.target.value)}
-          />
-
-          <button onClick={handleSubmit} className="attendance-button">
-            Save Attendance
-          </button>
-
-        </div>
-
-        {result && (
-          <div className={"form-message " + result.type}>
-            {result.text}
+        <section className="search-section">
+          <label>Staff ID</label>
+          <div className="search-box">
+            <input
+                type="text"
+                placeholder="Enter Staff ID"
+                value={staffId}
+                onChange={(e) => setStaffId(e.target.value)}
+            />
           </div>
-        )}
 
-      </section>
-    </>
+          <label style={{ marginTop: 16 }}>Date</label>
+          <div className="search-box">
+            <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+
+          <label style={{ marginTop: 16 }}>Status</label>
+          <div className="search-box">
+            <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+              <option value="Late">Late</option>
+            </select>
+          </div>
+
+          <label style={{ marginTop: 16 }}>Remarks</label>
+          <div className="search-box">
+            <input
+                type="text"
+                placeholder="Optional, e.g. On time, Sick leave"
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+            />
+            <button onClick={handleSubmit} className="attendance-button">
+              Save Attendance
+            </button>
+          </div>
+
+          {result && (
+              <div className={"form-message " + result.type}>
+                {result.text}
+              </div>
+          )}
+        </section>
+      </>
   );
 }
 
